@@ -1,16 +1,18 @@
 logs
 *.log
 npm-debug.log*
-.DS_Store
 .bsb.lock
 
-coverage
 node_modules
+.idea*
 build
-public/static
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 lib
 .merlin
+.graphql_ppx_cache
+graphql_schema.json
+.vscode
+todo.txt
+src/config/local.js
+src/config/localo.js
+*.bs.js
+rmLocal.sh

@@ -19,7 +19,7 @@
   "package-specs": [
     {
       "module": "es6-global",
-      "in-source": false
+      "in-source": true
     }
   ]
 }
