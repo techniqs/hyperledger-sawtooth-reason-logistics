@@ -1,3 +1,5 @@
+# Razzle README, needs to be updated
+
 # Razzle Reason React
 
 ## How to use
