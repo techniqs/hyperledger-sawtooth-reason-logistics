@@ -1,5 +1,5 @@
 {
-  "name": "hs-reason",
+  "name": "sawtooth-reason-supply",
   "version": "0.1.0",
   "scripts": {
     "start": "concurrently \"npm run js-watch\" \"npm run bsb-watch\"",
@@ -9,8 +9,10 @@
     "test": "razzle test --env=jsdom"
   },
   "dependencies": {
+    "@glennsl/bs-json": "5.0.1",
     "bs-react-intl": "^v0.9.0-beta.3",
     "express": "^4.17.1",
+    "protobufjs": "6.8.8",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "reason-react": "^0.7.0"
