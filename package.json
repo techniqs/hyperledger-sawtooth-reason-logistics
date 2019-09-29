@@ -15,7 +15,8 @@
     "protobufjs": "6.8.8",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "reason-react": "^0.7.0"
+    "reason-react": "^0.7.0",
+    "sawtooth-sdk": "1.0.5"
   },
   "devDependencies": {
     "bs-platform": "5.0.6",

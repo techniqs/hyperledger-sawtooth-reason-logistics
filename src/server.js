@@ -20,7 +20,7 @@ function renderTemplate(markup) {
       ${assets.client.js ? `<script src="${assets.client.js}" defer></script>` : ''}
       ${assets.client.css ? `<link rel="stylesheet" type="text/css" href="${assets.client.css}" />` : ''}
       <link rel="icon" href="/favicon.png" />
-      <title>hs-reason</title>
+      <title>sawtooth-reason-supply</title>
     </head>
     <body>
       <div id="root">${markup}</div>
