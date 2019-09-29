@@ -9,6 +9,19 @@ class type _hash =
 type hash = Js.t(_hash);
 [@bs.module "crypto"] external createHash: string => hash = "createHash";
 
+// some mindmap
+// need to extend transactionhandler and also ovverride apply function
+// problem is extending and overriding
+
+// cant just define own module because my TransactionProcessor.addHandler
+// only takes type TransactionHandler so need to extend it!!
+
+// maybe i can just override the apply function ?? 
+// just a good old external and then call my own letfunction
+// https://github.com/glennsl/bucklescript-cookbook#bind-to-a-higher-order-function-that-takes-a-function-accepting-an-argument-of-several-different-types-an-untagged-union
+
+
+
 // 1byte -> 2 chars
 // Address Schema -->
 // Bytes 1-3 Hashed App name
