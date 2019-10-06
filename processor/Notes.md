@@ -1,29 +1,14 @@
-some mindmap
-need to extend transactionhandler and also ovverride apply function
-problem is extending and overriding
+The processor will be a Node.js application. 
+which means i need to rewrite bs.raw files to make it node.js compatible..
 
-cant just define own module because my TransactionProcessor.addHandler
-only takes type TransactionHandler so need to extend it!!
+razzle only provided for hmr and ssr and some output // will delete probably
+Should use ninja/bsb -w
 
-maybe i can just override the apply function ?? 
-just a good old external and then call my own letfunction
-https://github.com/glennsl/bucklescript-cookbook#bind-to-a-higher-order-function-that-takes-a-function-accepting-an-argument-of-several-different-types-an-untagged-union
 
-apply doesnt work yet.. 
-in Try.bs.js 
-function test(param) {
-  const x = new ctor("xo", /* array */["versions"], /* array */["namespaces"]);
-  console.log("ARE YOU ?",x.prototype instanceof Handler.TransactionHandler);
-  console.log("LOL WHICH TYPE?",x.constructor.name);
-  console.log("wtf does this really work ? ", x.versionsField);
-  return new ctor("xo", /* array */["versions"], /* array */["namespaces"]);
-}
+i skipp payload and protobuf for now because i need to see some kind of information about payload .. 
+I THINK I KNOW IT 
+pb_2.SimpleSupplyPayload() 
+would be the message of the proto file 
 
-works lol
-  this["apply"]= function(){
-    console.log("lol works");
-  }
 
-this says its constructor is TransactionHandler so it should be fine i guess.
-
-check with this dude on Dev maybe he knows something about apply method overriding.
+Look at sawtooth sdk --> they used also protobuf and protos maybe i can figure it out through them

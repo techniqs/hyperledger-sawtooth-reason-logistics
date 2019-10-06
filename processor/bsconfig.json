@@ -15,7 +15,7 @@
   "suffix": ".bs.js",
   "package-specs": [
     {
-      "module": "es6-global",
+      "module": "commonjs",
       "in-source": true
     }
   ]

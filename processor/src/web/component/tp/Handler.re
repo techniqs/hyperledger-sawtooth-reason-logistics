@@ -38,7 +38,10 @@ module SupplyHandlerImpl = {
         context: context,
       ) => {
     let header = transaction.header;
+    // Payload Module, maybe use functor moduless? Slide 20
     let payload = transaction.header;
+    let state = context;
+
 
     Js.log3("Implementation", transaction, context);
   };
