@@ -12,7 +12,4 @@ lib
 graphql_schema.json
 .vscode
 todo.txt
-src/config/local.js
-src/config/localo.js
 *.bs.js
-rmLocal.sh

@@ -5,7 +5,7 @@
   "reason": {
     "react-jsx": 3
   },
-  "bs-dependencies": ["reason-react","bs-react-intl",],
+  "bs-dependencies": ["reason-react","bs-react-intl"],
   "sources": [
     {
       "dir": "src",

@@ -11,13 +11,18 @@ https://github.com/glennsl/bucklescript-cookbook#bind-to-a-higher-order-function
 
 apply doesnt work yet.. 
 in Try.bs.js 
- function test(param) {
+function test(param) {
   const x = new ctor("xo", /* array */["versions"], /* array */["namespaces"]);
   console.log("ARE YOU ?",x.prototype instanceof Handler.TransactionHandler);
   console.log("LOL WHICH TYPE?",x.constructor.name);
+  console.log("wtf does this really work ? ", x.versionsField);
   return new ctor("xo", /* array */["versions"], /* array */["namespaces"]);
-
 }
+
+works lol
+  this["apply"]= function(){
+    console.log("lol works");
+  }
 
 this says its constructor is TransactionHandler so it should be fine i guess.
 

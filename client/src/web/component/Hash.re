@@ -9,10 +9,6 @@ class type _hash =
 type hash = Js.t(_hash);
 [@bs.module "crypto"] external createHash: string => hash = "createHash";
 
-
-
-
-
 // 1byte -> 2 chars
 // Address Schema -->
 // Bytes 1-3 Hashed App name
@@ -36,26 +32,3 @@ module Hash = {
   let agent_prefix = "00";
   let record_prefix = "01";
 };
-
-// [@bs.val] external requireModule: string => unit = "require";
-
-module Result = {
-  include Belt.Result;
-  let mapWithDefault = (map, default, data) =>
-    Belt.Result.mapWithDefault(data, default, map);
-  let map = (map, data) => Belt.Result.map(data, map);
-  let getWithDefault = (default, data) =>
-    Belt.Result.getWithDefault(data, default);
-};
-
-// some stuff worth leaving
-
-// type hexBase64Latin1Encoding =
-// | Latin1
-// | Hex
-// | Base64;
-
-// type asdf = {
-//   digest: string => string,
-//   update: string => asdf,
-// };
