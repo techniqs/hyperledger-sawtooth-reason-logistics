@@ -9,7 +9,7 @@ message Agent {
     string name = 2;
 
     // Approximately when the agent was registered, as a Unix UTC timestamp
-    uint64 timestamp = 3;
+    // uint64 timestamp = 3;
 }
 
 
@@ -19,3 +19,4 @@ message Agent {
 message AgentContainer {
     repeated Agent entries = 1;
 }
+

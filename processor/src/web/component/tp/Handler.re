@@ -1,3 +1,17 @@
+//TODO Delete
+class type _jsTester =
+  [@bs]
+  {
+  };
+type jsTester = Js.t(_jsTester);
+[@bs.new] [@bs.module "./JsTester.js"]
+external createJSTester: unit => jsTester = "default";
+
+
+
+
+
+
 type header;
 type payload;
 
@@ -39,7 +53,7 @@ module SupplyHandlerImpl = {
       ) => {
     let header = transaction.header;
     // Payload Module, maybe use functor moduless? Slide 20
-    let payload = transaction.header;
+    let payload = transaction.payload;
     let state = context;
 
 

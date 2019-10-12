@@ -7,5 +7,10 @@ let make = () => {
   let supplyHandler2 = Handler.createSupplyHandler();
   supplyHandler2##apply("wtf", "wtf");
 
+
+  let jsTester = Handler.createJSTester();
+  
+
+
   <div> <p> {"BA " |> ReasonReact.string} </p> </div>;
 };

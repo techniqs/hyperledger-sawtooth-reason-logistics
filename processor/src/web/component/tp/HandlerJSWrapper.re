@@ -3,6 +3,7 @@
     const { Handler } = require('./Handler.bs');
 
     
+    // TODO change back to extends..
     // export default class SupplyHandler extends TransactionHandler {
     //  class SupplyHandler extends TransactionHandler {
 

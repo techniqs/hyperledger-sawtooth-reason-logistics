@@ -1,11 +1,13 @@
 
-module type PayloadType = {
-    type action;
-
-
+type asdf = {
+  age: int
 };
 
-module Payload = (PayloadType) => {
+
+module Payload = {
   type t;
 
-}
+  let determinePayload = () => 
+  Js.log();
+
+};
