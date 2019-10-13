@@ -4,5 +4,5 @@ package awesomepackage;
 syntax = "proto3";
 
 message AwesomeMessage {
-    string awesome_field = 1; // becomes awesomeField
+    string awesome_field_lol = 1; // becomes awesomeField
 }

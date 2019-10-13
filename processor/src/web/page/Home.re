@@ -9,6 +9,10 @@ let make = () => {
 
 
   let jsTester = Handler.createJSTester();
+
+
+
+  let asdf = Payload.loadProtoFile("protos/qq.proto",Payload.callBack);
   
 
 
