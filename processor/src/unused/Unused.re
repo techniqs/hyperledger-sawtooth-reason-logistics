@@ -26,3 +26,16 @@ external createSupplyHandler: unit => supplyHandler = "default";
 // | Hex
 // | Base64;
 
+
+    // let splitRegex = [%bs.re "/[,]+/gm"];
+    // let decodedPayload = Js.Re.exec_(splitRegex,(Node.Buffer.toString(payloadBuffer)));
+
+    // Js.log2("decoded", decodedPayload);
+
+    // let q = switch (decodedPayload) {
+    // | Some(p) => Js.Re.captures(p);
+    // | _ => [| |];
+    // };
+
+    // Js.log2("payload", q);
+

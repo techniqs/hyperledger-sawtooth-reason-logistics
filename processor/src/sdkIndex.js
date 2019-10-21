@@ -1,7 +1,7 @@
 'use strict'
 
 const { TransactionProcessor } = require('sawtooth-sdk/processor')
-const SupplyHandler = require('./tp/HandlerJsWrapper')
+const SupplyHandler = require('./tp/JsHandlerWrapper')
 
 // npm run start tcp://localhost:4004
 const address = "tcp://localhost:4004";

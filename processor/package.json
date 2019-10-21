@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "bsb -make-world -w",
     "node-docker": "bsb -make-world && node src/nodeIndex.js",
-    "xoTester": "bsb -make-world && node src/sdkIndex.js",
+    "xo": "bsb -make-world && node src/sdkIndex.js",
     "clean": "bsb -clean-world && rm -rf lib build && find . -type f -name '*.bs.js' -delete"
   },
   "dependencies": {

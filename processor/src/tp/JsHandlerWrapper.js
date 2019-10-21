@@ -10,11 +10,16 @@ class SupplyHandler extends TransactionHandler {
 
     constructor() {
         // Namespace has to be a hash
-        super("xo", ["1.0"], ["5b7349"]);
+
+        //xo super
+        // super("xo", ["1.0"], ["5b7349"]);
+
+        // education super
+        super("simple_supply", ["0.1"], ["212bd8"]);    
     }
 
     apply(transactionProcessRequest, context) {
-        console.log(SupplyHandlerImpl[5](this, transactionProcessRequest, context));
+        console.log(SupplyHandlerImpl[1](this, transactionProcessRequest, context));
 
         // return SupplyHandlerImpl.apply(this, transactionProcessRequest, context);
     }

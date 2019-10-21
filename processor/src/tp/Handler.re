@@ -15,9 +15,6 @@ type context;
 module SupplyHandlerImpl = {
   include Payload;
 
-// let asdf = Payload.loadProtoFile("protos/qq.proto",Payload.callBack);
-
-
   type t;
 
   // let transactionFamilyName = "transactionFamilyName";
@@ -29,13 +26,13 @@ module SupplyHandlerImpl = {
     let payload = transaction##payload;
     let state = context;
 
-    Js.log2("Transaction", transaction);
-    Js.log("------------------------");
-    Js.log("------------------------");
-    Js.log("------------------------");
+    // Js.log2("Transaction", transaction);
+    // Js.log("------------------------");
+    // Js.log("------------------------");
+    // Js.log("------------------------");
 
-    // Js.log2("payload", payload);
-    Js.log2("payload", Node.Buffer.toString(payload));
+
+    Payload.determinePayload(payload);
     // Js.log2("Context", context);
   };
 };

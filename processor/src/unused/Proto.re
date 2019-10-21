@@ -34,3 +34,6 @@ let callBack: loadCallBack =
 external loadProtoFile: (string, loadCallBack) => unit = "load";
 
 type asdf = {age: int};
+
+
+// let asdf = Payload.loadProtoFile("protos/qq.proto",Payload.callBack);
