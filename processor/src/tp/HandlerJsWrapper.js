@@ -4,15 +4,9 @@ const { TransactionHandler } = require('sawtooth-sdk/processor/handler');
 const { SupplyHandlerImpl } = require('./Handler.bs');
 
 
-// TODO change back to extends..
-// this for node
+// there is no way to extend in ReasonMl, since it was designed as,
+// we can control what happens in functions but extending we wont need
 class SupplyHandler extends TransactionHandler {
-
-    // this idk 
-    // export default class SupplyHandler extends TransactionHandler {
-
-    // this for razzle
-    // export default class SupplyHandler {
 
     constructor() {
         // Namespace has to be a hash

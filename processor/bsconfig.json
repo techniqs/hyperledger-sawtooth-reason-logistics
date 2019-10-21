@@ -2,10 +2,7 @@
   "name": "sawtooth-reason-supply-processor",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
   "refmt": 3,
-  "reason": {
-    "react-jsx": 3
-  },
-  "bs-dependencies": ["reason-react"],
+  "bs-dependencies": [],
   "sources": [
     {
       "dir": "src",
