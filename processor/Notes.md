@@ -5,25 +5,15 @@ i need probably for the client the payload functions again to encode i could do 
 
 
 TODOS:
-Delete in /public protos folder
-change in HandlerJSWrapper back to extends..
+if protos not needed for processor, delete protos folder
 create dockerfile for tp ->
 https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 
 
 
-protobufJs useful links: 
+protobufJs useful links: (look at JsTester.js)
 https://github.com/protobufjs/protobuf.js/blob/master/README.md#examples
 https://github.com/protobufjs/protobuf.js/issues/523
 probably also useful??
 https://github.com/protobufjs/protobuf.js/blob/master/examples/custom-get-set.js
 https://github.com/protobufjs/protobuf.js/blob/master/examples/traverse-types.js
-
-
-old package.json deps:
-    "express": "^4.17.1",
-    "protobufjs": "6.8.8",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "reason-react": "^0.7.0",
-    "sawtooth-sdk": "1.0.5"
