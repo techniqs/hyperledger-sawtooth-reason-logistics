@@ -1,17 +1,11 @@
 const protobuf = require("protobufjs");
 const path = require("path");
 
+// this for razzle
+// export default class JsTester {
 
-class Agent {
-    public_key;
-    name;
-    constructor() {
-        this.public_key = "pub_key";
-        this.name = "name";
-    }
-};
-
-export default class JsTester {
+//this for node
+class JsTester {
     constructor() {
         console.log("Tester works");
         this.testStuff();

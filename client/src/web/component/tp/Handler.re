@@ -17,7 +17,7 @@ class type _supplyHandler =
   // here need to say instead of string string, fix type!!
 
 type supplyHandler = Js.t(_supplyHandler);
-[@bs.new] [@bs.module "./HandlerJSWrapper.bs"]
+[@bs.new] [@bs.module "./HandlerJsWrapper"]
 external createSupplyHandler: unit => supplyHandler = "default";
 
 //Implementation for Js Wrapper SupplyHandler

@@ -6,6 +6,8 @@
     "dev": "bsb -make-world && razzle start",
     "dev-razzle": "bsb -make-world && razzle start",
     "dev-bsb": "bsb -make-world -w",
+    "node-docker": "bsb -make-world && node src/nodeIndex.js",
+    "xoTester": "bsb -make-world && node src/sdkIndex.js",
     "clean": "bsb -clean-world && rm -rf lib build && find . -type f -name '*.bs.js' -delete",
     "build": "bsb -make-world && razzle build",
     "test": "razzle test --env=jsdom"

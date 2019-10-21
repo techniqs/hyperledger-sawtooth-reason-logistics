@@ -27,7 +27,7 @@ let callBack: loadCallBack =
   (error, root) => {
     let qq = root##lookup("AwesomeMessage");
 
-    Js.log2("--------", root##lookup("AwesomeMessage"));
+    // Js.log2("--------", root##lookup("AwesomeMessage"));
   };
 
 [@bs.module "protobufjs"]
@@ -38,5 +38,9 @@ type asdf = {age: int};
 module Payload = {
   type t;
 
-  let determinePayload = () => Js.log();
+  let determinePayload = () => {
+    
+
+    Js.log("");
+  }
 };

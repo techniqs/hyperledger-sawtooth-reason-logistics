@@ -20,6 +20,9 @@ would be the message of the proto file
 TODOS:
 Delete in /public protos folder
 change in HandlerJSWrapper back to extends..
+create dockerfile for tp ->
+https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
+
 
 
 protobufJs useful links: 
