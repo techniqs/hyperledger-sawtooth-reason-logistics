@@ -1,26 +1,49 @@
-module Payload = {
-  type t;
+type actions =
+  | CreateAgent
+  | CreateRecord
+  | TransferRecord
+  | UpdateRecord
+  // Delete
+  | Create
+  // Delete
+  | Take
+  | NotDefined;
 
-  // wonderful record
-  type payloadType = {
-    name: string,
-    action: string,
-    space: string,
+let toTypeAction = action => {
+  switch (action) {
+  | "create_agent" => CreateAgent
+  | "create_record" => CreateRecord
+  | "transfer_record" => TransferRecord
+  | "update_record" => UpdateRecord
+  // Delete
+  | "create" => Create
+  // Delete
+  | "take" => Take
+  | _ => NotDefined
   };
+};
 
-  let determinePayload = (payloadBuffer: Node.Buffer.t) => {
-    // Js.log2("PAYLOAD Buffer", payloadBuffer);
-  
-  //  let pArray = Js.String.split(",", Node.Buffer.toString(payloadBuffer));
-   Js.log2("payload String", Node.Buffer.toString(payloadBuffer));
+type payloadType = {
+  name: string,
+  action: actions,
+  space: string,
+};
 
-   
+let determinePayload = (payloadBuffer: Node.Buffer.t) => {
+  let payloadAsString = Node.Buffer.toString(payloadBuffer);
 
+  let payloadArray = Js.String.split(",", payloadAsString);
+  if (Array.length(payloadArray) === 3) {
+    let payload: payloadType = {
+      name: payloadArray[0],
+      action: toTypeAction(payloadArray[1]),
+      space: payloadArray[2],
+    };
+    Js.log2("payload", payload);
 
-    // let payload = {name: pArray[0], action: pArray[1], space: pArray[2]};
-
-    // Js.log2("qqq", payload);
-    // Js.log2("qqq", payload.action);
-    ();
+    Some(payload);
+  } else {
+    None;
+        // here array aint 3 so somethings wrong !
   };
 };

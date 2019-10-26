@@ -1,32 +1,20 @@
+i did convert my header and payload to records for accessing -> so i need to figure state out and then im almost done :) -> for state look at some js file 
+either simplewalletHandler or the js sdk of sawtooth
+
+
+They use cbor to encode their payload.. so i could also use it ? :)
+right now i will still go for buffer hehe
+https://sawtooth.hyperledger.org/docs/core/releases/1.0/_autogen/sdk_submit_tutorial_js.html#encoding-your-payload
+
+Ehm looks like everything is encoded with protobuf, except for payload -> encoded your way. and i think the validator decodes it sends it to the tp -> and payload is obviously still encoded thats why we dont need to decode transaction header /context
+for protobuf encoding look at simplewalletClient
 
 
 
+!!find a better way to cast js object header to record type header @ Handler.re
+ask pavel one day :) !!
 
-
-
-
-
-ehm
-right now trying to decode buffer payload.. works perfect for the xo example, problem is though for the education example not
-now im kinda worried that i need to use protobufjs but probably i dont need to use it since i can just use normal buffer right?
-
-tomorrow with tan i will run the python project locally and then lets see what it logs there :)
-
-
-
-
-
-
-
-
-
-
-
-
-
-i need probably for the client the payload functions again to encode i could do some kind of npm library
-
-!!after tp is done -> create rest api with nodejs/express
+!!updated bs-platform from 5.0.6 to 5.2.1 !!
 
 
 
@@ -35,6 +23,8 @@ if protos not needed for processor, delete protos folder
 create dockerfile for tp ->
 https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 
+
+protobufjs probably not needed! just a json file LOOK AT simplewalletClient!1
 
 
 protobufJs useful links: (look at JsTester.js)

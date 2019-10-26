@@ -6,8 +6,22 @@ const SupplyHandler = require('./tp/JsHandlerWrapper')
 // npm run start tcp://localhost:4004
 const address = "tcp://localhost:4004";
 
-const transactionProcessor = new TransactionProcessor(address)
+if (process.argv.length < 3) {
+    console.log('Nothin specified, simple supply will be called!')
 
-transactionProcessor.addHandler(new SupplyHandler())
+    const transactionProcessor = new TransactionProcessor(address)
 
-transactionProcessor.start()
+    transactionProcessor.addHandler(new SupplyHandler())
+
+    transactionProcessor.start()
+
+} else {
+    console.log('Got extra input, xo will be called!')
+
+    const transactionProcessor = new TransactionProcessor(address)
+
+    transactionProcessor.addHandler(new SupplyHandler("xo"))
+
+    transactionProcessor.start()
+}
+

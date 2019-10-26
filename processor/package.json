@@ -8,11 +8,12 @@
     "clean": "bsb -clean-world && rm -rf lib build && find . -type f -name '*.bs.js' -delete"
   },
   "dependencies": {
+    "cbor": "5.0.1",
     "sawtooth-sdk": "1.0.5"
   },
   "author": "Daniel Rasheed",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "5.0.6"
+    "bs-platform": "5.2.1"
   }
 }
