@@ -1,0 +1,14 @@
+{
+  "name": "sawtooth-reason-supply-api",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "express-graphql": "0.9.0",
+    "graphql": "14.5.8"
+  },
+  "author": "Daniel Rasheed",
+  "license": "MIT"
+}
