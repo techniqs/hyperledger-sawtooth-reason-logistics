@@ -1,4 +1,3 @@
-
 [@bs.deriving jsConverter]
 type header = {
   batcherPublicKey: string,
@@ -9,21 +8,22 @@ type header = {
   nonce: string,
   outputs: array(string),
   payloadSha512: string,
-  signerPublicKey: string
+  signerPublicKey: string,
 };
 
 // im pretty sure this can be modelled better..
-class type _header = 
-[@bs]{
-  pub batcherPublicKey: string;
-  pub familyName: string;
-  pub familyVersion: string;
-  pub inputs: array(string);
-  pub nonce: string;
-  pub outputs: array(string);
-  pub payloadSha512: string;
-  pub signerPublicKey: string;
-};
+class type _header =
+  [@bs]
+  {
+    pub batcherPublicKey: string;
+    pub familyName: string;
+    pub familyVersion: string;
+    pub inputs: array(string);
+    pub nonce: string;
+    pub outputs: array(string);
+    pub payloadSha512: string;
+    pub signerPublicKey: string;
+  };
 
 class type _tpRequest =
   [@bs]
@@ -33,11 +33,9 @@ class type _tpRequest =
   };
 type tpRequest = Js.t(_tpRequest);
 
-type context;
-
-
 // just for my context
-let headerObj = [%raw"{ batcherPublicKey:
+let headerObj = [%raw
+  "{ batcherPublicKey:
    '02037dd8a1039f5e6721ccfa29926846a60310e03a0cd665bfe7f05620d6f08a59',
   familyVersion: '1.0',
   familyName: 'xo',
@@ -49,30 +47,32 @@ let headerObj = [%raw"{ batcherPublicKey:
   payloadSha512:
    '6b6e3e26a9e2e054d8d08ca87d59e01a07b81790b1c678d0fba0dba75965b7f06b9a6dff9bad0b2601957148d521c7be34b8b4e43d16b1d93bc997d21be4700f',
   signerPublicKey:
-   '02037dd8a1039f5e6721ccfa29926846a60310e03a0cd665bfe7f05620d6f08a59' }"];
+   '02037dd8a1039f5e6721ccfa29926846a60310e03a0cd665bfe7f05620d6f08a59' }"
+];
 
 //Implementation for Js Wrapper SupplyHandler
 module SupplyHandlerImpl = {
   open Payload;
-
-  // let transactionFamilyName = "transactionFamilyName";
-  // let versions = [|"versions"|];
-  // let namespaces = [|"namespaces"|];
-
+  open State;
 
   // header : normal type
   // payload : buffer
-  // context 
+  // context
+  
 
   let apply = (_t, transaction: tpRequest, context: context) => {
-
     let header = headerFromJs(transaction##header);
     let payload = determinePayload(transaction##payload);
-    let state = context;
+    let state = {context, timeout: 500};
 
-    Js.log2("CONTEXT//State", state );
-    
+    switch (payload) {
+    | Some(data) =>
+      Js.log2("STATESHIT", StateFunctions.getGame(data.name, state))
+    | _ => Js.log("PAYLOAD NULL")
+    };
+
     // validate_timestamp
+    // Js.log2("Is ttype right?",Hash.getAddressType(Hash.getAgentAddress(header.signerPublicKey)));
 
     switch (payload) {
     | Some(data) =>
@@ -93,19 +93,23 @@ module SupplyHandlerImpl = {
     };
   };
 
-
-
-  let createAgent = (state, pubKey:string, payload: payloadType) => {
-    ();
+  let createAgent = (state: State.state, pubKey: string, payload: payloadType) => {
+    switch (StateFunctions.getAgent(pubKey)) {
+    | Some(_) => Js.log("AGENT ALREADY IN STATE")
+    | _ => Js.log("NO AGENT, YOU CAN SAVE INTO STATE")
+    };
   };
 
-  let createRecord = (state, pubKey, payload: payloadType) => {
+  let createRecord =
+      (state: State.state, pubKey: string, payload: payloadType) => {
     ();
   };
-  let transferRecord = (state, pubKey, payload: payloadType) => {
+  let transferRecord =
+      (state: State.state, pubKey: string, payload: payloadType) => {
     ();
   };
-  let updateRecord = (state, pubKey, payload: Payload.payloadType) => {
+  let updateRecord =
+      (state: State.state, pubKey: string, payload: payloadType) => {
     ();
   };
 };
