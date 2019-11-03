@@ -1,26 +1,90 @@
-var express = require('express');
-var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
+// from apollo
+// https://www.apollographql.com/docs/apollo-server/getting-started/#next-steps
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
+import './config';
 
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello: () => {
-    return 'Hello world!';
+import express from 'express';
+import { ApolloServer } from 'apollo-server-express';
+
+import schema from './schema';
+import resolvers from './resolvers';
+import models, { sequelize } from './helpers/database';
+
+// import models, { sequelize } from './models';
+
+const app = express();
+
+// app.use(cors());
+
+
+//check how context works
+
+const server = new ApolloServer({
+  typeDefs: schema,
+  resolvers,
+  formatError: error => {
+    // remove the internal sequelize error message
+    // leave only the important validation error
+    const message = error.message
+      .replace('SequelizeValidationError: ', '')
+      .replace('Validation error: ', '');
+
+    return {
+      ...error,
+      message,
+    };
   },
-};
+  context: async () => ({
+    models,
+    me: await models.User.findByLogin('rwieruch'),
+  }),
+});
 
-var app = express();
-app.use('/graphiql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
-app.listen(4000);
-console.log('Running a GraphQL API server at localhost:4000/graphiql');
+server.applyMiddleware({ app, path: '/graphiql' });
+
+const port = process.env.APP_PORT; 
+
+const eraseDB = process.env.DB_ERASE;
+
+sequelize.sync({ force: eraseDB }).then(async () => {
+  if (eraseDB) {
+    createUsersWithMessages();
+  }
+
+  app.listen({ port }, () => {
+    console.log(`Graphiql Server on http://localhost:${port}/graphiql`);
+  });
+});
+
+const createUsersWithMessages = async () => {
+  await models.User.create(
+    {
+      username: 'rwieruch',
+      messages: [
+        {
+          text: 'Published the Road to learn React',
+        },
+      ],
+    },
+    {
+      include: [models.Message],
+    },
+  );
+
+  await models.User.create(
+    {
+      username: 'ddavids',
+      messages: [
+        {
+          text: 'Happy to release ...',
+        },
+        {
+          text: 'Published a complete ...',
+        },
+      ],
+    },
+    {
+      include: [models.Message],
+    },
+  );
+};
