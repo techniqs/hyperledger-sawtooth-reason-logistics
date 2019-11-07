@@ -1,27 +1,44 @@
+Possible Database actions:
+Querys:
+Get AgentInformation
+Get RecordInformation
+
+
+
+Mutations:
+Create agent
+Create record
+Update record
+Transfer record? (update?)
+
+
+
+
 tutorial to use graphql server
 https://www.robinwieruch.de/graphql-apollo-server-tutorial#apollo-server-postgresql-sequelize-setup
 
+dont forget to start docker
 
-found reason apollo server examples
+
+reason apollo server examples
 
 https://github.com/drejohnson/reason-apollo-server-example
-
-
-i think this below is my shit xDD
 https://github.com/zackify/reason-apollo-server
 
 
 idk look how svd and postla did schema updating .. 
-
+graphql boilerplates
 https://github.com/graphql-boilerplates
-https://github.com/chentsulin/awesome-graphql#reasonml-libraries
-https://github.com/sainthkh/reasonql
+
+
 postgres is running on 5432
 
 docker postgres commands: 
 also for some extra help look @ rbDump.sh
 
-docker run --name supply-postgres -p 5432:5432 -e POSTGRES_PASSWORD=supply -d -d mdillon/postgis
+docker run --name supply-postgres -p 5432:5432 -e POSTGRES_PASSWORD=supply -d mdillon/postgis
+
+check for real docker container if it works with mdillon/postgis
 
 docker exec -u postgres supply-postgres createdb supplyDB
 docker exec -u postgres supply-postgres dropdb supplyDB
@@ -42,6 +59,3 @@ https://www.apollographql.com/docs/apollo-server/getting-started/#step-1-create-
 graphql link
 https://graphql.org/graphql-js/running-an-express-graphql-server/
 
-
-grapqhl ts server boilerplate
-https://github.com/benawad/graphql-ts-server-boilerplate

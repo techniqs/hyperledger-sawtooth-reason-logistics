@@ -13,6 +13,7 @@ const sequelize = new Sequelize(
 const models = {
     User: sequelize.import('../models/user'),
     Message: sequelize.import('../models/message'),
+    Agent: sequelize.import('../models/agent'),
 };
 
 Object.keys(models).forEach(key => {

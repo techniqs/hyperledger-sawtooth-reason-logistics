@@ -42,9 +42,9 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app, path: '/graphiql' });
 
-const port = process.env.APP_PORT; 
+const port = process.env.APP_PORT;
 
-const eraseDB = process.env.DB_ERASE;
+const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
 sequelize.sync({ force: eraseDB }).then(async () => {
   if (eraseDB) {
@@ -54,6 +54,8 @@ sequelize.sync({ force: eraseDB }).then(async () => {
   app.listen({ port }, () => {
     console.log(`Graphiql Server on http://localhost:${port}/graphiql`);
   });
+}).catch(err => {
+  console.error("Database not working, docker issue?", err)
 });
 
 const createUsersWithMessages = async () => {
@@ -68,6 +70,13 @@ const createUsersWithMessages = async () => {
     },
     {
       include: [models.Message],
+    },
+  );
+
+  await models.Agent.create(
+    {
+      pubKey: 'QQQQ',
+      userName: 'ABC'
     },
   );
 
