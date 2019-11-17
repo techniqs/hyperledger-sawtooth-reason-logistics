@@ -24,6 +24,9 @@ const rootSchema = gql`
     #message mutations
     createMessage(text: String!): Message!
     deleteMessage(id: ID!): Boolean!
+    #agent mutations
+    createAgent(input: AgentInput!): Agent!
+    # createAgent(input: AgentInput!): Agent!
   }
 
 

@@ -6,5 +6,11 @@ export default gql`
     pubKey: String!
     userName: String!
     createdAt: Date!
+    updatedAt: Date!
   }
+
+  input AgentInput {
+  userName: String
+  pubKey: String
+}
 `;

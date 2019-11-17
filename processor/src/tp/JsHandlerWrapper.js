@@ -13,13 +13,16 @@ class SupplyHandler extends TransactionHandler {
         //xo super
         super("xo", ["1.0"], ["5b7349"]);
         } else {
-        // education super
-        super("simple_supply", ["0.1"], ["212bd8"]);    
+        // education_simple_supply super
+        // super("simple_supply", ["0.1"], ["212bd8"]);
+        
+        // my_sawtooth super
+        super("sawtooth-reason-supply", ["0.1"], ["5d347c"]);    
         }
     }
 
     apply(transactionProcessRequest, context) {
-        console.log(SupplyHandlerImpl.apply(this, transactionProcessRequest, context));
+        return SupplyHandlerImpl.apply(this, transactionProcessRequest, context);
 
         // return SupplyHandlerImpl.apply(this, transactionProcessRequest, context);
     }

@@ -1,3 +1,13 @@
+STATE:
+I tried to save the agent to blockchain, but in the promise i get an map error and idk how to fix .. ask pavel ;)
+in state.re
+
+Need to be able to throw invalidTransaction but idk how to bind to a class 
+exception ..  
+
+
+Why did i convert my address with lowercase ?? maybe delete--
+
 
 I left processor to start rest api, getting state works already,
 setting state shouldnt be that hard either, but i should for testing purposes get client and api running

@@ -29,7 +29,7 @@ let familyVersion = "0.1";
 // first 3 bytes of address from 35
 let nameSpace =
   String.sub(
-    createHash("sha512")##update("sawtooth-reason-supply")##digest("hex"),
+    createHash("sha512")##update(familyName)##digest("hex"),
     0,
     6,
   );

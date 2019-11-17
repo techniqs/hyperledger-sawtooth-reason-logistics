@@ -1,3 +1,7 @@
+maybe refactor keyhandler to a class with signer obj and pubkey, privatekey blabla
+rest api link change from localhost to rest-api !! docker needs rest-api since in container only like this accessible.
+
+
 Possible Database actions:
 Querys:
 Get AgentInformation
@@ -11,6 +15,20 @@ Create record
 Update record
 Transfer record? (update?)
 
+
+for sending from our api to tp look at simplewalletclient wrap_and_send method
+need node-fetch
+https://www.npmjs.com/package/node-fetch
+
+question i have:
+look @scenario
+user sends mutation to graphql api, which forwards it to 
+tp, which transactions it blabla, but when will user be notified if done?
+
+should i do something like callmutation-> forward-> query over what i wanted from mutation and if not there some error occured?
+Answer: TP GIVES YOU RESULT BACK IF VALIDATED OR NOT ;) OR DOES IT?
+
+keys should be stored in 
 
 
 

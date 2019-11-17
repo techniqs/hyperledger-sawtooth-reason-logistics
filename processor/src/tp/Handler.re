@@ -55,61 +55,40 @@ module SupplyHandlerImpl = {
   open Payload;
   open State;
 
-  // header : normal type
-  // payload : buffer
-  // context
-  
-
   let apply = (_t, transaction: tpRequest, context: context) => {
     let header = headerFromJs(transaction##header);
-    let payload = determinePayload(transaction##payload);
+    // let payload = determinePayload(transaction##payload);
+    let payloadBuffer = transaction##payload;
     let state = {context, timeout: 500};
+    let payloadAction = getPayloadAction(payloadBuffer);
 
-    switch (payload) {
-    | Some(data) =>
-      Js.log2("STATESHIT", StateFunctions.getGame(data.name, state))
-    | _ => Js.log("PAYLOAD NULL")
-    };
+    // xo stuff
+    // switch (payload) {
+    // | Some(data) =>
+    //   Js.log2("STATESHIT", StateFunctions.getGame(data.name, state))
+    // | _ => Js.log("PAYLOAD NULL")
+    // };
 
-    // validate_timestamp
     // Js.log2("Is ttype right?",Hash.getAddressType(Hash.getAgentAddress(header.signerPublicKey)));
 
-    switch (payload) {
-    | Some(data) =>
-      switch (data.action) {
-      | CreateAgent => Js.log("lol")
-      | CreateRecord => Js.log("lol")
-      | TransferRecord => Js.log("lol")
-      | UpdateRecord => Js.log("lol")
-      | NotDefined => Js.log("action Not defined!")
-      // Delete
-      | Create => Js.log("Xo Create")
-      // Delete
-      | Take => Js.log("Xo Take")
-      };
-
-      ();
-    | _ => Js.log("RAISE EXCETIPN!!")
+    switch (payloadAction) {
+    | _ => {
+      StateFunctions.setAgent(
+        header.signerPublicKey,
+        getAgentPayload(payloadBuffer),
+        state,
+      ) 
+      // |> Js.Promise.then_((result: Belt.Map.String.t(Node.Buffer.t)) => {
+      //       Js.log("WTF??");
+      
+      // }
+      // ()
+    }
+    // | CreateRecord => Js.promise.
+    // | TransferRecord => Js.log("lol")
+    // | UpdateRecord => Js.log("lol")
+    // | NotDefined => Js.log("action Not defined!")
+    // | _ => Js.log("EXCEPTION?")
     };
-  };
-
-  let createAgent = (state: State.state, pubKey: string, payload: payloadType) => {
-    switch (StateFunctions.getAgent(pubKey)) {
-    | Some(_) => Js.log("AGENT ALREADY IN STATE")
-    | _ => Js.log("NO AGENT, YOU CAN SAVE INTO STATE")
-    };
-  };
-
-  let createRecord =
-      (state: State.state, pubKey: string, payload: payloadType) => {
-    ();
-  };
-  let transferRecord =
-      (state: State.state, pubKey: string, payload: payloadType) => {
-    ();
-  };
-  let updateRecord =
-      (state: State.state, pubKey: string, payload: payloadType) => {
-    ();
   };
 };
