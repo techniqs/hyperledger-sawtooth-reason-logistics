@@ -1,3 +1,21 @@
+status: 
+tp got transaction, can get and set. 
+start with the supplyshitclient which reports to db?
+
+
+check if other exceptions from tp are also in the invalid transaction section.
+
+what am i doing here?
+    tans usecase: firma a ware x
+    firma b scanned x 
+    b angelangt durch scannen
+    transpaerenz is key 
+
+    save on blockchain only data which should be public
+    user table:
+    username, public, private encoded with hashed password 
+
+
 STATUS:
 I created a transaction, send it to my tp, this works. 
 Now i need to implement this create agent shit 

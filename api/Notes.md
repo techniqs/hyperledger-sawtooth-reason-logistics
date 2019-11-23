@@ -1,3 +1,5 @@
+dont forget validation in api like username, shouldnt be in tp 
+
 maybe refactor keyhandler to a class with signer obj and pubkey, privatekey blabla
 rest api link change from localhost to rest-api !! docker needs rest-api since in container only like this accessible.
 

@@ -11,3 +11,12 @@ module Result = {
 };
 
 
+module Exceptions = {
+
+[@bs.module "../js/JsUtils"]
+ external newInvalidTransactionException: string => unit = "newInvalidTransactionException";
+
+ [@bs.module "../js/JsUtils"]
+ external newInternalErrorException: string => unit = "newInternalErrorException";
+
+}

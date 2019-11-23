@@ -98,6 +98,7 @@ export const wrapAndSendNewAgent = (agentName) => {
     sendToRest(batchListBytes);
 }
 
+
 const sendToRest = (batchListBytes) => {
 
     // HTTP CODES OF TP 
@@ -115,34 +116,16 @@ const sendToRest = (batchListBytes) => {
         console.log("response body:", json);
         console.log("response status:", response.statusCode);
 
-        request.get({
-            url: json.link,
-            headers: { 'Content-Type': 'application/octet-stream' }
-        }, (err, response) => {
-            if (err) return console.log(err)
-
-            console.log("body of curl:", response.body);
-
-        })
+        setTimeout(function(something) {
+            request.get({
+                url: json.link,
+                headers: { 'Content-Type': 'application/octet-stream' }
+            }, (err, response) => {
+                if (err) return console.log(err)
+        
+                console.log("body of curl:", response.body);
+        
+            })
+        },1000);
     })
 }
-
-
-
-//needs atleast node 10.12!
-// const { generateKeyPair, generateKeyPairSync } = require('crypto');
-// export const cryptoCreateKeyPair = () => {
-
-//     return generateKeyPairSync('rsa', {
-//         modulusLength: 4096,
-//         publicKeyEncoding: {
-//             type: 'spki',
-//             format: 'pem'
-//         },
-//         privateKeyEncoding: {
-//             type: 'pkcs8',
-//             format: 'pem',
-//         }
-//     })
-
-// }

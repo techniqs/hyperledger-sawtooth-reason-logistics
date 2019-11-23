@@ -2,8 +2,16 @@ STATE:
 I tried to save the agent to blockchain, but in the promise i get an map error and idk how to fix .. ask pavel ;)
 in state.re
 
-Need to be able to throw invalidTransaction but idk how to bind to a class 
-exception ..  
+
+bind to json and then parse it to dictionary 
+https://bucklescript.github.io/docs/en/object.html#name-mangling
+
+Important screenshots 
+https://imgur.com/a/W0NqVOq
+
+What was open?
+application developer sawtooth shit
+3 terminals: graphl api, tp, sawtooth docker shit
 
 
 Why did i convert my address with lowercase ?? maybe delete--

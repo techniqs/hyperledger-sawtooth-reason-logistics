@@ -61,28 +61,18 @@ module SupplyHandlerImpl = {
     let payloadBuffer = transaction##payload;
     let state = {context, timeout: 500};
     let payloadAction = getPayloadAction(payloadBuffer);
+    let agentPayload = getAgentPayload(payloadBuffer);
 
-    // xo stuff
-    // switch (payload) {
-    // | Some(data) =>
-    //   Js.log2("STATESHIT", StateFunctions.getGame(data.name, state))
-    // | _ => Js.log("PAYLOAD NULL")
-    // };
 
     // Js.log2("Is ttype right?",Hash.getAddressType(Hash.getAgentAddress(header.signerPublicKey)));
-
+    
     switch (payloadAction) {
     | _ => {
       StateFunctions.setAgent(
         header.signerPublicKey,
-        getAgentPayload(payloadBuffer),
+        payloadBuffer,
         state,
       ) 
-      // |> Js.Promise.then_((result: Belt.Map.String.t(Node.Buffer.t)) => {
-      //       Js.log("WTF??");
-      
-      // }
-      // ()
     }
     // | CreateRecord => Js.promise.
     // | TransferRecord => Js.log("lol")

@@ -8,8 +8,8 @@ import { ApolloServer } from 'apollo-server-express';
 
 import schema from './schema';
 import resolvers from './resolvers';
-import models, { sequelize } from './helpers/database';
-import {createKeyPair, wrapAndSendNewAgent} from './helpers/keyHandler';
+import models, { sequelize } from './utils/database';
+import {createKeyPair, wrapAndSendNewAgent} from './utils/keyHandler';
 
 // import models, { sequelize } from './models';
 
@@ -54,7 +54,6 @@ sequelize.sync({ force: eraseDB }).then(async () => {
     createUsersWithMessages();
   }
   if(test) {
-    // console.log(createKeyPair());
     console.log(wrapAndSendNewAgent("techniqs"));
   }
 
