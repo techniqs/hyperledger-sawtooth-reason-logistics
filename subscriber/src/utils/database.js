@@ -16,9 +16,9 @@ const models = {
     Auth: sequelize.import('../models/auth'),
     Block: sequelize.import('../models/block'),
     Agent: sequelize.import('../models/agent'),
-    Record: sequelize.import('../models/record'),
-    RecordLocation: sequelize.import('../models/recordLocation'),
-    RecordOwner: sequelize.import('../models/recordOwner'),
+    Asset: sequelize.import('../models/asset'),
+    AssetLocation: sequelize.import('../models/assetLocation'),
+    AssetOwner: sequelize.import('../models/assetOwner'),
 };
 
 // const models = {

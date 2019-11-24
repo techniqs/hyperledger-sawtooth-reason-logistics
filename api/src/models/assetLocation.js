@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const RecordOwner = sequelize.define('recordOwner', {
-    agent_id: {
+  const AssetLocation = sequelize.define('assetLocation', {
+    asset_id: {
       type: DataTypes.BIGINT,
       unique: true,
       allowNull: false,
@@ -8,19 +8,7 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
       references: {
-        model: sequelize.models.agent,
-        key: 'id',
-      },
-    },
-    record_id: {
-      type: DataTypes.BIGINT,
-      unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-      references: {
-        model: sequelize.models.record,
+        model: sequelize.models.asset,
         key: 'id',
       },
     },
@@ -58,12 +46,11 @@ export default (sequelize, DataTypes) => {
   });
 
   // this doesnt work 
-  RecordOwner.associate = models => {
-    RecordOwner.belongsTo(models.Record, { foreignKey: 'id', onDelete: 'CASCADE' });
-    RecordOwner.belongsTo(models.Agent, { foreignKey: 'id', onDelete: 'CASCADE' });
+  AssetLocation.associate = models => {
+    AssetLocation.belongsTo(models.Asset, { foreignKey: 'id', onDelete: 'CASCADE' });
   };
 
 
-  return RecordOwner;
+  return AssetLocation;
 };
 

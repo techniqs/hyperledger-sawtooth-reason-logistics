@@ -1,6 +1,5 @@
 STATE:
-I tried to save the agent to blockchain, but in the promise i get an map error and idk how to fix .. ask pavel ;)
-in state.re
+tp can get and set state now
 
 
 bind to json and then parse it to dictionary 

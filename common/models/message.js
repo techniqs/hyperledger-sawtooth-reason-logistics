@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) => {
+const message = (sequelize, DataTypes) => {
   const Message = sequelize.define('message', {
     text: {
       type: DataTypes.STRING,
@@ -12,3 +12,5 @@ export default (sequelize, DataTypes) => {
 
   return Message;
 };
+
+export default message;
