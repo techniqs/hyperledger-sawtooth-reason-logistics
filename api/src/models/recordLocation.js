@@ -1,22 +1,17 @@
 export default (sequelize, DataTypes) => {
-  const Agent = sequelize.define('agent', {
-    public_key: {
-      type: DataTypes.STRING,
+  const RecordLocation = sequelize.define('recordLocation', {
+    record_id: {
+      type: DataTypes.BIGINT,
       unique: true,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
-    },
-    userName: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
+      references: {
+        model: sequelize.models.record,
+        key: 'id',
       },
     },
-    
     timestamp: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -50,8 +45,12 @@ export default (sequelize, DataTypes) => {
     },
   });
 
+  // this doesnt work 
+  RecordLocation.associate = models => {
+    RecordLocation.belongsTo(models.Record, { foreignKey: 'id', onDelete: 'CASCADE' });
+  };
 
 
-  return Agent;
+  return RecordLocation;
 };
 

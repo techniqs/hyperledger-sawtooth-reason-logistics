@@ -51,11 +51,20 @@ const test = true;
 
 sequelize.sync({ force: eraseDB }).then(async () => {
   if (eraseDB) {
-    createUsersWithMessages();
+    // createUsersWithMessages();
   }
-  if(test) {
-    console.log(wrapAndSendNewAgent("techniqs"));
-  }
+  // if(test) {
+  //   console.log(wrapAndSendNewAgent("techniqs"));
+  // }
+
+
+
+  const agentCreatedAt = (new Date()).toLocaleDateString("de-DE");
+  console.log("DATE ()", new Date());
+  const qq = Date.parse(new Date())/1000;
+  console.log("DATE parsed", qq);
+  console.log("DATE parsed", new Date(qq*1000));
+  console.log("DATE ??", agentCreatedAt);
 
 
 
@@ -63,7 +72,7 @@ sequelize.sync({ force: eraseDB }).then(async () => {
     console.log(`Graphiql Server on http://localhost:${port}/graphiql`);
   });
 }).catch(err => {
-  console.error("Couldnt connect to database, docker issue?", err)
+  console.error("Error on sequelize start: ", err)
 });
 
 const createUsersWithMessages = async () => {
@@ -81,12 +90,12 @@ const createUsersWithMessages = async () => {
     },
   );
 
-  await models.Agent.create(
-    {
-      pubKey: 'TEST',
-      userName: 'TEST'
-    },
-  );
+  // await models.Agent.create(
+  //   {
+  //     pubKey: 'TEST',
+  //     userName: 'TEST'
+  //   },
+  // );
 
   await models.User.create(
     {

@@ -1,22 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Agent = sequelize.define('agent', {
-    public_key: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    userName: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    
+  const Record = sequelize.define('record', {
     timestamp: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -50,8 +33,6 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-
-
-  return Agent;
+  return Record;
 };
 

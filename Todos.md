@@ -1,8 +1,20 @@
 status: 
 tp got transaction, can get and set. 
-start with the supplyshitclient which reports to db?
+db models also right, 
+start with eventsubscriber.
+look at the streaming class -> do i really need to setup a serveR? i dont think so .. probably just connection between tp and subscriber but idk
+
+db model: first save into blocks
+
+          afterwards into specific tables
+          tables below tables have to be inited first 
 
 
+
+
+share code from repos .. 
+
+https://demo.bitwise.io/fish/#!/
 check if other exceptions from tp are also in the invalid transaction section.
 
 what am i doing here?
@@ -16,13 +28,9 @@ what am i doing here?
     username, public, private encoded with hashed password 
 
 
-STATUS:
-I created a transaction, send it to my tp, this works. 
-Now i need to implement this create agent shit 
-after this create agent implement, should i start with subscribe client? 
-
 also response from tp back to my graphl api if something went wrong..
-also where todo validation of username?? in graph or in tp ??
+also where todo validation of username?? in graph !!
+
 
 i had simplewalletClient and education open
 
