@@ -11,8 +11,6 @@ const sequelize = new Sequelize(
 );
 
 const models = {
-    User: sequelize.import('../models/user'),
-    Message: sequelize.import('../models/message'),
     Auth: sequelize.import('../models/auth'),
     Block: sequelize.import('../models/block'),
     Agent: sequelize.import('../models/agent'),
@@ -22,8 +20,6 @@ const models = {
 };
 
 // const models = {
-//     // User: sequelize.import('../../../common/models/user'),
-//     // Message: sequelize.import('../../../common/models/message'),
 //     // Auth: sequelize.import('../../../common/models/auth'),
 //     // Block: sequelize.import('../../../common/models/block'),
 //     // Agent: sequelize.import('../../../common/models/agent'),

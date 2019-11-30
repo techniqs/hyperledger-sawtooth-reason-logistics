@@ -1,7 +1,9 @@
 import './config';
 
 import models, { sequelize } from './utils/database';
-import {createKeyPair, wrapAndSendNewAgent} from './utils/keyHandler';
+import { createKeyPair, wrapAndSendNewAgent } from './utils/keyHandler';
+import Subscriber from './components/subscriber';
+import {throwExceptionAndClose} from "./utils/exceptionHandler";
 
 
 const eraseDB = process.env.DB_ERASE === "true" ? true : false;
@@ -11,22 +13,21 @@ const test = true;
 
 
 // sequelize.sync({ force: eraseDB }).then(async () => {
-//   if (eraseDB) {
-    // createUsersWithMessages();
-//   }
-//   // if(test) {
-//   //   console.log(wrapAndSendNewAgent("techniqs"));
-//   // }
-
-//   // while (true){
-    
-//   //   // do something
-//   // }
-
-
+const sub = new Subscriber("tcp://localhost:4004")
+sub.start().then(() => { }).catch(err => {
+  throwExceptionAndClose(sub,err);
+})
 // }).catch(err => {
-  // console.error("Error on sequelize start: ", err)
+// console.error("Error on sequelize start: ", err)
 // });
+
+
+process.on('SIGINT', function () {
+  console.log("Caught interrupt signal, closing connections before exiting");
+
+  sub.close()
+  process.exit(0);
+});
 
 const createUsersWithMessages = async () => {
   await models.User.create(

@@ -53,9 +53,9 @@ sequelize.sync({ force: eraseDB }).then(async () => {
   if (eraseDB) {
     // createUsersWithMessages();
   }
-  // if(test) {
-  //   console.log(wrapAndSendNewAgent("techniqs"));
-  // }
+  if(test) {
+    console.log(wrapAndSendNewAgent("techniqs"));
+  }
 
 
 

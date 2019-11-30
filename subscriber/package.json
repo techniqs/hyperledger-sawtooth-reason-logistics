@@ -2,9 +2,13 @@
   "name": "sawtooth-reason-supply-apollo-api",
   "version": "0.1.0",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server.js"
+    "build-sawtooth": "babel node_modules/sawtooth-sdk -d sawtooth-transpiled",
+    "build": "babel src node_modules/sawtooth-sdk -d dist",
+    "dev": "nodemon --exec babel-node src/server.js",
+    "start": "nodemon babel src/server.js"
   },
   "dependencies": {
+    "@babel/polyfill": "7.7.0",
     "apollo-server": "2.9.7",
     "dotenv": "8.2.0",
     "express": "4.17.1",
@@ -17,6 +21,7 @@
   "author": "Daniel Rasheed",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "7.7.4",
     "@babel/core": "7.6.4",
     "@babel/node": "7.6.3",
     "@babel/preset-env": "7.6.3",
