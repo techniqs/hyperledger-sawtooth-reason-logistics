@@ -2,23 +2,44 @@ import { Stream } from "sawtooth-sdk/messaging/stream";
 const protobuf = require('sawtooth-sdk/protobuf')
 import { NAMESPACE } from "../utils/addressHandler";
 import { throwExceptionAndClose } from "../utils/exceptionHandler";
+import Database from "./database";
+import { executionAsyncId } from "async_hooks";
 
 export default class Subscriber extends Stream {
     constructor(validatorUrl) {
         super(validatorUrl);
+        this.database=new Database();
     }
 
 
-    eventHandler(message) {
+    async eventHandler(message) {
         console.log("EVENTHANDLER CALLED");
         const block = this.parseNewBlock(message);
         console.log(this.parseNewBlock(message));
         if (block.block_id !== null && block.block_num !== null) {
-            // do stuff here 
+            const duplicate = await this.resolveFork(block);
+            if(!duplicate){
+                // apply state changes here 
+            }
+            
         } else {
             throwExceptionAndClose(this, 
                 "Unable to handle event, blockID and blockNum couldnt be found");
         }
+    }
+
+    async resolveFork(block){
+        const existingBlock = await this.database.fetchBlock(block.block_num)
+        if(existingBlock !== null){
+            //block is duplicate
+            if(existingBlock.block_id === block.block_id)
+                return true;
+            
+            // fork detected, replacing block with new block
+            this.database.dropFork(block.block_num)
+        }
+        
+        return false;
     }
 
 

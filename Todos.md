@@ -1,7 +1,6 @@
 status:
-i successfully subsribed to events, now i still need to check if its a fork or not
-check handle_events from education also in my code its in // do stuff here
-all i need to do now is check if duplicate if not apply changes :)
+i successfully subsribed to events, need to be able to apply state changes and implement drop fork method.
+last 4 methods of event_handling and database shit 
 
 BIG TODO:
 subscriber has some babel issues, i need to call stream class from sawtooth but thats es6 and since im using babel everything gets transpiled to es5 i need to transpile the whole package and use it.. but i cant exclude it idk .. here are some issues 

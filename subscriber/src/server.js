@@ -1,7 +1,6 @@
 import './config';
 
-import models, { sequelize } from './utils/database';
-import { createKeyPair, wrapAndSendNewAgent } from './utils/keyHandler';
+import models, { sequelize } from './utils/databaseConfig';
 import Subscriber from './components/subscriber';
 import {throwExceptionAndClose} from "./utils/exceptionHandler";
 

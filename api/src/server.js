@@ -8,7 +8,7 @@ import { ApolloServer } from 'apollo-server-express';
 
 import schema from './schema';
 import resolvers from './resolvers';
-import models, { sequelize } from './utils/database';
+import models, { sequelize } from './utils/databaseConfig';
 import {createKeyPair, wrapAndSendNewAgent} from './utils/keyHandler';
 
 // import models, { sequelize } from './models';
