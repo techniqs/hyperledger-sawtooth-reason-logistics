@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 // our goods tracked supplychain
-message Record {
+message Ware {
     message Owner {
-        // Public key of the agent who owns the record
+        // Public key of the agent who owns the ware
         string agent_id = 1;
 
         // Approximately when the owner was updated, as a Unix UTC timestamp
@@ -21,7 +21,7 @@ message Record {
 
     // The user-defined natural key which identifies the object in the
     // real world (for example a serial number)
-    string record_id = 1;
+    string ware_id = 1;
 
     // Ordered oldest to newest by timestamp
     repeated Owner owners = 2;
@@ -31,8 +31,8 @@ message Record {
 // Special case when hash of two unique entities 
 // have the same state adress
 // so our supply chain stores containers at each adress instead of the entity itself.
-message RecordContainer {
-    repeated Record entries = 1;
+message WareContainer {
+    repeated Ware entries = 1;
 }
 
 

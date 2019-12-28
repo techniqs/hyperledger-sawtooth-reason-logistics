@@ -20,7 +20,7 @@ I left processor to start rest api, getting state works already,
 setting state shouldnt be that hard either, but i should for testing purposes get client and api running
 before i can do more :)
 
-i did convert my header and payload to records for accessing -> so i need to figure state out and then im almost done :) -> for state look at some js file 
+i did convert my header and payload to wares for accessing -> so i need to figure state out and then im almost done :) -> for state look at some js file 
 either simplewalletHandler or the js sdk of sawtooth
 
 
@@ -33,7 +33,7 @@ for protobuf encoding look at simplewalletClient
 
 
 
-!!find a better way to cast js object header to record type header @ Handler.re
+!!find a better way to cast js object header to ware type header @ Handler.re
 ask pavel one day :) !!
 
 !!updated bs-platform from 5.0.6 to 5.2.1 !!

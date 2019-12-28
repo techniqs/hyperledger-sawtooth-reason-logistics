@@ -1,5 +1,12 @@
 export default (sequelize, DataTypes) => {
-  const Asset = sequelize.define('asset', {
+  const Ware = sequelize.define('ware', {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     timestamp: {
       type: DataTypes.BIGINT,
       allowNull: false,
@@ -9,7 +16,7 @@ export default (sequelize, DataTypes) => {
     },
     start_block_num: {
       type: DataTypes.BIGINT,
-      unique: true,
+      unique: false,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -21,18 +28,14 @@ export default (sequelize, DataTypes) => {
     },
     end_block_num: {
       type: DataTypes.BIGINT,
-      unique: true,
-      allowNull: false,
+      unique: false,
+      allowNull: true,
       validate: {
         notEmpty: true,
-      },
-      references: {
-        model: sequelize.models.block,
-        key: 'block_num',
       },
     },
   });
 
-  return Asset;
+  return Ware;
 };
 

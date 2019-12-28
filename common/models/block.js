@@ -9,10 +9,9 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    //not sure if unique or not
     block_id: {
       type: DataTypes.STRING,
-      // unique: true,
+      unique: true,
       allowNull: false,
       validate: {
         notEmpty: true,

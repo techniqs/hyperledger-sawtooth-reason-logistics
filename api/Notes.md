@@ -7,15 +7,15 @@ rest api link change from localhost to rest-api !! docker needs rest-api since i
 Possible Database actions:
 Querys:
 Get AgentInformation
-Get RecordInformation
+Get WareInformation
 
 
 
 Mutations:
 Create agent
-Create record
-Update record
-Transfer record? (update?)
+Create ware
+Update ware
+Transfer ware? (update?)
 
 
 for sending from our api to tp look at simplewalletclient wrap_and_send method

@@ -14,10 +14,10 @@ type hash = Js.t(_hash);
 // Bytes 1-3 Hashed App name
 // Byte 4 Resource Type
 // Agent: 00
-// Record: 01
+// Ware: 01
 // Bytes 5-35
 // Agent: First 62 chars of hash of public key
-// Record: First 62 chars of hash of identifier
+// Ware: First 62 chars of hash of identifier
 
 module Hash = {
   let fam_name = "sawtooth-reason-supply";
@@ -30,5 +30,5 @@ module Hash = {
       6,
     );
   let agent_prefix = "00";
-  let record_prefix = "01";
+  let ware_prefix = "01";
 };

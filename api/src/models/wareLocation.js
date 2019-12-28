@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const AssetOwner = sequelize.define('assetOwner', {
-    agent_id: {
+  const WareLocation = sequelize.define('wareLocation', {
+    ware_id: {
       type: DataTypes.BIGINT,
       unique: true,
       allowNull: false,
@@ -8,19 +8,7 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
       references: {
-        model: sequelize.models.agent,
-        key: 'id',
-      },
-    },
-    asset_id: {
-      type: DataTypes.BIGINT,
-      unique: true,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-      references: {
-        model: sequelize.models.asset,
+        model: sequelize.models.ware,
         key: 'id',
       },
     },
@@ -33,7 +21,7 @@ export default (sequelize, DataTypes) => {
     },
     start_block_num: {
       type: DataTypes.BIGINT,
-      unique: true,
+      unique: false,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -45,25 +33,20 @@ export default (sequelize, DataTypes) => {
     },
     end_block_num: {
       type: DataTypes.BIGINT,
-      unique: true,
-      allowNull: false,
+      unique: false,
+      allowNull: true,
       validate: {
         notEmpty: true,
-      },
-      references: {
-        model: sequelize.models.block,
-        key: 'block_num',
       },
     },
   });
 
   // this doesnt work 
-  AssetOwner.associate = models => {
-    AssetOwner.belongsTo(models.Asset, { foreignKey: 'id', onDelete: 'CASCADE' });
-    AssetOwner.belongsTo(models.Agent, { foreignKey: 'id', onDelete: 'CASCADE' });
+  WareLocation.associate = models => {
+    WareLocation.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
   };
 
 
-  return AssetOwner;
+  return WareLocation;
 };
 

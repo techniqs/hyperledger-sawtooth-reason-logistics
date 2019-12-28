@@ -3,7 +3,7 @@ import express from 'express';
 import { renderToString } from 'react-dom/server';
 
 
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const wares = require(process.env.RAZZLE_ASSETS_MANIFEST);
 
 
 // important to read is dynamically via require, because globalConfig has to be processed before it
@@ -17,8 +17,8 @@ function renderTemplate(markup) {
   <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      ${assets.client.js ? `<script src="${assets.client.js}" defer></script>` : ''}
-      ${assets.client.css ? `<link rel="stylesheet" type="text/css" href="${assets.client.css}" />` : ''}
+      ${wares.client.js ? `<script src="${wares.client.js}" defer></script>` : ''}
+      ${wares.client.css ? `<link rel="stylesheet" type="text/css" href="${wares.client.css}" />` : ''}
       <link rel="icon" href="/favicon.png" />
       <title>sawtooth-reason-supply</title>
     </head>

@@ -1,72 +1,14 @@
-import { Stream } from "sawtooth-sdk/messaging/stream";
-const protobuf = require('sawtooth-sdk/protobuf')
+import { Stream } from "../../sawtooth-transpiled/messaging/stream";
+const protobuf = require('../../sawtooth-transpiled/protobuf')
 import { NAMESPACE } from "../utils/addressHandler";
-import { throwExceptionAndClose } from "../utils/exceptionHandler";
+import { handle_events } from "./eventHandler";
 import Database from "./database";
-import { executionAsyncId } from "async_hooks";
 
 export default class Subscriber extends Stream {
     constructor(validatorUrl) {
         super(validatorUrl);
-        this.database=new Database();
+        this.database = new Database();
     }
-
-
-    async eventHandler(message) {
-        console.log("EVENTHANDLER CALLED");
-        const block = this.parseNewBlock(message);
-        console.log(this.parseNewBlock(message));
-        if (block.block_id !== null && block.block_num !== null) {
-            const duplicate = await this.resolveFork(block);
-            if(!duplicate){
-                // apply state changes here 
-            }
-            
-        } else {
-            throwExceptionAndClose(this, 
-                "Unable to handle event, blockID and blockNum couldnt be found");
-        }
-    }
-
-    async resolveFork(block){
-        const existingBlock = await this.database.fetchBlock(block.block_num)
-        if(existingBlock !== null){
-            //block is duplicate
-            if(existingBlock.block_id === block.block_id)
-                return true;
-            
-            // fork detected, replacing block with new block
-            this.database.dropFork(block.block_num)
-        }
-        
-        return false;
-    }
-
-
-    parseNewBlock(message) {
-        const eventlist = protobuf.EventList.decode(message).events;
-        console.log("------------------------------");
-        let block_num = null;
-        let block_id = null;
-        for (let event of eventlist) {
-            if (event.eventType === "sawtooth/block-commit") {
-                const attributes = event.attributes;
-                for (let attr of attributes) {
-                    if (attr.key === "block_id") {
-                        block_id = attr.value;
-                    } else if (attr.key === "block_num") {
-                        block_num = attr.value;
-                        if (block_id !== null)
-                            break;
-                    }
-                }
-            }
-        }
-
-        return { block_id, block_num };
-    }
-
-
 
     async start() {
         await this.connect(function () {
@@ -101,11 +43,9 @@ export default class Subscriber extends Stream {
         this.onReceive(function (message) {
             // messageStatus = 504 / CLIENT_EVENTS 
             console.log("-------------------------------------");
-            // console.log("ONRECEIVE CALLED: ", message);
-            // console.log("BUFFER CONTENT: ", Buffer.from(message.content).toString("utf8"));
-            // console.log("BUFFER CONTENT: ", Buffer.from(message.content).toString("ascii"));
-            // console.log("BUFFER CONTENT: ", Buffer.from(message.content).toString());
-            self.eventHandler(message.content);
+            const events = protobuf.EventList.decode(message.content).events;
+            handle_events(self.database, events, self);
+
 
             return Promise.resolve(message);
 

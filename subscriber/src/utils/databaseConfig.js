@@ -14,18 +14,18 @@ const models = {
     Auth: sequelize.import('../models/auth'),
     Block: sequelize.import('../models/block'),
     Agent: sequelize.import('../models/agent'),
-    Asset: sequelize.import('../models/asset'),
-    AssetLocation: sequelize.import('../models/assetLocation'),
-    AssetOwner: sequelize.import('../models/assetOwner'),
+    Ware: sequelize.import('../models/ware'),
+    WareLocation: sequelize.import('../models/wareLocation'),
+    WareOwner: sequelize.import('../models/wareOwner'),
 };
 
 // const models = {
 //     // Auth: sequelize.import('../../../common/models/auth'),
 //     // Block: sequelize.import('../../../common/models/block'),
 //     // Agent: sequelize.import('../../../common/models/agent'),
-//     // Record: sequelize.import('../../../common/models/record'),
-//     // RecordLocation: sequelize.import('../../../common/models/recordLocation'),
-//     // RecordOwner: sequelize.import('../../../common/models/recordOwner'),
+//     // Ware: sequelize.import('../../../common/models/ware'),
+//     // WareLocation: sequelize.import('../../../common/models/wareLocation'),
+//     // WareOwner: sequelize.import('../../../common/models/wareOwner'),
 // };
 
 Object.keys(models).forEach(key => {

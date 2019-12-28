@@ -1,8 +1,8 @@
 type actions =
   | CreateAgent
-  | CreateRecord
-  | TransferRecord
-  | UpdateRecord
+  | CreateWare
+  | TransferWare
+  | UpdateWare
   // Delete
   | Create
   // Delete
@@ -12,9 +12,9 @@ type actions =
 let toTypeAction = action => {
   switch (action) {
   | "create_agent" => CreateAgent
-  | "create_record" => CreateRecord
-  | "transfer_record" => TransferRecord
-  | "update_record" => UpdateRecord
+  | "create_ware" => CreateWare
+  | "transfer_ware" => TransferWare
+  | "update_ware" => UpdateWare
   // Delete
   | "create" => Create
   // Delete
@@ -31,7 +31,7 @@ type payloadType = {
 
 type agentPayload = {
   action: actions,
-  userName: string,
+  username: string,
   createdAt: string,
 };
 
@@ -50,7 +50,7 @@ let getAgentPayload = (payloadBuffer: Node.Buffer.t) => {
   let payloadArray = getPayloadArray(payloadBuffer);
   let payload: agentPayload = {
     action: toTypeAction(payloadArray[0]),
-    userName: payloadArray[1],
+    username: payloadArray[1],
     createdAt: payloadArray[2],
   };
   payload;
@@ -65,7 +65,7 @@ let getAgentPayload = (payloadBuffer: Node.Buffer.t) => {
 //   if(payloadArray[0] === "create_agent" && Array.length(payloadArray) === 3){
 //     // let payload: agentPayload = {
 //     //   action: toTypeAction(payloadArray[0]),
-//     //   userName: payloadArray[1],
+//     //   username: payloadArray[1],
 //     //   createdAt: payloadArray[2]
 //     // }
 //     // Some(payload);

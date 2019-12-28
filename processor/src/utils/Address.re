@@ -14,14 +14,14 @@ type hash = Js.t(_hash);
 // Bytes 1-3 Hashed App name
 // Byte 4 Resource Type
 // Agent: 00
-// Record: 01
+// Ware: 01
 // Bytes 5-35
 // Agent: First 62 chars of hash of public key
-// Record: First 62 chars of hash of identifier
+// Ware: First 62 chars of hash of identifier
 
 type addressTypes =
   | Agent
-  | Record
+  | Ware
   | OtherFamily;
 
 let familyName = "sawtooth-reason-supply";
@@ -34,7 +34,7 @@ let nameSpace =
     6,
   );
 let agentPrefix = "00";
-let recordPrefix = "01";
+let warePrefix = "01";
 
 //Delete
 let getXoHash = (x: string) => {
@@ -63,8 +63,8 @@ let getAgentAddress = (pubKey: string) => {
 };
 
 // either string or int idk what id is lets see
-let getRecordAddress = (identifier: int) => {
-  nameSpace ++ recordPrefix ++ getIdentifierHash(string_of_int(identifier));
+let getWareAddress = (identifier: int) => {
+  nameSpace ++ warePrefix ++ getIdentifierHash(string_of_int(identifier));
 };
 
 let getAddressType = (address: string) =>
@@ -73,7 +73,7 @@ let getAddressType = (address: string) =>
   } else {
     switch (String.sub(address, 6, 2)) {
     | "00" => Agent
-    | "01" => Record
+    | "01" => Ware
     | _ => OtherFamily
     };
   };

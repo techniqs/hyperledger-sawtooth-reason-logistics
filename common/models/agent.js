@@ -8,7 +8,7 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    userName: {
+    username: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,
@@ -26,7 +26,7 @@ export default (sequelize, DataTypes) => {
     },
     start_block_num: {
       type: DataTypes.BIGINT,
-      unique: true,
+      unique: false,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -38,14 +38,10 @@ export default (sequelize, DataTypes) => {
     },
     end_block_num: {
       type: DataTypes.BIGINT,
-      unique: true,
-      allowNull: false,
+      unique: false,
+      allowNull: true,
       validate: {
         notEmpty: true,
-      },
-      references: {
-        model: sequelize.models.block,
-        key: 'block_num',
       },
     },
   });

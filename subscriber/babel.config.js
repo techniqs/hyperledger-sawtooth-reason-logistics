@@ -6,7 +6,8 @@ module.exports = function (api) {
     const presets = ["@babel/preset-env"];
 
     return {
-        ignore: ["/node_modules\/(?!sawtooth-sdk/messaging/stream)/"],
+        // include:["src","node_modules"],
+        // ignore: ["/node_modules\/(?!sawtooth-sdk)/"],
         presets,
     };
 }

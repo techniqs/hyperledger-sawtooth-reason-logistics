@@ -1,5 +1,8 @@
 open Utils;
 
+external jsonDict: Js.Dict.t(string) => Js.Json.t = "%identity";
+
+
 // from sawtooth-sdk-javascript/processor/context.js
 // context is our state
 class type _context =
@@ -26,6 +29,7 @@ let setState = (payload: Js.Dict.t(Node.Buffer.t), state: state) => {
   state.context##setState(payload, state.timeout);
 };
 
+
 module StateFunctions = {
   let setAgent = (pubKey: string, agentBuffer: Node.Buffer.t, state: state) => {
     Js.log2("setAgent called, pubkey:", pubKey);
@@ -46,10 +50,17 @@ module StateFunctions = {
              : {
                Js.log("no buffer, call setSTate");
 
-               let stateDict = Js.Dict.empty();
-               Js.Dict.set(stateDict, address, agentBuffer);
-
-               Js.log2("dict", stateDict);
+              
+               Js.log2("Buffer data:", Node.Buffer.toString(agentBuffer));
+               let agentArray = Js.String.split(",", Node.Buffer.toString(agentBuffer));
+               let dataObj = Js.Dict.empty();
+               Js.Dict.set(dataObj,"pubKey",pubKey);
+               Js.Dict.set(dataObj,"username",agentArray[1]);
+               Js.Dict.set(dataObj,"timestamp",agentArray[2]);
+               Js.log2("Data transfering to state:", dataObj);
+                
+                let stateDict = Js.Dict.empty();
+               Js.Dict.set(stateDict, address, Node.Buffer.fromString(Js.Json.stringify(jsonDict(dataObj))));
 
                setState(stateDict, state)
                |> Js.Promise.then_((res: array(string)) => {
@@ -72,19 +83,19 @@ module StateFunctions = {
     // |> ignore;
   };
 
-  let getRecord = () => {
+  let getWare = () => {
     ();
   };
 
-  let setRecord = () => {
+  let setWare = () => {
     ();
   };
 
-  let transferRecord = () => {
+  let transferWare = () => {
     ();
   };
 
-  let updateRecord = () => {
+  let updateWare = () => {
     ();
   };
 };

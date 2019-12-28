@@ -1,9 +1,84 @@
 status:
-i successfully subsribed to events, need to be able to apply state changes and implement drop fork method.
-last 4 methods of event_handling and database shit 
+OKAY FROM API to sub everything works with createAgent.
 
-BIG TODO:
-subscriber has some babel issues, i need to call stream class from sawtooth but thats es6 and since im using babel everything gets transpiled to es5 i need to transpile the whole package and use it.. but i cant exclude it idk .. here are some issues 
+
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+
+// The maximum age (in milliseconds) of a valid session.
+const SALT_ROUNDS = 7; // 10
+const SESSION_MAXAGE = 30 * 24 * 60 * 60 * 1000;
+const SESSION_SECRET = 'cHgc8LAEcvMTTT9OitNMkfw4';
+
+
+type AuthObj {
+  access: Int
+  token: String
+  userId: String
+}
+
+
+
+how does login work: user types username and pw
+i look for username in agent, get the public key in the same table
+now i check in auth, where for every created agent there is a entry made with public key and private key encrypted with the hashed pw,
+if i can decrypt the encrypted private key with the hashed pw and check if public and private key match
+
+
+
+only thing that needs to be done in subscriber is insertWare into db ++ parseWare method
+grad mit tan geredet:
+er meint ja ist ziemlich schlau dass man immer einen eintrag in die ware table macht wenn irgendwas gemodified wird damit man sieht wann was valide ist.
+
+before creating agent do a call to db and ask if username already given :)
+
+moment:
+
+timestamp : mom.unix()
+format timestamp back to date -> moment.unix(timestamp).format('DD/MM/YYYY, H:mm:ss')
+
+test dropfork method
+
+change localhost ips to docker ips like in requesthandler sending to validator
+
+Subscriber getting data from tp
+https://imgur.com/a/d9VWglC
+
+okay now i know everything i save to state will also get transmitted to my subscriber.
+parsed data successfully need to save data to db
+
+okay it needs to update because block nums need to be updated.
+also probably agent will never update and look at github issue for updating
+
+try to check why on every insert it also updates ware lol
+when does the agent get updated never thanks.?
+
+saving timestamp as 1234, fix!!
+
+The start_block_num and end_block_num columns specify the range in which that state value is set or exists. Values that
+are valid as of the current block have end_block_num set to NULL or MAX_INTEGER.
+
+check why in dropfork method of database only agent and wares get updated, rest just deleted..
+
+#####
+status of tuesday
+still parsing data, insertingblock though,
+this question remains: question is if i also have to insert first block, cuz i think currently it doesnt, check education
+
+#####
+
+check if all files of transpiled sawtooth are in folder
+check comments !!
+
+
+info: 
+Event with eventtype sawtooth/block-commit has attributes:
+block_id, block_num, state_root_hash, previous_block_id,
+----
+Event with eventtype sawtooth/delta-commit has attributes:
+address, and state data 
+
+
 
 
 check how it would work with more then one tp .. 
@@ -12,6 +87,7 @@ also does this have to be persistent??
 
 https://github.com/babel/babel/issues/8802
 https://github.com/babel/example-node-server
+
 
 status: 
 tp got transaction, can get and set. 
@@ -53,7 +129,10 @@ then start tp
 then start graphql api :)
 
 
-Rename repo
+utils and models can be in seperate folder
+
+Rename repo and change family name
+rename wares to ware :)
 rename everything in package.json
 check dependencies in package.json
 comment

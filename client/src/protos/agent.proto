@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-//can own, transfer and update Records
+//can own, transfer and update Wares
 message Agent {
     // The agent's unique public key
     string public_key = 1;

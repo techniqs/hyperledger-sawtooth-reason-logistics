@@ -9,14 +9,10 @@ import { ApolloServer } from 'apollo-server-express';
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { sequelize } from './utils/databaseConfig';
-import {createKeyPair, wrapAndSendNewAgent} from './utils/keyHandler';
-
+import { wrapAndSendNewAgent } from './components/requestHandler';
 // import models, { sequelize } from './models';
 
 const app = express();
-
-// app.use(cors());
-
 
 //check how context works
 
@@ -37,7 +33,7 @@ const server = new ApolloServer({
   },
   context: async () => ({
     models,
-    me: await models.User.findByLogin('rwieruch'),
+    // me: await models.User.findByLogin('rwieruch'),
   }),
 });
 
@@ -47,25 +43,27 @@ const port = process.env.APP_PORT;
 
 const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
-const test = true;
+const test = false;
 
 sequelize.sync({ force: eraseDB }).then(async () => {
-  if (eraseDB) {
-    // createUsersWithMessages();
+  // if (eraseDB) {
+  // }
+
+  if (test) {
+    await  models.Block.create({
+      block_num: 1,
+      block_id: "fztguio",
+  })
+    await models.Agent.create({
+      public_key: "qzugeq12312",
+      username: "techniqs",
+      timestamp: 12341523,
+      start_block_num: 1,
+      end_block_num: 1235913,
+  })
+
+    // wrapAndSendNewAgent({username:"techniqs",password:"1234"});
   }
-  if(test) {
-    console.log(wrapAndSendNewAgent("techniqs"));
-  }
-
-
-
-  const agentCreatedAt = (new Date()).toLocaleDateString("de-DE");
-  console.log("DATE ()", new Date());
-  const qq = Date.parse(new Date())/1000;
-  console.log("DATE parsed", qq);
-  console.log("DATE parsed", new Date(qq*1000));
-  console.log("DATE ??", agentCreatedAt);
-
 
 
   app.listen({ port }, () => {
@@ -75,42 +73,3 @@ sequelize.sync({ force: eraseDB }).then(async () => {
   console.error("Error on sequelize start: ", err)
 });
 
-const createUsersWithMessages = async () => {
-  await models.User.create(
-    {
-      username: 'rwieruch',
-      messages: [
-        {
-          text: 'Published the Road to learn React',
-        },
-      ],
-    },
-    {
-      include: [models.Message],
-    },
-  );
-
-  // await models.Agent.create(
-  //   {
-  //     pubKey: 'TEST',
-  //     userName: 'TEST'
-  //   },
-  // );
-
-  await models.User.create(
-    {
-      username: 'ddavids',
-      messages: [
-        {
-          text: 'Happy to release ...',
-        },
-        {
-          text: 'Published a complete ...',
-        },
-      ],
-    },
-    {
-      include: [models.Message],
-    },
-  );
-};

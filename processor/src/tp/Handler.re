@@ -74,9 +74,9 @@ module SupplyHandlerImpl = {
         state,
       ) 
     }
-    // | CreateRecord => Js.promise.
-    // | TransferRecord => Js.log("lol")
-    // | UpdateRecord => Js.log("lol")
+    // | CreateWare => Js.promise.
+    // | TransferWare => Js.log("lol")
+    // | UpdateWare => Js.log("lol")
     // | NotDefined => Js.log("action Not defined!")
     // | _ => Js.log("EXCEPTION?")
     };
