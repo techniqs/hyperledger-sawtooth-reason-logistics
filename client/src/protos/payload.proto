@@ -3,19 +3,19 @@ syntax = "proto3";
 
 message SupplyPayload{
     enum Action {
-        CREATE_AGENT = 0;
+        CREATE_USER = 0;
         CREATE_WARE = 1;
         UPDATE_WARE = 2;
         TRANSFER_WARE = 3;
     }
 
-    // Whether the payload contains a create agent, create ware,
+    // Whether the payload contains a create user, create ware,
     // update ware, or transfer ware action
     Action action = 1;
 
     // The transaction handler will read from just one of these fields
     // according to the action
-    CreateAgentAction create_agent = 2;
+    CreateUserAction create_user = 2;
     CreateWareAction create_ware = 3;
     UpdateWareAction update_ware = 4;
     TransferWareAction transfer_ware = 5;
@@ -25,8 +25,8 @@ message SupplyPayload{
 }
 
 
-message CreateAgentAction {
-    // A human-readable name identifying the new agent
+message CreateUserAction {
+    // A human-readable name identifying the new user
     string name = 1;
 }
 
@@ -56,6 +56,6 @@ message TransferWareAction {
     // The id of the ware for the ownership transfer
     string ware_id = 1;
 
-    // The public key of the agent to which the ware will be transferred
-    string receiving_agent = 2;
+    // The public key of the user to which the ware will be transferred
+    string receiving_user = 2;
 }

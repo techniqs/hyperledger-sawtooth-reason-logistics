@@ -59,7 +59,7 @@ server
   .disable('x-powered-by')
   .use('/robots.txt', function (req, res) {
     res.type('text/plain');
-    res.send("User-agent: *\nDisallow: /");
+    res.send("User-user: *\nDisallow: /");
   })
   .use(express.static(publicPath))
   .get('/*', async (req, res) => {

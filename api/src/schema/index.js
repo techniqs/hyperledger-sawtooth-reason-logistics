@@ -2,31 +2,24 @@ import { gql } from 'apollo-server-express';
 
 import userSchema from './user';
 import messageSchema from './message';
-import agentSchema from './agent';
+import userSchema from './user';
 
 const rootSchema = gql`
   scalar Date 
 
   type Query {
     #user queries
-    users: [User!]
-    user(id: ID!): User
-    me: User
-    #message queries
-    messages: [Message!]!
-    message(id: ID!): Message!
-    #agent queries
-    getAgent(pubKey: String!): Agent!
+    getUser(pubKey: String!): User!
+    # getWare()
   }
 
 
   type Mutation {
-    #message mutations
-    createMessage(text: String!): Message!
-    deleteMessage(id: ID!): Boolean!
-    #agent mutations
-    createAgent(input: AgentInput!): Agent!
-    # createAgent(input: AgentInput!): Agent!
+
+    #user mutations
+    createUser(input: UserInput!): User!
+    createWare(input: WareInput!): Ware!
+  
   }
 
 
@@ -37,5 +30,5 @@ export default [
   rootSchema,
    userSchema,
     messageSchema,
-     agentSchema,
+     userSchema,
     ];

@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
 const models = {
     Auth: sequelize.import('../models/auth'),
     Block: sequelize.import('../models/block'),
-    Agent: sequelize.import('../models/agent'),
+    User: sequelize.import('../models/user'),
     Ware: sequelize.import('../models/ware'),
     WareLocation: sequelize.import('../models/wareLocation'),
     WareOwner: sequelize.import('../models/wareOwner'),
@@ -22,7 +22,7 @@ const models = {
 // const models = {
 //     // Auth: sequelize.import('../../../common/models/auth'),
 //     // Block: sequelize.import('../../../common/models/block'),
-//     // Agent: sequelize.import('../../../common/models/agent'),
+//     // User: sequelize.import('../../../common/models/user'),
 //     // Ware: sequelize.import('../../../common/models/ware'),
 //     // WareLocation: sequelize.import('../../../common/models/wareLocation'),
 //     // WareOwner: sequelize.import('../../../common/models/wareOwner'),

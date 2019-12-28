@@ -6,13 +6,13 @@ rest api link change from localhost to rest-api !! docker needs rest-api since i
 
 Possible Database actions:
 Querys:
-Get AgentInformation
+Get UserInformation
 Get WareInformation
 
 
 
 Mutations:
-Create agent
+Create user
 Create ware
 Update ware
 Transfer ware? (update?)

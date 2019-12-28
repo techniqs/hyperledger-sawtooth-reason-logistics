@@ -61,14 +61,14 @@ module SupplyHandlerImpl = {
     let payloadBuffer = transaction##payload;
     let state = {context, timeout: 500};
     let payloadAction = getPayloadAction(payloadBuffer);
-    let agentPayload = getAgentPayload(payloadBuffer);
+    let userPayload = getUserPayload(payloadBuffer);
 
 
-    // Js.log2("Is ttype right?",Hash.getAddressType(Hash.getAgentAddress(header.signerPublicKey)));
+    // Js.log2("Is ttype right?",Hash.getAddressType(Hash.getUserAddress(header.signerPublicKey)));
     
     switch (payloadAction) {
     | _ => {
-      StateFunctions.setAgent(
+      StateFunctions.setUser(
         header.signerPublicKey,
         payloadBuffer,
         state,

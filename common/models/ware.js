@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Ware = sequelize.define('ware', {
-    name: {
+    name:{
       type: DataTypes.STRING,
       allowNull: false,
       validate: {

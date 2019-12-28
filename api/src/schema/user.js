@@ -1,9 +1,16 @@
 import { gql } from 'apollo-server-express';
 
+
 export default gql`
   type User {
-    id: ID!
+    pubKey: String!
     username: String!
-    messages: [Message!]
+    createdAt: Date!
+    updatedAt: Date!
   }
+
+  input UserInput {
+  username: String
+  password: String
+}
 `;

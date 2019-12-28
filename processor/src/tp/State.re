@@ -31,9 +31,9 @@ let setState = (payload: Js.Dict.t(Node.Buffer.t), state: state) => {
 
 
 module StateFunctions = {
-  let setAgent = (pubKey: string, agentBuffer: Node.Buffer.t, state: state) => {
-    Js.log2("setAgent called, pubkey:", pubKey);
-    let address = Address.getAgentAddress(pubKey);
+  let setUser = (pubKey: string, userBuffer: Node.Buffer.t, state: state) => {
+    Js.log2("setUser called, pubkey:", pubKey);
+    let address = Address.getUserAddress(pubKey);
     getState([|address|], state)
     |> Js.Promise.then_((result: Js.Dict.t(Node.Buffer.t)) =>
          switch (Js.Dict.get(result, address)) {
@@ -43,7 +43,7 @@ module StateFunctions = {
                Js.log("something @ adress, dont call setState");
 
                Exceptions.newInvalidTransactionException(
-                 {j|Invalid Action: Agent with PublicKey: $pubKey ,already exists|j},
+                 {j|Invalid Action: User with PublicKey: $pubKey ,already exists|j},
                );
                Js.Promise.resolve(result);
              }
@@ -51,12 +51,12 @@ module StateFunctions = {
                Js.log("no buffer, call setSTate");
 
               
-               Js.log2("Buffer data:", Node.Buffer.toString(agentBuffer));
-               let agentArray = Js.String.split(",", Node.Buffer.toString(agentBuffer));
+               Js.log2("Buffer data:", Node.Buffer.toString(userBuffer));
+               let userArray = Js.String.split(",", Node.Buffer.toString(userBuffer));
                let dataObj = Js.Dict.empty();
                Js.Dict.set(dataObj,"pubKey",pubKey);
-               Js.Dict.set(dataObj,"username",agentArray[1]);
-               Js.Dict.set(dataObj,"timestamp",agentArray[2]);
+               Js.Dict.set(dataObj,"username",userArray[1]);
+               Js.Dict.set(dataObj,"timestamp",userArray[2]);
                Js.log2("Data transfering to state:", dataObj);
                 
                 let stateDict = Js.Dict.empty();

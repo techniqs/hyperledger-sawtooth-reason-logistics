@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const WareOwner = sequelize.define('wareOwner', {
-    agent_id: {
+    user_id: {
       type: DataTypes.BIGINT,
       unique: true,
       allowNull: false,
@@ -8,8 +8,8 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
       references: {
-        model: sequelize.models.agent,
-        key: 'id',
+        model: sequelize.models.user,
+        // key: 'id',
       },
     },
     ware_id: {
@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
       },
       references: {
         model: sequelize.models.ware,
-        key: 'id',
+        // key: 'id',
       },
     },
     timestamp: {
@@ -56,7 +56,7 @@ export default (sequelize, DataTypes) => {
   // this doesnt work 
   WareOwner.associate = models => {
     WareOwner.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
-    WareOwner.belongsTo(models.Agent, { foreignKey: 'id', onDelete: 'CASCADE' });
+    WareOwner.belongsTo(models.User, { foreignKey: 'id', onDelete: 'CASCADE' });
   };
 
 

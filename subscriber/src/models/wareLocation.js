@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
       },
       references: {
         model: sequelize.models.ware,
-        key: 'id',
+        // key: 'id',
       },
     },
     timestamp: {
@@ -19,6 +19,9 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+
+
+
     start_block_num: {
       type: DataTypes.BIGINT,
       unique: false,

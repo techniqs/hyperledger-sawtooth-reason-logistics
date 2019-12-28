@@ -13,10 +13,10 @@ type hash = Js.t(_hash);
 // Address Schema -->
 // Bytes 1-3 Hashed App name
 // Byte 4 Resource Type
-// Agent: 00
+// User: 00
 // Ware: 01
 // Bytes 5-35
-// Agent: First 62 chars of hash of public key
+// User: First 62 chars of hash of public key
 // Ware: First 62 chars of hash of identifier
 
 module Hash = {
@@ -29,6 +29,6 @@ module Hash = {
       0,
       6,
     );
-  let agent_prefix = "00";
+  let user_prefix = "00";
   let ware_prefix = "01";
 };

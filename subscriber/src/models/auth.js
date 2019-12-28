@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
       references: {
-        model: sequelize.models.agent,
+        model: sequelize.models.user,
         key: 'public_key',
       },
     },
@@ -25,7 +25,7 @@ export default (sequelize, DataTypes) => {
   });
 
   Auth.associate = models => {
-    Auth.belongsTo(models.Agent, { foreignKey: 'public_key', onDelete: 'CASCADE' });
+    Auth.belongsTo(models.User, { foreignKey: 'public_key', onDelete: 'CASCADE' });
   };
 
 

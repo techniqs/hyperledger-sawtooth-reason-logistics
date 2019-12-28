@@ -17,14 +17,14 @@ export default class Database {
         })
     };
 
-    insertAgent(agent) {
-        console.log('\x1b[36m%s\x1b[0m', "INSERTING AGENT ------------------", agent);        
-        models.Agent.create({
-            public_key: agent.pubKey,
-            username: agent.username,
-            timestamp: agent.timestamp,
-            start_block_num: agent.start_block_num,
-            end_block_num: agent.end_block_num,
+    insertUser(user) {
+        console.log('\x1b[36m%s\x1b[0m', "INSERTING USER ------------------", user);        
+        models.User.create({
+            public_key: user.pubKey,
+            username: user.username,
+            timestamp: user.timestamp,
+            start_block_num: user.start_block_num,
+            end_block_num: user.end_block_num,
         }).catch(function(err){
             console.log("VALIDATION ERROR", err);
         });
@@ -32,16 +32,16 @@ export default class Database {
 
 
     // timestamp not correct!!
-    // agents will only be updated when deleted
+    // users will only be updated when deleted
     //needs to be done
-    insertWare(agent) {
+    insertWare(user) {
 
-        models.Agent.create({
-            public_key: agent[0],
-            username: agent[1],
+        models.User.create({
+            public_key: user[0],
+            username: user[1],
             timestamp: 1234,
-            start_block_num: agent[3],
-            end_block_num: agent[4],
+            start_block_num: user[3],
+            end_block_num: user[4],
         })
     };
 
@@ -49,10 +49,10 @@ export default class Database {
 
 
     // drop from everytable with that block num
-    // not sure why only agents and wares get updated but rest stays..
+    // not sure why only users and wares get updated but rest stays..
     dropFork(blockNum) {
 
-        models.Agent.destroy({
+        models.User.destroy({
             where: {
                 start_block_num: {
                     $gte: blockNum

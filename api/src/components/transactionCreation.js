@@ -1,6 +1,6 @@
 import protobuf from 'sawtooth-sdk/protobuf';
 import { createKeyPair } from './keyHandler';
-import { hash, getAgentAddress, getWareAddress, FAMILY_NAME, FAMILY_VERSION, NAMESPACE } from '../utils/addressHandler';
+import { hash, getUserAddress, getWareAddress, FAMILY_NAME, FAMILY_VERSION, NAMESPACE } from '../utils/addressHandler';
 
 const batchSigner = createKeyPair();
 
@@ -17,18 +17,18 @@ const batchSigner = createKeyPair();
     //   payload = action + "," + values[0];
     // }
 
-export const createAgentTransaction = (transactionSigner, username, timestamp) => {
-    const agentAddress = getAgentAddress(transactionSigner.pubKey);
+export const createUserTransaction = (transactionSigner, username, timestamp) => {
+    const userAddress = getUserAddress(transactionSigner.pubKey);
 
-    console.log("adress", agentAddress);
+    console.log("adress", userAddress);
 
-    let inputAddressList = [agentAddress];
-    let outputAddressList = [agentAddress];
+    let inputAddressList = [userAddress];
+    let outputAddressList = [userAddress];
 
-    const action = "create_agent";
+    const action = "create_user";
 
 
-    // payload consists of action, agentName, and agentCreateDate
+    // payload consists of action, userName, and userCreateDate
     const payload = action + "," + username + "," + timestamp;
 
     console.log("payload data:", payload);

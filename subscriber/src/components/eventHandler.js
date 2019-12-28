@@ -1,5 +1,5 @@
 import { throwExceptionAndClose } from "../components/exceptionHandler";
-import { NAMESPACE, AGENT_PREFIX, WARE_PREFIX } from "../utils/addressHandler";
+import { NAMESPACE, USER_PREFIX, WARE_PREFIX } from "../utils/addressHandler";
 const protobuf = require('../../sawtooth-transpiled/protobuf')
 
 const MAX_BLOCK_NUMBER = Number.MAX_SAFE_INTEGER - 1;
@@ -38,8 +38,8 @@ const parseData = async (db, events, block) => {
             await db.insertBlock(block);
             // check resource type, since we only have two, everything else not valid ..
             const prefix = change.address.substring(6, 8);
-            if (prefix === AGENT_PREFIX) {
-                parseAgentData(db, change.value, block.block_num)
+            if (prefix === USER_PREFIX) {
+                parseUserData(db, change.value, block.block_num)
             } else if (prefix === WARE_PREFIX) {
                 // ware
                 console.log("ware")
@@ -52,14 +52,14 @@ const parseData = async (db, events, block) => {
     }
 
 };
-const parseAgentData = (db, buffer, block_num) => {
-    console.log("parseAgentData called with buffer:",buffer.toString());
-    const agentData = JSON.parse(buffer.toString());
-    agentData["start_block_num"]=block_num;
-    agentData["end_block_num"]=MAX_BLOCK_NUMBER;
+const parseUserData = (db, buffer, block_num) => {
+    console.log("parseUserData called with buffer:",buffer.toString());
+    const userData = JSON.parse(buffer.toString());
+    userData["start_block_num"]=block_num;
+    userData["end_block_num"]=MAX_BLOCK_NUMBER;
 
-    console.log(agentData)
-    db.insertAgent(agentData);
+    console.log(userData)
+    db.insertUser(userData);
 }
 
 const parseWareData = (db, buffer, block_num) => {

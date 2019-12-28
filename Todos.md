@@ -1,6 +1,9 @@
 status:
-OKAY FROM API to sub everything works with createAgent.
+OKAY FROM API to sub everything works with createUser.
 
+change user to user 
+
+schema types i can do together with client because right now i dont know what i need for client
 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -20,8 +23,8 @@ type AuthObj {
 
 
 how does login work: user types username and pw
-i look for username in agent, get the public key in the same table
-now i check in auth, where for every created agent there is a entry made with public key and private key encrypted with the hashed pw,
+i look for username in user, get the public key in the same table
+now i check in auth, where for every created user there is a entry made with public key and private key encrypted with the hashed pw,
 if i can decrypt the encrypted private key with the hashed pw and check if public and private key match
 
 
@@ -30,7 +33,7 @@ only thing that needs to be done in subscriber is insertWare into db ++ parseWar
 grad mit tan geredet:
 er meint ja ist ziemlich schlau dass man immer einen eintrag in die ware table macht wenn irgendwas gemodified wird damit man sieht wann was valide ist.
 
-before creating agent do a call to db and ask if username already given :)
+before creating user do a call to db and ask if username already given :)
 
 moment:
 
@@ -48,17 +51,17 @@ okay now i know everything i save to state will also get transmitted to my subsc
 parsed data successfully need to save data to db
 
 okay it needs to update because block nums need to be updated.
-also probably agent will never update and look at github issue for updating
+also probably user will never update and look at github issue for updating
 
 try to check why on every insert it also updates ware lol
-when does the agent get updated never thanks.?
+when does the user get updated never thanks.?
 
 saving timestamp as 1234, fix!!
 
 The start_block_num and end_block_num columns specify the range in which that state value is set or exists. Values that
 are valid as of the current block have end_block_num set to NULL or MAX_INTEGER.
 
-check why in dropfork method of database only agent and wares get updated, rest just deleted..
+check why in dropfork method of database only user and wares get updated, rest just deleted..
 
 #####
 status of tuesday

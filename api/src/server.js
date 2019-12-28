@@ -9,7 +9,7 @@ import { ApolloServer } from 'apollo-server-express';
 import schema from './schema';
 import resolvers from './resolvers';
 import models, { sequelize } from './utils/databaseConfig';
-import { wrapAndSendNewAgent } from './components/requestHandler';
+import { wrapAndSendNewUser } from './components/requestHandler';
 // import models, { sequelize } from './models';
 
 const app = express();
@@ -54,7 +54,7 @@ sequelize.sync({ force: eraseDB }).then(async () => {
       block_num: 1,
       block_id: "fztguio",
   })
-    await models.Agent.create({
+    await models.User.create({
       public_key: "qzugeq12312",
       username: "techniqs",
       timestamp: 12341523,
@@ -62,7 +62,7 @@ sequelize.sync({ force: eraseDB }).then(async () => {
       end_block_num: 1235913,
   })
 
-    // wrapAndSendNewAgent({username:"techniqs",password:"1234"});
+    // wrapAndSendNewUser({username:"techniqs",password:"1234"});
   }
 
 

@@ -1,5 +1,5 @@
 export default (sequelize, DataTypes) => {
-  const Agent = sequelize.define('agent', {
+  const User = sequelize.define('user', {
     public_key: {
       type: DataTypes.STRING,
       unique: true,
@@ -48,6 +48,6 @@ export default (sequelize, DataTypes) => {
 
 
 
-  return Agent;
+  return User;
 };
 

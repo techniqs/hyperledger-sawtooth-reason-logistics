@@ -3,8 +3,8 @@ syntax = "proto3";
 // our goods tracked supplychain
 message Ware {
     message Owner {
-        // Public key of the agent who owns the ware
-        string agent_id = 1;
+        // Public key of the user who owns the ware
+        string user_id = 1;
 
         // Approximately when the owner was updated, as a Unix UTC timestamp
         uint64 timestamp = 2;

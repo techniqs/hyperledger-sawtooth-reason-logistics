@@ -1,14 +1,14 @@
 syntax = "proto3";
 
 //can own, transfer and update Wares
-message Agent {
-    // The agent's unique public key
+message User {
+    // The user's unique public key
     string public_key = 1;
 
-    // A human-readable name identifying the agent
+    // A human-readable name identifying the user
     string name = 2;
 
-    // Approximately when the agent was registered, as a Unix UTC timestamp
+    // Approximately when the user was registered, as a Unix UTC timestamp
     // uint64 timestamp = 3;
 }
 
@@ -16,7 +16,7 @@ message Agent {
 // Special case when hash of two unique entities 
 // have the same state adress
 // so our supply chain stores containers at each adress instead of the entity itself.
-message AgentContainer {
-    repeated Agent entries = 1;
+message UserContainer {
+    repeated User entries = 1;
 }
 

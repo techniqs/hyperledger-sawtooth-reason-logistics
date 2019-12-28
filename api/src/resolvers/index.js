@@ -1,6 +1,6 @@
 import userResolvers from '../resolvers/user';
 import messageResolvers from '../resolvers/message';
-import agentResolvers from '../resolvers/agent';
+import userResolvers from '../resolvers/user';
 import { GraphQLScalarType } from 'graphql';
 
 const dateResolver = {
@@ -21,5 +21,5 @@ export default [
   dateResolver,
   userResolvers,
   messageResolvers,
-  agentResolvers,
+  userResolvers,
 ];

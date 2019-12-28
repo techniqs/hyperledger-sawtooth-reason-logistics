@@ -1,5 +1,5 @@
 type actions =
-  | CreateAgent
+  | CreateUser
   | CreateWare
   | TransferWare
   | UpdateWare
@@ -11,7 +11,7 @@ type actions =
 
 let toTypeAction = action => {
   switch (action) {
-  | "create_agent" => CreateAgent
+  | "create_user" => CreateUser
   | "create_ware" => CreateWare
   | "transfer_ware" => TransferWare
   | "update_ware" => UpdateWare
@@ -29,7 +29,7 @@ type payloadType = {
   space: string,
 };
 
-type agentPayload = {
+type userPayload = {
   action: actions,
   username: string,
   createdAt: string,
@@ -46,9 +46,9 @@ let getPayloadAction = (payloadBuffer: Node.Buffer.t) => {
   toTypeAction(payloadArray[0]);
 };
 
-let getAgentPayload = (payloadBuffer: Node.Buffer.t) => {
+let getUserPayload = (payloadBuffer: Node.Buffer.t) => {
   let payloadArray = getPayloadArray(payloadBuffer);
-  let payload: agentPayload = {
+  let payload: userPayload = {
     action: toTypeAction(payloadArray[0]),
     username: payloadArray[1],
     createdAt: payloadArray[2],
@@ -62,8 +62,8 @@ let getAgentPayload = (payloadBuffer: Node.Buffer.t) => {
 //   let payloadAsString = Node.Buffer.toString(payloadBuffer);
 //   let payloadArray = Js.String.split(",", payloadAsString);
 //   Js.log2("PAYLOADARRAY", payloadArray);
-//   if(payloadArray[0] === "create_agent" && Array.length(payloadArray) === 3){
-//     // let payload: agentPayload = {
+//   if(payloadArray[0] === "create_user" && Array.length(payloadArray) === 3){
+//     // let payload: userPayload = {
 //     //   action: toTypeAction(payloadArray[0]),
 //     //   username: payloadArray[1],
 //     //   createdAt: payloadArray[2]
