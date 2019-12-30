@@ -30,6 +30,17 @@ let setState = (payload: Js.Dict.t(Node.Buffer.t), state: state) => {
 };
 
 
+
+// type everything like this
+[@bs.deriving abstract]
+type userData = {action: string, username: string, timestamp:string};
+
+[@bs.scope "JSON"] [@bs.val]
+external parseUser : string => userData = "parse";
+
+
+
+
 module StateFunctions = {
   let setUser = (pubKey: string, userBuffer: Node.Buffer.t, state: state) => {
     Js.log2("setUser called, pubkey:", pubKey);
@@ -49,14 +60,15 @@ module StateFunctions = {
              }
              : {
                Js.log("no buffer, call setSTate");
-
               
                Js.log2("Buffer data:", Node.Buffer.toString(userBuffer));
-               let userArray = Js.String.split(",", Node.Buffer.toString(userBuffer));
+
+               let parsedData = parseUser(Node.Buffer.toString(userBuffer));
+
                let dataObj = Js.Dict.empty();
                Js.Dict.set(dataObj,"pubKey",pubKey);
-               Js.Dict.set(dataObj,"username",userArray[1]);
-               Js.Dict.set(dataObj,"timestamp",userArray[2]);
+               Js.Dict.set(dataObj,"username",usernameGet(parsedData));
+               Js.Dict.set(dataObj,"timestamp",timestampGet(parsedData));
                Js.log2("Data transfering to state:", dataObj);
                 
                 let stateDict = Js.Dict.empty();

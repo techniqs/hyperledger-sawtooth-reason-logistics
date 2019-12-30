@@ -5,12 +5,14 @@ export default gql`
   type User {
     pubKey: String!
     username: String!
-    createdAt: Date!
-    updatedAt: Date!
+  }
+  type AuthObj {
+    token: String!
+    username: String!
   }
 
   input UserInput {
-  username: String
-  password: String
+  username: String!
+  password: String!
 }
 `;

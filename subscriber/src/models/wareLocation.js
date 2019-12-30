@@ -1,15 +1,15 @@
 export default (sequelize, DataTypes) => {
   const WareLocation = sequelize.define('wareLocation', {
-    ware_id: {
-      type: DataTypes.BIGINT,
-      unique: true,
+    ware_ean: {
+      type: DataTypes.STRING,
+      unique: false,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
       references: {
         model: sequelize.models.ware,
-        // key: 'id',
+        key: 'ean',
       },
     },
     timestamp: {
@@ -19,9 +19,26 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-
-
-
+    //range from -180 - +180    
+    longitude: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        min: -180,
+        max: 180
+      },
+    },
+    //range from -90 - +90
+    latitude: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        min: -90,
+        max: 90
+      },
+    },
     start_block_num: {
       type: DataTypes.BIGINT,
       unique: false,
@@ -45,9 +62,9 @@ export default (sequelize, DataTypes) => {
   });
 
   // this doesnt work 
-  WareLocation.associate = models => {
-    WareLocation.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
-  };
+  // WareLocation.associate = models => {
+  //   WareLocation.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
+  // };
 
 
   return WareLocation;

@@ -1,5 +1,19 @@
 export default (sequelize, DataTypes) => {
   const Ware = sequelize.define('ware', {
+    ean:{
+      type: DataTypes.STRING,
+      unique:true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isNumeric:true,
+        hasCorrectLength: function(value){
+          if(!(value.length >= 8 && value.length <=13)){
+            throw new Error("ean has to be between 8 and 13 numbers!");
+          }
+        }
+      },
+    },
     name:{
       type: DataTypes.STRING,
       allowNull: false,

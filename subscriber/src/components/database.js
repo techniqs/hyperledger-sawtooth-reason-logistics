@@ -1,4 +1,4 @@
-import models from '../utils/databaseConfig';
+import models, { Op } from '../utils/databaseConfig';
 
 export default class Database {
     constructor() {
@@ -18,14 +18,14 @@ export default class Database {
     };
 
     insertUser(user) {
-        console.log('\x1b[36m%s\x1b[0m', "INSERTING USER ------------------", user);        
+        console.log('\x1b[36m%s\x1b[0m', "INSERTING USER ------------------", user);
         models.User.create({
             public_key: user.pubKey,
             username: user.username,
             timestamp: user.timestamp,
             start_block_num: user.start_block_num,
             end_block_num: user.end_block_num,
-        }).catch(function(err){
+        }).catch(function (err) {
             console.log("VALIDATION ERROR", err);
         });
     };
@@ -48,46 +48,99 @@ export default class Database {
 
 
 
-    // drop from everytable with that block num
-    // not sure why only users and wares get updated but rest stays..
-    dropFork(blockNum) {
-
-        models.User.destroy({
+    async dropFork(blockNum) {
+        models.WareLocation.destroy({
             where: {
                 start_block_num: {
-                    $gte: blockNum
+                    [Op.gte]: blockNum
                 }
             },
         });
 
-        models.WareLocation.destroy({
+        models.WareLocation.update({
+            end_block_num: null,
+        }, {
             where: {
-                start_block_num: {
-                    $gte: blockNum
+                end_block_num: {
+                    [Op.gte]: blockNum
                 }
-            },
+            }
         });
 
         models.WareOwner.destroy({
             where: {
                 start_block_num: {
-                    $gte: blockNum
+                    [Op.gte]: blockNum
                 }
             },
+        });
+
+        models.WareOwner.update({
+            end_block_num: null,
+        }, {
+            where: {
+                end_block_num: {
+                    [Op.gte]: blockNum
+                }
+            }
         });
 
         models.Ware.destroy({
             where: {
                 start_block_num: {
-                    $gte: blockNum
+                    [Op.gte]: blockNum
                 }
             },
+        });
+
+        models.Ware.update({
+            end_block_num: null,
+        }, {
+            where: {
+                end_block_num: {
+                    [Op.gte]: blockNum
+                }
+            }
+        });
+
+        const pubKeys = (await models.User.findAll({
+            attributes: ['public_key'],
+            where: {
+                start_block_num: {
+                    [Op.gte]: blockNum
+                }
+            },
+        })).map(user => user.dataValues.public_key);
+
+
+        models.Auth.destroy({
+            where: {
+                public_key: pubKeys
+            },
+        });
+
+        models.User.destroy({
+            where: {
+                start_block_num: {
+                    [Op.gte]: blockNum
+                }
+            },
+        });
+
+        models.User.update({
+            end_block_num: null,
+        }, {
+            where: {
+                end_block_num: {
+                    [Op.gte]: blockNum
+                }
+            }
         });
 
         models.Block.destroy({
             where: {
                 block_num: {
-                    $gte: blockNum
+                    [Op.gte]: blockNum
                 }
             },
         });

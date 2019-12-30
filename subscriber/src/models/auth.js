@@ -24,6 +24,7 @@ export default (sequelize, DataTypes) => {
     },
   });
 
+  //check this
   Auth.associate = models => {
     Auth.belongsTo(models.User, { foreignKey: 'public_key', onDelete: 'CASCADE' });
   };

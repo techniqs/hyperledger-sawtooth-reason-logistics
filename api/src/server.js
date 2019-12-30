@@ -8,13 +8,11 @@ import { ApolloServer } from 'apollo-server-express';
 
 import schema from './schema';
 import resolvers from './resolvers';
-import models, { sequelize } from './utils/databaseConfig';
-import { wrapAndSendNewUser } from './components/requestHandler';
-// import models, { sequelize } from './models';
+import { authorize } from './components/authHandler'
+import models, { sequelize, Op } from './utils/databaseConfig';
+import moment from 'moment';
 
 const app = express();
-
-//check how context works
 
 const server = new ApolloServer({
   typeDefs: schema,
@@ -31,9 +29,9 @@ const server = new ApolloServer({
       message,
     };
   },
-  context: async () => ({
-    models,
-    // me: await models.User.findByLogin('rwieruch'),
+  context: async (ctx) => ({
+    authorizedUser: await authorize(ctx),
+    models
   }),
 });
 
@@ -43,26 +41,74 @@ const port = process.env.APP_PORT;
 
 const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
-const test = false;
+const test = true;
 
 sequelize.sync({ force: eraseDB }).then(async () => {
   // if (eraseDB) {
   // }
 
   if (test) {
-    await  models.Block.create({
+    await models.Block.create({
       block_num: 1,
       block_id: "fztguio",
-  })
+    });
+    await models.Block.create({
+      block_num: 2,
+      block_id: "fztgaasdasuio",
+    });
+   
     await models.User.create({
       public_key: "qzugeq12312",
       username: "techniqs",
       timestamp: 12341523,
       start_block_num: 1,
-      end_block_num: 1235913,
-  })
+      end_block_num: null,
+    });
+    await models.Auth.create({
+      public_key: "qzugeq12312",
+      encrypted_private_key: "qwdsasdasdasd",
+    });
+    await models.Ware.create({
+      ean:"1234567891234",
+      name:"werkzeug",
+      timestamp: moment().unix(),
+      start_block_num: 1,
+      end_block_num: null,
+    });
+    await models.Ware.create({
+      ean:"12345678",
+      name:"hammer",
+      timestamp: moment().unix(),
+      start_block_num: 1,
+      end_block_num: null,
+    });
+    await models.WareOwner.create({
+      user_pubKey:"qzugeq12312",
+      ware_ean:"1234567891234",
+      timestamp:moment().unix(),
+      start_block_num: 1,
+      end_block_num: null,
+    });
+    await models.WareLocation.create({
+      ware_ean:"1234567891234",
+      timestamp:moment().unix(),
+      longitude:20,
+      latitude:-20,
+      start_block_num: 1,
+      end_block_num: null,
+    });
+    await models.WareLocation.update({
+      end_block_num: 2,
+    }, {where: {ware_ean:"1234567891234", start_block_num:1}});
 
-    // wrapAndSendNewUser({username:"techniqs",password:"1234"});
+    await models.WareLocation.create({
+      ware_ean:"1234567891234",
+      timestamp:moment().unix()+2,
+      longitude:30,
+      latitude:-40,
+      start_block_num: 2,
+      end_block_num: null,
+    })
   }
 
 

@@ -1,26 +1,22 @@
-status:
-OKAY FROM API to sub everything works with createUser.
+API STILL NEED TODO: 
+    check all resolver methods! most of them still need something!
+    also still need to implement this encrypting/decrypting of private key for login and creating
+    also need to implement authorizationrequest for header with token // will come together with client hopefully for now some dummy data enabled
+    uncomment in api checkAuth in resolver methods
+    implement getPrivateKey, problem: lets say i want to createware and i have my user from context. so i have the pub key, --->
+        but i dont have his password to decode privkey so i need to store it maybe in token or something?
 
-change user to user 
+
+
+lol ehm None from Reason to graphql does it translate to null? xDDD scared af
+
+OKAY FROM API to sub everything works with createUser.
 
 schema types i can do together with client because right now i dont know what i need for client
 
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-
-// The maximum age (in milliseconds) of a valid session.
-const SALT_ROUNDS = 7; // 10
-const SESSION_MAXAGE = 30 * 24 * 60 * 60 * 1000;
-const SESSION_SECRET = 'cHgc8LAEcvMTTT9OitNMkfw4';
-
-
-type AuthObj {
-  access: Int
-  token: String
-  userId: String
-}
-
-
+how i got into db of education
+docker exec -it simple-supply-postgres bash
+psql -U sawtooth -d simple-supply
 
 how does login work: user types username and pw
 i look for username in user, get the public key in the same table
@@ -40,7 +36,6 @@ moment:
 timestamp : mom.unix()
 format timestamp back to date -> moment.unix(timestamp).format('DD/MM/YYYY, H:mm:ss')
 
-test dropfork method
 
 change localhost ips to docker ips like in requesthandler sending to validator
 
@@ -60,8 +55,6 @@ saving timestamp as 1234, fix!!
 
 The start_block_num and end_block_num columns specify the range in which that state value is set or exists. Values that
 are valid as of the current block have end_block_num set to NULL or MAX_INTEGER.
-
-check why in dropfork method of database only user and wares get updated, rest just deleted..
 
 #####
 status of tuesday
@@ -132,10 +125,9 @@ then start tp
 then start graphql api :)
 
 
-utils and models can be in seperate folder
+utils and models can be in seperate folder probably need to transpile with babel to use it
 
 Rename repo and change family name
-rename wares to ware :)
 rename everything in package.json
 check dependencies in package.json
 comment

@@ -1,10 +1,18 @@
 import { createContext, CryptoFactory } from 'sawtooth-sdk/signing';
+import { Secp256k1PrivateKey } from 'sawtooth-sdk/signing/secp256k1';
+
+const context = createContext('secp256k1');
 
 export const createKeyPair = () => {
-    const context = createContext('secp256k1')
     const privateKey = context.newRandomPrivateKey()
     const pubKey = context.getPublicKey(privateKey);
-    const signer = new CryptoFactory(context).newSigner(privateKey)
-    return { signer: signer, pubKey: pubKey.asHex(), privKey: privateKey.asHex() };
+    return { pubKey: pubKey.asHex(), privKey: privateKey.asHex() };
 }
 
+
+export const getSigner = (privKey) => {
+    return new CryptoFactory(context).newSigner(Secp256k1PrivateKey.fromHex(privKey))
+}
+
+export const batchKeyPair = createKeyPair();
+export const batchSigner = getSigner(batchKeyPair.privKey);

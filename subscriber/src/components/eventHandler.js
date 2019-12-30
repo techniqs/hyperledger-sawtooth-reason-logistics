@@ -2,7 +2,8 @@ import { throwExceptionAndClose } from "../components/exceptionHandler";
 import { NAMESPACE, USER_PREFIX, WARE_PREFIX } from "../utils/addressHandler";
 const protobuf = require('../../sawtooth-transpiled/protobuf')
 
-const MAX_BLOCK_NUMBER = Number.MAX_SAFE_INTEGER - 1;
+const MAX_BLOCK_NUMBER = null;
+// const MAX_BLOCK_NUMBER = Number.MAX_SAFE_INTEGER - 1;
 
 export const handle_events = async (db, events, subscriberRef) => {
     console.log("EVENTHANDLER CALLED");
@@ -53,12 +54,12 @@ const parseData = async (db, events, block) => {
 
 };
 const parseUserData = (db, buffer, block_num) => {
-    console.log("parseUserData called with buffer:",buffer.toString());
     const userData = JSON.parse(buffer.toString());
+    userData["timestamp"]=parseInt(userData.timestamp,10);
     userData["start_block_num"]=block_num;
     userData["end_block_num"]=MAX_BLOCK_NUMBER;
 
-    console.log(userData)
+    // console.log("userData: ",userData)
     db.insertUser(userData);
 }
 
@@ -82,7 +83,7 @@ const resolveFork = async (db, block) => {
 
         // fork detected, undo all events >= blockNum
         console.log("FORK DETECTED!! DELETING RECENT EVENTS");
-        db.dropFork(block.block_num)
+        await db.dropFork(block.block_num)
     }
 
     return false;

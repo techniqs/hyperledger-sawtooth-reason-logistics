@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+const Op = Sequelize.Op;
 
 const sequelize = new Sequelize(
     process.env.DB_NAME,
@@ -35,5 +36,5 @@ Object.keys(models).forEach(key => {
 });
 
 
-export { sequelize };
+export { sequelize, Op };
 export default models;

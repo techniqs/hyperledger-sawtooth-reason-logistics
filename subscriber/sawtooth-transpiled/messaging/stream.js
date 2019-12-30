@@ -168,10 +168,7 @@ function () {
     value: function onReceive(cb) {
       var _this4 = this;
 
-      console.log("onReceive called");
-
       this._socket.on('message', function (buffer) {
-        console.log("BUFFER HERE");
         var message = Message.decode(buffer);
 
         if (_this4._futures[message.correlationId]) {

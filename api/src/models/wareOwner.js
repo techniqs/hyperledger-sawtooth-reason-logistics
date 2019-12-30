@@ -1,7 +1,7 @@
 export default (sequelize, DataTypes) => {
   const WareOwner = sequelize.define('wareOwner', {
-    user_id: {
-      type: DataTypes.BIGINT,
+    user_pubKey: {
+      type: DataTypes.STRING,
       unique: true,
       allowNull: false,
       validate: {
@@ -9,11 +9,11 @@ export default (sequelize, DataTypes) => {
       },
       references: {
         model: sequelize.models.user,
-        // key: 'id',
+        key: 'public_key',
       },
     },
-    ware_id: {
-      type: DataTypes.BIGINT,
+    ware_ean: {
+      type: DataTypes.STRING,
       unique: true,
       allowNull: false,
       validate: {
@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
       },
       references: {
         model: sequelize.models.ware,
-        // key: 'id',
+        key: 'ean',
       },
     },
     timestamp: {
@@ -54,10 +54,10 @@ export default (sequelize, DataTypes) => {
   });
 
   // this doesnt work 
-  WareOwner.associate = models => {
-    WareOwner.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
-    WareOwner.belongsTo(models.User, { foreignKey: 'id', onDelete: 'CASCADE' });
-  };
+  // WareOwner.associate = models => {
+  //   WareOwner.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
+  //   WareOwner.belongsTo(models.User, { foreignKey: 'id', onDelete: 'CASCADE' });
+  // };
 
 
   return WareOwner;
