@@ -8,11 +8,12 @@ for login we hash pw with salt and verifykeys
 for auth we can get the hash through token and check whatever
 
 What to to do next time:
-    finish api resolvers and authorizationrequest.
+    finish api resolvers
     then back to processor and finish saving to state
     then modify subscriber for new processor changes
 
 API STILL NEED TODO: 
+    authorizationrequest done, uncomment for client DONT FORGET TO DELETE FAKETOKEN GENERATOR !!
     check all resolver methods! most of them still need something!
     also need to implement authorizationrequest for header with token -->
             for now some dummy data enabled
@@ -22,6 +23,9 @@ API STILL NEED TODO:
 TAN RESOLVED:
     example ware update: on getState i get buffer of adress back. normally nothing in there but obv im updating so there is data on this adress. education extends the data and then saves it back on same adress. i mean i could do same no problem but should i? also im pretty sure even if i write on same adress batch is created. my real question is like shouldnt the blockchain be a history of commits, is this extending and updating also on there since i dont set data on a new adress instead on an existing adress.
     TAN SAYS EXTEND
+
+
+change name of public_key to either pubKey or other way around !! must be unified!
 
 
 Status: i created all transactions, resolvers are still unfinished, now to processor 

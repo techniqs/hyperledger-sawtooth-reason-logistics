@@ -2,21 +2,25 @@ import { Op } from '../utils/databaseConfig';
 import { sendBatch } from '../components/requestHandler';
 import { getSigner, createKeyPair, batchSigner, batchKeyPair } from '../components/keyHandler';
 import { createWareTransaction, updateWareTransaction, transferWareTransaction } from '../components/transactionCreation';
-import { checkAuth, getPrivateKey } from '../components/authHandler';
+import { checkAuth } from '../components/authHandler';
 import moment from 'moment';
 
 export default {
   Query: {
-    getWare: async (parent, { id }, { authorizedUser, models }) => {
+    getWare: async (parent, { ean }, { authorizedUser, models }) => {
 
-      let ware = (await models.Ware.findByPk(id));
+      let ware = (await models.Ware.findOne({
+        where: {
+          ean: ean
+        }
+      }))
       if (ware === null) {
-        throw Error("ware not found.");
+        throw Error("Invalid EAN, ware couldn't be found!");
       }
       ware = ware.dataValues
       const wareLocations = (await models.WareLocation.findAll({
         where: {
-          ware_id: id
+          ware_ean: ean
         }
       })).map(wareLocation => {
         const obj = {};
@@ -30,7 +34,7 @@ export default {
       const wareOwner = (await models.WareOwner.findOne({
         where:
         {
-          ware_id: id,
+          ware_ean: ean,
           end_block_num: {
             [Op.is]: null
           }
@@ -45,7 +49,12 @@ export default {
 
       const updatedAt = moment.unix(updatedAtTimestamp).format('DD/MM/YYYY, H:mm:ss')
 
-      const wareUser = (await models.User.findByPk(wareOwner.user_id)).dataValues;
+      
+      const wareUser = (await models.User.findOne({
+        where: {
+          public_key: wareOwner.user_pubKey
+        }
+      })).dataValues;
 
       const owner = { pubKey: wareUser.public_key, username: wareUser.username };
 
@@ -53,6 +62,7 @@ export default {
 
     },
 
+    // idk depends what i want to show check with client?
     listWares: async (parent, { input }, { authorizedUser, models }) => {
       let wares = (await models.Ware.findAll()).map(ware => {
         const obj = {};
@@ -69,8 +79,7 @@ export default {
   },
   Mutation: {
     createWare: async (parent, { input }, { authorizedUser, models }) => {
-      // checkAuth(authorizedUser);
-      console.log("INPUT", input);
+      checkAuth(authorizedUser);
 
       const ware = (await models.Ware.findOne({
         where:
@@ -85,8 +94,18 @@ export default {
 
       const timestamp = moment().unix();
       // getPrivateKey of authorizedUser
-      const keyObj = { pubKey: authorizedUser.public_key, privKey: getPrivateKey(authorizedUser.public_key) };
-
+      
+      const auth = (await models.Auth.findOne({
+        where: {
+          public_key: authorizedUser.token.public_key
+        }
+      })).dataValues;
+      
+      const hash = authorizedUser.token.hash;
+      const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
+      
+      const keyObj = { pubKey: authorizedUser.public_key,
+         privKey: getPrivateKey(authorizedUser.public_key) };
 
       const batch = createWareTransaction(keyObj, input, timestamp);
 

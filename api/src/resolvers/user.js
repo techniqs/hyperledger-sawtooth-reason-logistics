@@ -1,5 +1,5 @@
 import { createKeyPair, verifyKeys } from '../components/keyHandler';
-import { hashPassword, signToken, checkAuth, encryptKey, decryptKey, verifyToken, genSalt } from '../components/authHandler';
+import { hashPassword, signToken, checkAuth, encryptKey, decryptKey, genSalt } from '../components/authHandler';
 import { createUserTransaction } from '../components/transactionCreation';
 import { sendBatch } from '../components/requestHandler';
 import moment from 'moment';
@@ -12,7 +12,6 @@ export default {
           username: input.username
         }
       });
-
 
       if (user !== null) {
         user = user.dataValues;
@@ -38,21 +37,24 @@ export default {
     listUsers: async (parent, { input }, { authorizedUser, models }) => {
       return await models.User.findAll();
     },
-    getPrivateKey: async (parent, { pw }, { authorizedUser, models }) => {
+    getPrivateKey: async (parent, { input }, { authorizedUser, models }) => {
 
-      console.log("privKey params", parent, pubKey, user, models)
       checkAuth(authorizedUser);
-      // decrypt private key lol
-      //still dunno how
-
+      let auth = (await models.Auth.findOne({
+        where: {
+          public_key: authorizedUser.token.public_key
+        }
+      }))
+      if (auth !== null) {
+        auth = auth.dataValues;
+        const privKey = decryptKey(auth.encrypted_private_key, auth.iv, authorizedUser.token.hash);
+        return privKey;
+      }
       throw new Error("couldnt get PrivateKey");
-
-
     },
   },
   Mutation: {
     createUser: async (parent, { input }, { authorizedUser, models }) => {
-      console.log("INPUT", input);
 
       const alreadyInDb = await models.User.findOne({
         attributes: ['username'],
@@ -73,7 +75,6 @@ export default {
           const hash = hashPassword(input.password, salt);
           const { iv, encryptedKey } = encryptKey(keyObj.privKey, hash);
 
-          console.log("saving to auth with pubKey: ", keyObj.pubKey);
           models.Auth.create({
             public_key: keyObj.pubKey,
             salt,

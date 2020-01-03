@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import models from '../utils/databaseConfig';
-import { batchKeyPair } from './keyHandler'
+import { batchKeyPair, verifyKeys } from './keyHandler'
 import crypto from 'crypto';
+import {fakeToken} from '../server';
 
 const genSalt = () => {
     return crypto.randomBytes(8).toString('hex');
@@ -30,6 +31,7 @@ export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
 };
 
 
+// signToken({ public_key: auth.public_key, hash: hash })
 const signToken = data => {
     const token = jwt.sign(Buffer.from(JSON.stringify(data)).toString('base64'), batchKeyPair.privKey);
     return token;
@@ -41,18 +43,39 @@ const verifyToken = token => {
 };
 
 
-
-const user = true
-
+// TODO DELETE FAKE TOKEN!! AND GET TOKEN FROM HEADER!!
 const authorize = async (ctx) => {
     // console.log("CONTEXT REQUEST", ctx.req);
 
     // find user by header from request.
     // in token of header should be username, find it through that.
-    if (user)
-        return await models.User.findByPk(1);
+    // something like in header authorization bearer 
+    // then get token
 
+    // delete fake token generator
+    //get token from header!!
+    const data = verifyToken(fakeToken.token);
+    const token = JSON.parse(data);
+    let auth = (await models.Auth.findOne({
+        where: {
+            public_key: token.public_key
+        }
+    }))
+    if (auth !== null) {
+        auth = auth.dataValues;
 
+        const privKey = decryptKey(auth.encrypted_private_key, auth.iv, token.hash);
+        if (verifyKeys(privKey, token.public_key)) {
+            const user = await models.User.findOne({
+                where: {
+                    public_key: token.public_key
+                }
+            });
+            if (user !== null) {
+                return { user: user.dataValues, token: token };
+            }
+        }
+    }
     return null;
 
 };
@@ -62,13 +85,5 @@ const checkAuth = (authorizedUser) => {
         throw Error("not authorized!");
 };
 
-// here decode privateKey through public Key
-const getPrivateKey = (pubKey) => {
 
-    return "asdf";
-
-}
-
-
-
-export { signToken, verifyToken, hashPassword, checkAuth, authorize, getPrivateKey, genSalt };
+export { signToken, verifyToken, hashPassword, checkAuth, authorize, genSalt };

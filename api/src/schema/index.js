@@ -11,11 +11,12 @@ const rootSchema = gql`
     
     loginUser(input:UserInput!): AuthObj!
     listUsers:[User!]!
-    getPrivateKey(pw:String!):String!
+    getPrivateKey:String!
 
 
     #ware queries
-    getWare(id:Int!): WareWithDetails!
+    getWare(ean:String!): WareWithDetails!
+    # check what i want to show!
     listWares: [Ware!]!
   }
 
