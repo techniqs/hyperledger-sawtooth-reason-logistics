@@ -47,7 +47,6 @@ let getUserAddress = (pubKey: string) => {
   nameSpace ++ userPrefix ++ getIdentifierHash(pubKey);
 };
 
-// either string or int idk what id is lets see
 let getWareAddress = (ean: string) => {
   nameSpace ++ warePrefix ++ getIdentifierHash(ean);
 };

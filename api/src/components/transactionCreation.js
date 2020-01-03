@@ -11,15 +11,11 @@ export const createUserTransaction = (transactionKeyPair, username, timestamp) =
     let outputAddressList = [userAddress];
 
     const action = "create_user";
-
-
-    // payload consists of action, userName, and userCreateDate
-    const payload = { action, 
-        data: { username, timestamp:timestamp.toString() } };
-
+    const payload = {
+        action,
+        data: { username, timestamp }
+    };
     console.log("payload data:", payload);
-
-    // encoding with node buffer
     const payloadBytes = Buffer.from(JSON.stringify(payload));
 
     return createBatch(payloadBytes, inputAddressList, outputAddressList, transactionKeyPair)
@@ -35,8 +31,10 @@ export const createWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     const action = "create_ware";
 
-    const payload = { action, 
-        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp } };
+    const payload = {
+        action,
+        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp }
+    };
 
     console.log("payload: ", payload);
 
@@ -55,8 +53,10 @@ export const updateWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     const action = "update_ware";
 
-    const payload = { action, 
-        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp } };
+    const payload = {
+        action,
+        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp }
+    };
 
     console.log("payload: ", payload);
 
@@ -76,8 +76,10 @@ export const transferWareTransaction = (transactionKeyPair, newUser, input, time
 
     const action = "transfer_ware";
 
-    const payload = { action, 
-        data:{ean: input.ean, newOwner: newUser.username, timestamp }};
+    const payload = {
+        action,
+        data: { ean: input.ean, newOwner: newUser.username, timestamp }
+    };
 
     console.log("payload: ", payload);
 

@@ -2,7 +2,8 @@ open Utils;
 
 external stringDictToJson: Js.Dict.t(string) => Js.Json.t = "%identity";
 
-external arrayDictToJson: Js.Dict.t(array(Js.Dict.t(string))) => Js.Json.t = "%identity";
+external arrayDictToJson: Js.Dict.t(array(Js.Dict.t(string))) => Js.Json.t =
+  "%identity";
 
 // from sawtooth-sdk-javascript/processor/context.js
 // context is our state
@@ -22,44 +23,33 @@ type state = {
   timeout: int,
 };
 
-
-
 //returns dict if nothing in that dict at adress returns empty array else buffer
 let getState = (address: array(string), state: state) => {
   state.context##getState(address, state.timeout);
 };
 
-// idk why should i need to handle the promise.. i dont even know how to handle
-// if theres returned adress aint same what to do
-// |> Js.Promise.then_((res: array(string)) => {
-//      Js.log2("IN SETSTATE PROMISE?", res);
-//          raise(Exceptions.StateError("Resulting adress of state not the same as the one saved to!"));
-//     //  Js.Promise.resolve(res);
-//    })
-//    |> ignore
+
 let setState = (stateDict: Js.Dict.t(Node.Buffer.t), state: state) => {
   state.context##setState(stateDict, state.timeout)
   |> Js.Promise.then_((res: array(string)) => {
-     Js.log2("Data sucessfully saved to adress: ", res);
-     Js.Promise.resolve(res);
-   })
-   |> Js.Promise.catch(err => {
-     Js.log2("Error occured while saving to state: ", err);
-     Js.Promise.resolve([||]);
-   })
-   |> ignore;
+       Js.log2("Data sucessfully saved to adress: ", res);
+       Js.Promise.resolve(stateDict);
+     })
+  |> Js.Promise.catch(err => {
+       Js.log2("Error occured while saving to state: ", err);
+       Js.Promise.resolve(Js.Dict.empty());
+     });
 };
 
 module StateFunctions = {
-  let setUser = (pubKey: string, buffer: Node.Buffer.t, state: state, input: string) => {
+  let setUser = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
     let address = Address.getUserAddress(pubKey);
     Js.log2("setUser called with adress:", address);
-    Js.log2("got same adress as input", address === input);
     getState([|address|], state)
     |> Js.Promise.then_((result: Js.Dict.t(Node.Buffer.t)) =>
          switch (Js.Dict.get(result, address)) {
-         | Some(b) =>
-           Node.Buffer.isBuffer(b)
+         | Some(adressData) =>
+           Node.Buffer.isBuffer(adressData)
              ? {
                Js.log("DATA ON ADRES!!");
                Exceptions.newInvalidTransactionException(
@@ -82,7 +72,6 @@ module StateFunctions = {
                  parsedData.timestamp |> string_of_int,
                );
                Js.log2("Data transfering to state:", userDict);
-               Js.log2("STRINGIFY DICT ", Js.Json.stringify(stringDictToJson(userDict)));
               
                let stateDict = Js.Dict.empty();
                Js.Dict.set(
@@ -92,19 +81,15 @@ module StateFunctions = {
                    Js.Json.stringify(stringDictToJson(userDict)),
                  ),
                );
-               Js.log2("STATEDICT ", stateDict);
-               Js.log2("STATE", state);
                setState(stateDict, state);
-               Js.Promise.resolve(result);
              }
          | _ =>
-          Js.Promise.resolve(Js.Dict.empty());
-          //  raise(Exceptions.StateError("Couldnt get Dict from getState"))
+           raise(Exceptions.StateError("Couldnt get Dict from getState"))
          }
        );
   };
 
-  let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
+let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
     let parsedData = Payload.decodeWareData(buffer);
     let address = Address.getWareAddress(parsedData.ean);
     getState([|address|], state)
@@ -172,12 +157,11 @@ module StateFunctions = {
        );
   };
 
-  let updateWare = () => {
-    ();
-  };
-
   let transferWare = () => {
     ();
   };
 
+  let updateWare = () => {
+    ();
+  };
 };

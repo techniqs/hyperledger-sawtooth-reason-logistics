@@ -21,23 +21,6 @@ type transactionRequest = {
 external convertTransaction: string => transactionRequest = "parse";
 
 // delete
-let xoHeaderObj = [%raw
-  "{ batcherPublicKey:
-   '02037dd8a1039f5e6721ccfa29926846a60310e03a0cd665bfe7f05620d6f08a59',
-  familyVersion: '1.0',
-  familyName: 'xo',
-  inputs:
-   [ '5b73496ba2b9df31680dcda5a4a083c462109df7e1abf32ff25d82f8b3cbf9734de8ef' ],
-  nonce: '0x1.76d1a8ea26e8dp+30',
-  outputs:
-   [ '5b73496ba2b9df31680dcda5a4a083c462109df7e1abf32ff25d82f8b3cbf9734de8ef' ],
-  payloadSha512:
-   '6b6e3e26a9e2e054d8d08ca87d59e01a07b81790b1c678d0fba0dba75965b7f06b9a6dff9bad0b2601957148d521c7be34b8b4e43d16b1d93bc997d21be4700f',
-  signerPublicKey:
-   '02037dd8a1039f5e6721ccfa29926846a60310e03a0cd665bfe7f05620d6f08a59' }"
-];
-
-// delete
 // let myHeaderObj = [%raw
 //   "{ header:
 //    { batcherPublicKey:
@@ -60,58 +43,22 @@ let xoHeaderObj = [%raw
 //   contextId: 'deb3ddd6e14e4faeb3ced04c6dd2133c' }"
 // ];
 
-external arrayDictToJson: Js.Dict.t(array(Js.Dict.t(string))) => Js.Json.t =
-  "%identity";
-
-type ware = {
-  ean: string,
-  name: string,
-  timestamp: string,
-};
-type owner = {
-  user_pubKey: string,
-  ware_ean: string,
-  timestamp: string,
-};
-
-type stateWare = {
-  ware: Js.Dict.t(string),
-  owner: array(Js.Dict.t(string)),
-};
-
 //Implementation for Js Wrapper SupplyHandler
 module SupplyHandlerImpl = {
   open Payload;
   open State;
 
   let apply = (_t, transaction: transactionRequest, context: context) => {
-    // i think i need to check if its my application xo and familyname right?
-    // Js.log2("TRANSACTION", transaction);
-    Js.log("------------------------------------------------------------------------------------------------------------------------");
-    Js.log("------------------------------------------------------------------------------------------------------------------------");
-    Js.log("------------------------------------------------------------------------------------------------------------------------");
-    Js.log("------------------------------------------------------------------------------------------------------------------------");
-    Js.log("------------------------------------------------------------------------------------------------------------------------");
     let header = transaction.header;
-    Js.log3("transaction adresses", header.inputs, header.outputs)
-    Js.log2("check if same adress," ,header.inputs[0] === header.outputs[0] );
-    // Js.log3(
-    //   "transaction input and key",
-    //   header.inputs,
-    //   header.signerPublicKey,
-    // );
     let payloadBuffer = transaction.payload;
     let state = {context, timeout: 500};
     let payloadAction = decodePayloadAction(payloadBuffer);
 
-
     switch (payloadAction) {
-    | CreateUser =>
-      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state, header.inputs[0])
-    // | CreateWare =>
-    //   StateFunctions.setWare(header.signerPublicKey, payloadBuffer, state)
+    | CreateUser =>  
+      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state)
     | _ =>
-      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state, header.inputs[0])
+      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state)
     };
   };
 };
