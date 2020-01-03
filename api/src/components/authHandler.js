@@ -1,12 +1,37 @@
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import models from '../utils/databaseConfig';
 import { batchKeyPair } from './keyHandler'
+import crypto from 'crypto';
 
-const SALT_ROUNDS = 10;
+const genSalt = () => {
+    return crypto.randomBytes(8).toString('hex');
+};
+
+const hashPassword = (pw, salt) => {
+    const hash = crypto.createHmac("sha256", salt).update(pw).digest("hex");
+    return hash;
+}
+
+export const encryptKey = (privKey, hash) => {
+    const iv = crypto.randomBytes(16);
+    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(hash, "hex"), iv);
+    let encrypted = cipher.update(privKey);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    return { iv: iv.toString('hex'), encryptedKey: encrypted.toString('hex') };
+};
+
+export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
+    let iv = Buffer.from(ivHex, 'hex');
+    let encryptedText = Buffer.from(encryptedPrivKey, 'hex');
+    let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(hash, "hex"), iv);
+    let decrypted = decipher.update(encryptedText);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    return decrypted.toString();
+};
+
 
 const signToken = data => {
-    const token = jwt.sign(Buffer.from(data).toString('base64'), batchKeyPair.privKey);
+    const token = jwt.sign(Buffer.from(JSON.stringify(data)).toString('base64'), batchKeyPair.privKey);
     return token;
 };
 
@@ -15,9 +40,7 @@ const verifyToken = token => {
     return Buffer.from(data, 'base64').toString('ascii');
 };
 
-const hashPassword = async password => {
-    return bcrypt.hash(password, SALT_ROUNDS);
-};
+
 
 const user = true
 
@@ -43,9 +66,9 @@ const checkAuth = (authorizedUser) => {
 const getPrivateKey = (pubKey) => {
 
     return "asdf";
-    
+
 }
 
 
 
-export { signToken, verifyToken, hashPassword, checkAuth, authorize, getPrivateKey };
+export { signToken, verifyToken, hashPassword, checkAuth, authorize, getPrivateKey, genSalt };

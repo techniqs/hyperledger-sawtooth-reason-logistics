@@ -9,6 +9,11 @@ export const createKeyPair = () => {
     return { pubKey: pubKey.asHex(), privKey: privateKey.asHex() };
 }
 
+export const verifyKeys = (privKey, publicKey) => {
+    const privKeyInstance = Secp256k1PrivateKey.fromHex(privKey);
+    const realPubKey = context.getPublicKey(privKeyInstance);
+    return realPubKey.asHex() === publicKey;
+};
 
 export const getSigner = (privKey) => {
     return new CryptoFactory(context).newSigner(Secp256k1PrivateKey.fromHex(privKey))

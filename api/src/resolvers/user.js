@@ -1,5 +1,5 @@
-import { createKeyPair } from '../components/keyHandler';
-import { hashPassword, signToken, checkAuth } from '../components/authHandler';
+import { createKeyPair, verifyKeys } from '../components/keyHandler';
+import { hashPassword, signToken, checkAuth, encryptKey, decryptKey, verifyToken, genSalt } from '../components/authHandler';
 import { createUserTransaction } from '../components/transactionCreation';
 import { sendBatch } from '../components/requestHandler';
 import moment from 'moment';
@@ -7,7 +7,7 @@ import moment from 'moment';
 export default {
   Query: {
     loginUser: async (parent, { input }, { authorizedUser, models }) => {
-      const user = await models.User.findOne({
+      let user = await models.User.findOne({
         where: {
           username: input.username
         }
@@ -15,16 +15,23 @@ export default {
 
 
       if (user !== null) {
-        console.log("user:", user.dataValues);
+        user = user.dataValues;
+        console.log("user:", user);
+        const auth = (await models.Auth.findOne({
+          where: {
+            public_key: user.public_key
+          }
+        })).dataValues;
 
-        // hash pw and decrypt private key, check if private and public are working together
-        // const hashedPw = await hashPassword(input.password);
-        // if everythings right then return token
-
-        return { token: signToken(input.username), username: input.username }
-
+        const hash = hashPassword(input.password, auth.salt);
+        const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
+        if (verifyKeys(privKey, auth.public_key)) {
+          return { token: signToken({ public_key: auth.public_key, hash: hash }) }
+        }
+        else {
+          throw new Error("Login not successful, check credentials!");
+        }
       }
-
       // user not in db check error handling lol
       throw new Error("Wrong credentials!");
     },
@@ -45,7 +52,6 @@ export default {
   },
   Mutation: {
     createUser: async (parent, { input }, { authorizedUser, models }) => {
-      console.log("PARENT", parent);
       console.log("INPUT", input);
 
       const alreadyInDb = await models.User.findOne({
@@ -63,15 +69,19 @@ export default {
         try {
           await sendBatch(batch);
 
+          const salt = genSalt();
+          const hash = hashPassword(input.password, salt);
+          const { iv, encryptedKey } = encryptKey(keyObj.privKey, hash);
 
-          const hashedPw = await hashPassword(input.password);
-          // encrypt private key with hashed pw.. ? howto
-          //   await models.Auth.create({
-          //     public_key: keyObj.pubKey,
-          //     encrypted_private_key: block.block_id,
-          // })
+          console.log("saving to auth with pubKey: ", keyObj.pubKey);
+          models.Auth.create({
+            public_key: keyObj.pubKey,
+            salt,
+            iv,
+            encrypted_private_key: encryptedKey,
+          })
 
-          return { token: signToken(input.username), username: input.username }
+          return { token: signToken({ public_key: keyObj.pubKey, hash: hash }) }
 
 
         } catch (err) {

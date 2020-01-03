@@ -55,11 +55,11 @@ const parseData = async (db, events, block) => {
 };
 const parseUserData = (db, buffer, block_num) => {
     const userData = JSON.parse(buffer.toString());
-    userData["timestamp"]=parseInt(userData.timestamp,10);
+    userData["timestamp"]=parseInt(userData.timestamp);
     userData["start_block_num"]=block_num;
     userData["end_block_num"]=MAX_BLOCK_NUMBER;
 
-    // console.log("userData: ",userData)
+    console.log("userData: ",userData)
     db.insertUser(userData);
 }
 

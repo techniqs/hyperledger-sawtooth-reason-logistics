@@ -16,7 +16,6 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    
     timestamp: {
       type: DataTypes.BIGINT,
       allowNull: false,

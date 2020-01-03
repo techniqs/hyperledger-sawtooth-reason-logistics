@@ -8,7 +8,8 @@ import { ApolloServer } from 'apollo-server-express';
 
 import schema from './schema';
 import resolvers from './resolvers';
-import { authorize } from './components/authHandler'
+import { authorize, hashPassword, encryptKey, decryptKey, genSalt} from './components/authHandler'
+import { createKeyPair, verifyKeys} from './components/keyHandler'
 import models, { sequelize, Op } from './utils/databaseConfig';
 import moment from 'moment';
 
@@ -41,11 +42,15 @@ const port = process.env.APP_PORT;
 
 const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
-const test = true;
+const test = false;
 
+const qq = false;
 sequelize.sync({ force: eraseDB }).then(async () => {
-  // if (eraseDB) {
-  // }
+  if(qq){
+    const keys =createKeyPair();
+    console.log(verifyKeys(keys.privKey, keys.pubKey));
+  
+  }
 
   if (test) {
     await models.Block.create({
@@ -66,6 +71,7 @@ sequelize.sync({ force: eraseDB }).then(async () => {
     });
     await models.Auth.create({
       public_key: "qzugeq12312",
+      salt:"qqqq",
       encrypted_private_key: "qwdsasdasdasd",
     });
     await models.Ware.create({

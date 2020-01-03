@@ -2,23 +2,6 @@ import protobuf from 'sawtooth-sdk/protobuf';
 import { batchKeyPair, batchSigner, getSigner } from './keyHandler';
 import { hash, getUserAddress, getWareAddress, FAMILY_NAME, FAMILY_VERSION, NAMESPACE } from '../utils/addressHandler';
 
-
-
-// probably needed for ware update from own owner to other
-// if (action === "transfer") {
-//   const pubKeyStrBuf = this.getUserPubKey(values[1]);
-//   const pubKeyStr = pubKeyStrBuf.toString().trim();
-//   var toAddress = hash("simplewallet").substr(0, 6) + hash(pubKeyStr).substr(0, 64);
-//   inputAddressList.push(toAddress);
-//   outputAddressList.push(toAddress);
-//   payload = action + "," + values[0] + "," + pubKeyStr;
-// }
-// else {
-//   payload = action + "," + values[0];
-// }
-
-
-
 export const createUserTransaction = (transactionKeyPair, username, timestamp) => {
     const userAddress = getUserAddress(transactionKeyPair.pubKey);
 
@@ -31,7 +14,8 @@ export const createUserTransaction = (transactionKeyPair, username, timestamp) =
 
 
     // payload consists of action, userName, and userCreateDate
-    const payload = {action, username, timestamp};
+    const payload = { action, 
+        data: { username, timestamp:timestamp.toString() } };
 
     console.log("payload data:", payload);
 
@@ -51,7 +35,8 @@ export const createWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     const action = "create_ware";
 
-    const payload = { action, ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp };
+    const payload = { action, 
+        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp } };
 
     console.log("payload: ", payload);
 
@@ -70,7 +55,8 @@ export const updateWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     const action = "update_ware";
 
-    const payload = { action, ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp };
+    const payload = { action, 
+        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp } };
 
     console.log("payload: ", payload);
 
@@ -85,12 +71,13 @@ export const transferWareTransaction = (transactionKeyPair, newUser, input, time
     const newUserAddress = getUserAddress(newUser.public_key);
     const wareAddress = getWareAddress(input.ean);
 
-    let inputAddressList = [oldUserAddress,newUserAddress, wareAddress];
+    let inputAddressList = [oldUserAddress, newUserAddress, wareAddress];
     let outputAddressList = [wareAddress];
 
     const action = "transfer_ware";
 
-    const payload = { action, ean: input.ean, newOwner: newUser.username, timestamp};
+    const payload = { action, 
+        data:{ean: input.ean, newOwner: newUser.username, timestamp }};
 
     console.log("payload: ", payload);
 

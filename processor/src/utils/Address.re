@@ -36,26 +36,11 @@ let nameSpace =
 let userPrefix = "00";
 let warePrefix = "01";
 
-//Delete
-let getXoHash = (x: string) => {
-  String.lowercase(
-    String.sub(createHash("sha512")##update(x)##digest("hex"), 0, 64),
-  );
-};
 
 let getIdentifierHash = (x: string) => {
-  String.lowercase(
+  String.lowercase_ascii(
     String.sub(createHash("sha512")##update(x)##digest("hex"), 0, 62),
   );
-};
-
-//Delete
-let xoNameSpace =
-  String.sub(createHash("sha512")##update("xo")##digest("hex"), 0, 6);
-
-//Delete
-let xoAdress = (x: string) => {
-  xoNameSpace ++ getXoHash(x);
 };
 
 let getUserAddress = (pubKey: string) => {
@@ -63,8 +48,8 @@ let getUserAddress = (pubKey: string) => {
 };
 
 // either string or int idk what id is lets see
-let getWareAddress = (identifier: int) => {
-  nameSpace ++ warePrefix ++ getIdentifierHash(string_of_int(identifier));
+let getWareAddress = (ean: string) => {
+  nameSpace ++ warePrefix ++ getIdentifierHash(ean);
 };
 
 let getAddressType = (address: string) =>

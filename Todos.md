@@ -1,12 +1,34 @@
+I implemented user auth structure like this:
+on create salt gets generated, password gets hashed through salt
+privatekey gets encrypted with hashed pw. 
+in auth will be then iv, encryptedpw and salt saved and in token we save the hash
+
+for login we hash pw with salt and verifykeys
+
+for auth we can get the hash through token and check whatever
+
+What to to do next time:
+    finish api resolvers and authorizationrequest.
+    then back to processor and finish saving to state
+    then modify subscriber for new processor changes
+
 API STILL NEED TODO: 
     check all resolver methods! most of them still need something!
-    also still need to implement this encrypting/decrypting of private key for login and creating
-    also need to implement authorizationrequest for header with token // will come together with client hopefully for now some dummy data enabled
+    also need to implement authorizationrequest for header with token -->
+            for now some dummy data enabled
     uncomment in api checkAuth in resolver methods
-    implement getPrivateKey, problem: lets say i want to createware and i have my user from context. so i have the pub key, --->
-        but i dont have his password to decode privkey so i need to store it maybe in token or something?
+    Error handling!! catched?? & HTTP Error code
+
+TAN RESOLVED:
+    example ware update: on getState i get buffer of adress back. normally nothing in there but obv im updating so there is data on this adress. education extends the data and then saves it back on same adress. i mean i could do same no problem but should i? also im pretty sure even if i write on same adress batch is created. my real question is like shouldnt the blockchain be a history of commits, is this extending and updating also on there since i dont set data on a new adress instead on an existing adress.
+    TAN SAYS EXTEND
 
 
+Status: i created all transactions, resolvers are still unfinished, now to processor 
+i already converted payload for create user check if it still works and check if types are all string from the record
+
+Subscriber: convert int to string for timestamp and latitude / longitude
+create methods needed for the transactions :) !!!
 
 lol ehm None from Reason to graphql does it translate to null? xDDD scared af
 

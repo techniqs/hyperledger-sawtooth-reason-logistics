@@ -3,14 +3,32 @@ export default (sequelize, DataTypes) => {
     public_key: {
       type: DataTypes.STRING,
       unique: true,
-      primaryKey:true,
+      primaryKey: true,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
-      references: {
-        model: sequelize.models.user,
-        key: 'public_key',
+      // cannot reference because on time of save user not in db yet
+      // but i know its fkey
+      // references: {
+      //   model: sequelize.models.user,
+      //   key: 'public_key',
+      // },
+    },
+    salt: {
+      type: DataTypes.STRING,
+      unique: false,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    iv: {
+      type: DataTypes.STRING,
+      unique: false,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
       },
     },
     // private key encrypted with hashed password
@@ -24,10 +42,10 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  //check this
-  Auth.associate = models => {
-    Auth.belongsTo(models.User, { foreignKey: 'public_key', onDelete: 'CASCADE' });
-  };
+  // check this
+  // Auth.associate = models => {
+  //   Auth.belongsTo(models.User, { foreignKey: 'public_key', onDelete: 'CASCADE' });
+  // };
 
 
   return Auth;

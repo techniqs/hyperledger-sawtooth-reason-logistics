@@ -8,7 +8,6 @@ export default gql`
   }
   type AuthObj {
     token: String!
-    username: String!
   }
 
   input UserInput {

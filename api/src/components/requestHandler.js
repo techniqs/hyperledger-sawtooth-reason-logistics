@@ -45,8 +45,7 @@ export const sendBatch = async (batch) => {
         const status = body.data[0].status;
 
         if (status === "INVALID") {
-            const message = "Invalid Batch with invalid transactions: " + body.data[0].invalid_transactions[0];
-            throw new Error(message);
+            throw new Error(body.data[0].invalid_transactions[0].message);
         } else if (status === "PENDING") {
             throw new Error("Batch Status Request timed out.");
         } else if (status === "UNKNOWN") {

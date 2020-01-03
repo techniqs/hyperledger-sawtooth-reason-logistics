@@ -10,8 +10,11 @@ module Result = {
     Belt.Result.getWithDefault(data, default);
 };
 
+external stringToJson : string => Js.Json.t = "%identity";
 
 module Exceptions = {
+  exception StateError(string);
+
 
 [@bs.module "../js/JsUtils"]
  external newInvalidTransactionException: string => unit = "newInvalidTransactionException";
