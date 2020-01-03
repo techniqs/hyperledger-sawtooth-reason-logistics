@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
       },
       references: {
         model: sequelize.models.user,
-        key: 'public_key',
+        key: 'pubKey',
       },
     },
     ware_ean: {

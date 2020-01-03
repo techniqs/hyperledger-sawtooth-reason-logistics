@@ -25,12 +25,12 @@ const rootSchema = gql`
 
     createUser(input: UserInput!): AuthObj!
     # return type status instead of Ware??
-    createWare(input: WareInput!): Ware!
+    createWare(input: WareInput!): WareResult!
     # return type status instead of Ware??
     # idk if this needs to be mandatory or not
     # for now i will do it mandatory dont know how to deal with it
-    updateWare(input: WareInput!): Ware!
-    transferWare(input: WareTransferInput!): Ware!
+    updateWare(input: WareInput!): WareResult!
+    # transferWare(input: WareTransferInput!): WareResult!
   
   }
 

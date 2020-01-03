@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
-    public_key: {
+    pubKey: {
       type: DataTypes.STRING,
       unique: true,
       allowNull: false,

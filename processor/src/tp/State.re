@@ -44,24 +44,21 @@ let setState = (stateDict: Js.Dict.t(Node.Buffer.t), state: state) => {
 module StateFunctions = {
   let setUser = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
     let address = Address.getUserAddress(pubKey);
-    Js.log2("setUser called with adress:", address);
     getState([|address|], state)
     |> Js.Promise.then_((result: Js.Dict.t(Node.Buffer.t)) =>
          switch (Js.Dict.get(result, address)) {
          | Some(adressData) =>
            Node.Buffer.isBuffer(adressData)
              ? {
-               Js.log("DATA ON ADRES!!");
+               Js.log2("Data already saved at address: ", address);
                Exceptions.newInvalidTransactionException(
                  {j|Cannot create User! Public_key: $pubKey already exists!|j},
                );
                Js.Promise.resolve(result);
              }
              : {
-               Js.log2("Buffer data:", Node.Buffer.toString(buffer));
-
                let parsedData = Payload.decodeUserData(buffer);
-               Js.log2("PARSED DATA", parsedData);
+               Js.log2("Parsed Payload Data", parsedData);
 
                let userDict = Js.Dict.empty();
                Js.Dict.set(userDict, "pubKey", pubKey);
@@ -89,7 +86,7 @@ module StateFunctions = {
        );
   };
 
-let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
+let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state, inputs: array(string)) => {
     let parsedData = Payload.decodeWareData(buffer);
     let address = Address.getWareAddress(parsedData.ean);
     getState([|address|], state)
@@ -98,42 +95,75 @@ let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
          | Some(b) =>
            Node.Buffer.isBuffer(b)
              ? {
-               Exceptions.newInvalidTransactionException(
-                 {j|Cannot create Ware! EAN: $parsedData.ean already exists!|j},
-               );
-               Js.Promise.resolve(result);
+               // update is with owner + data at buffer
+               // transfer is with 3 adresses at inputs :)
+               // set is without owner + no data at buffer
+
+              Js.log2("What is saved at adress", Node.Buffer.toString(buffer));
+
+              //  let savedWareData = Payload.decodeSavedWareData(b);
+
+               // here update Ware
+              //  Js.log2("Update Ware:", Node.Buffer.toString(buffer));
+              //  let eanDict = Js.Dict.empty();
+              //  Js.Dict.set(eanDict, "ean", parsedData.ean);
+
+              //  let wareDict = Js.Dict.empty();
+              //  Js.Dict.set(wareDict, "name", parsedData.name);
+              //  Js.Dict.set(wareDict, "timestamp", parsedData.timestamp |> string_of_int);
+               
+              //  let ownerDict = Js.Dict.empty();
+              //  Js.Dict.set(ownerDict, "user_pubKey", pubKey);
+              //  Js.Dict.set(ownerDict, "timestamp", parsedData.timestamp |> string_of_int);
+              //  let locationDict = Js.Dict.empty();
+              //  Js.Dict.set(locationDict, "latitude", parsedData.latitude |> string_of_int);
+              //  Js.Dict.set(locationDict, "longitude", parsedData.longitude |> string_of_int);
+              //  Js.Dict.set(locationDict, "timestamp", parsedData.timestamp |> string_of_int);
+
+              //  let containerDict = Js.Dict.empty();
+              //  Js.Dict.set(containerDict, "ean", [|eanDict|]);
+              //  Js.Dict.set(containerDict, "wares", [|wareDict|]);
+              //  Js.Dict.set(containerDict, "owners", [|ownerDict|]);
+              //  Js.Dict.set(containerDict, "locations", [|locationDict|]);
+
+              //  Js.log2("Container:", containerDict);
+              //  Js.log2("Container stringified", Js.Json.stringify(arrayDictToJson(containerDict)));
+
+              //  let stateDict = Js.Dict.empty();
+              //  Js.Dict.set(
+              //    stateDict,
+              //    address,
+              //    Node.Buffer.fromString(
+              //      Js.Json.stringify(arrayDictToJson(containerDict)),
+              //    ),
+              //  );
+              
+              //  setState(stateDict, state);
+              Js.Promise.resolve(result);
              }
              : {
                Js.log2("Buffer data:", Node.Buffer.toString(buffer));
-               //if tan says, just extend
+
+               let eanDict = Js.Dict.empty();
+               Js.Dict.set(eanDict, "ean", parsedData.ean);
+
                let wareDict = Js.Dict.empty();
-               Js.Dict.set(wareDict, "ean", parsedData.ean);
                Js.Dict.set(wareDict, "name", parsedData.name);
                Js.Dict.set(wareDict, "timestamp", parsedData.timestamp |> string_of_int);
                
                let ownerDict = Js.Dict.empty();
                Js.Dict.set(ownerDict, "user_pubKey", pubKey);
-               Js.Dict.set(ownerDict, "ware_ean", parsedData.ean);
                Js.Dict.set(ownerDict, "timestamp", parsedData.timestamp |> string_of_int);
                let locationDict = Js.Dict.empty();
-               Js.Dict.set(locationDict, "ware_ean", parsedData.ean);
                Js.Dict.set(locationDict, "timestamp", parsedData.timestamp |> string_of_int);
                Js.Dict.set(locationDict, "longitude", parsedData.longitude |> string_of_int);
                Js.Dict.set(locationDict, "latitude", parsedData.latitude |> string_of_int);
 
                let containerDict = Js.Dict.empty();
-               Js.Dict.set(containerDict, "ware", [|wareDict|]);
+               Js.Dict.set(containerDict, "ean", [|eanDict|]);
+               Js.Dict.set(containerDict, "wares", [|wareDict|]);
                Js.Dict.set(containerDict, "owners", [|ownerDict|]);
                Js.Dict.set(containerDict, "locations", [|locationDict|]);
-
-              // if tan says dont extend then this
-              // for update i take fields and just save into it.
-              //  Js.Dict.set(wareDict, "ean", parsedData.ean);
-              //  Js.Dict.set(wareDict, "name", parsedData.name);
-              //  Js.Dict.set(wareDict, "timestamp", parsedData.timestamp |> string_of_int);
-              //  Js.Dict.set(wareDict, "owner_pubKey", pubKey);
-              //  Js.Dict.set(wareDict, "longitude", parsedData.longitude |> string_of_int);
-              //  Js.Dict.set(wareDict, "latitude", parsedData.latitude |> string_of_int);
 
                Js.log2("Container:", containerDict);
                Js.log2("Container stringified", Js.Json.stringify(arrayDictToJson(containerDict)));
@@ -148,8 +178,7 @@ let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
                );
 
 
-              //  setState(stateDict, state);
-               Js.Promise.resolve(result);
+               setState(stateDict, state);
              }
          | _ =>
            raise(Exceptions.StateError("Couldnt get Dict from getState"))
@@ -161,7 +190,4 @@ let setWare = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
     ();
   };
 
-  let updateWare = () => {
-    ();
-  };
 };

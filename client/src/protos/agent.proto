@@ -3,7 +3,7 @@ syntax = "proto3";
 //can own, transfer and update Wares
 message User {
     // The user's unique public key
-    string public_key = 1;
+    string pubKey = 1;
 
     // A human-readable name identifying the user
     string name = 2;

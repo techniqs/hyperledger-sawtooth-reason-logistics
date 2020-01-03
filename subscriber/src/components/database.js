@@ -20,7 +20,7 @@ export default class Database {
     insertUser(user) {
         console.log('\x1b[36m%s\x1b[0m', "INSERTING USER ------------------", user);
         models.User.create({
-            public_key: user.pubKey,
+            pubKey: user.pubKey,
             username: user.username,
             timestamp: user.timestamp,
             start_block_num: user.start_block_num,
@@ -37,7 +37,7 @@ export default class Database {
     insertWare(user) {
 
         models.User.create({
-            public_key: user[0],
+            pubKey: user[0],
             username: user[1],
             timestamp: 1234,
             start_block_num: user[3],
@@ -104,18 +104,18 @@ export default class Database {
         });
 
         const pubKeys = (await models.User.findAll({
-            attributes: ['public_key'],
+            attributes: ['pubKey'],
             where: {
                 start_block_num: {
                     [Op.gte]: blockNum
                 }
             },
-        })).map(user => user.dataValues.public_key);
+        })).map(user => user.dataValues.pubKey);
 
 
         models.Auth.destroy({
             where: {
-                public_key: pubKeys
+                pubKey: pubKeys
             },
         });
 

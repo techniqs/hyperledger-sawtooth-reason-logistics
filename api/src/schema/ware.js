@@ -17,6 +17,16 @@ export default gql`
     createdAt: String!,
   }
 
+  enum Status {
+    OK
+    ERROR
+  }
+
+  type WareResult {
+    ean: String!
+    status: Status!
+  }
+
   type Location{
     latitude:Int!
     longitude:Int!
@@ -27,10 +37,12 @@ export default gql`
     name: String!
     longitude: Int!
     latitude: Int!
+    owner: String!
   }
 
-  input WareTransferInput {
-    ean: String!
-    newOwner: String!
-  }
+  # input WareTransferInput {
+  #   ean: String!
+  #   newOwnerPubKey: String!
+  # }
 `;
+ 

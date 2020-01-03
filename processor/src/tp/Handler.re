@@ -57,8 +57,10 @@ module SupplyHandlerImpl = {
     switch (payloadAction) {
     | CreateUser =>  
       StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state)
+    | SetWare => 
+      StateFunctions.setWare(header.signerPublicKey, payloadBuffer, state, header.inputs)
     | _ =>
-      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state)
+      Js.Promise.resolve(Js.Dict.empty());
     };
   };
 };

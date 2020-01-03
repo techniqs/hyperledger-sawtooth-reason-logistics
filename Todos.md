@@ -1,3 +1,18 @@
+I summarized update and transfer methods. 
+status:
+    resolvers in api finished, right now at processor update method,
+    didnt check if createWare method on tp works!
+    next up subscriber!
+
+    EAN CANT BE UDPATED!
+    type savedWareData = {
+      ean: array(ean),
+      wares: array(ware),
+      owners: array(owner),
+      locations: array(location),
+    };
+
+
 I implemented user auth structure like this:
 on create salt gets generated, password gets hashed through salt
 privatekey gets encrypted with hashed pw. 
@@ -7,25 +22,10 @@ for login we hash pw with salt and verifykeys
 
 for auth we can get the hash through token and check whatever
 
-What to to do next time:
-    finish api resolvers
-    then back to processor and finish saving to state
-    then modify subscriber for new processor changes
-
 API STILL NEED TODO: 
     authorizationrequest done, uncomment for client DONT FORGET TO DELETE FAKETOKEN GENERATOR !!
-    check all resolver methods! most of them still need something!
-    also need to implement authorizationrequest for header with token -->
-            for now some dummy data enabled
-    uncomment in api checkAuth in resolver methods
     Error handling!! catched?? & HTTP Error code
-
-TAN RESOLVED:
-    example ware update: on getState i get buffer of adress back. normally nothing in there but obv im updating so there is data on this adress. education extends the data and then saves it back on same adress. i mean i could do same no problem but should i? also im pretty sure even if i write on same adress batch is created. my real question is like shouldnt the blockchain be a history of commits, is this extending and updating also on there since i dont set data on a new adress instead on an existing adress.
-    TAN SAYS EXTEND
-
-
-change name of public_key to either pubKey or other way around !! must be unified!
+    FOR CLIENT, CHECK IF AUTHORIZEDUSER ALWAYS GETS CALLED BEFORE RESOLVER METHOD!
 
 
 Status: i created all transactions, resolvers are still unfinished, now to processor 

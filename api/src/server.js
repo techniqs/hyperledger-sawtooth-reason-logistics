@@ -44,9 +44,9 @@ const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
 const test = false;
 
-const qq = true;
+const qq = false;
 
-export let fakeToken;
+export let fakeToken = null;
 sequelize.sync({ force: eraseDB }).then(async () => {
   if (qq) {
     // const keys =createKeyPair();
@@ -57,14 +57,14 @@ sequelize.sync({ force: eraseDB }).then(async () => {
     });
     //pw asdf
     await models.User.create({
-      public_key: "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b",
+      pubKey: "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b",
       username: "techniqs",
       timestamp: 1578065323,
       start_block_num: 1,
       end_block_num: null,
     });
     await models.Auth.create({
-      public_key: "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b",
+      pubKey: "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b",
       salt: "4200f273d787164d",
       iv: "7cf481ce78644e9fca582aa8a5794e46",
       encrypted_private_key: "b114149b35e4e775a4b73c4e162e250599309ebd5f5223db57a3b55896a2cbce5dc1ae8e28a88c0752f9faae5fb71122ea07da55333656087cf3b65ae81759bf54173c460cd2c662613cd47cb40812aa",
@@ -74,10 +74,8 @@ sequelize.sync({ force: eraseDB }).then(async () => {
     const privKey = decryptKey("b114149b35e4e775a4b73c4e162e250599309ebd5f5223db57a3b55896a2cbce5dc1ae8e28a88c0752f9faae5fb71122ea07da55333656087cf3b65ae81759bf54173c460cd2c662613cd47cb40812aa",
       "7cf481ce78644e9fca582aa8a5794e46", hash);
     if (verifyKeys(privKey, "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b")) {
-      fakeToken = { token: signToken({ public_key: "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b", hash: hash }) }
-    } else {
-      fakeToken = null;
-    }
+      fakeToken = { token: signToken({ pubKey: "025464702a00440bee85228779c745a5310ec141d4705238c8b6c38d3764fdeb4b", hash: hash }) }
+    } 
 
   }
 
@@ -92,14 +90,14 @@ sequelize.sync({ force: eraseDB }).then(async () => {
     });
 
     await models.User.create({
-      public_key: "qzugeq12312",
+      pubKey: "qzugeq12312",
       username: "techniqs",
       timestamp: 12341523,
       start_block_num: 1,
       end_block_num: null,
     });
     await models.Auth.create({
-      public_key: "qzugeq12312",
+      pubKey: "qzugeq12312",
       salt: "qqqq",
       encrypted_private_key: "qwdsasdasdasd",
     });

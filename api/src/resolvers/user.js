@@ -18,14 +18,14 @@ export default {
         console.log("user:", user);
         const auth = (await models.Auth.findOne({
           where: {
-            public_key: user.public_key
+            pubKey: user.pubKey
           }
         })).dataValues;
 
         const hash = hashPassword(input.password, auth.salt);
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
-        if (verifyKeys(privKey, auth.public_key)) {
-          return { token: signToken({ public_key: auth.public_key, hash: hash }) }
+        if (verifyKeys(privKey, auth.pubKey)) {
+          return { token: signToken({ pubKey: auth.pubKey, hash: hash }) }
         }
         else {
           throw new Error("Login not successful, check credentials!");
@@ -42,7 +42,7 @@ export default {
       checkAuth(authorizedUser);
       let auth = (await models.Auth.findOne({
         where: {
-          public_key: authorizedUser.token.public_key
+          pubKey: authorizedUser.token.pubKey
         }
       }))
       if (auth !== null) {
@@ -76,13 +76,13 @@ export default {
           const { iv, encryptedKey } = encryptKey(keyObj.privKey, hash);
 
           models.Auth.create({
-            public_key: keyObj.pubKey,
+            pubKey: keyObj.pubKey,
             salt,
             iv,
             encrypted_private_key: encryptedKey,
           })
 
-          return { token: signToken({ public_key: keyObj.pubKey, hash: hash }) }
+          return { token: signToken({ pubKey: keyObj.pubKey, hash: hash }) }
 
 
         } catch (err) {

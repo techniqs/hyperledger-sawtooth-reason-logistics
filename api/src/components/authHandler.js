@@ -31,7 +31,7 @@ export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
 };
 
 
-// signToken({ public_key: auth.public_key, hash: hash })
+// signToken({ pubKey: auth.pubKey, hash: hash })
 const signToken = data => {
     const token = jwt.sign(Buffer.from(JSON.stringify(data)).toString('base64'), batchKeyPair.privKey);
     return token;
@@ -54,21 +54,24 @@ const authorize = async (ctx) => {
 
     // delete fake token generator
     //get token from header!!
+    if(fakeToken === null){
+        return null;
+    }
     const data = verifyToken(fakeToken.token);
     const token = JSON.parse(data);
     let auth = (await models.Auth.findOne({
         where: {
-            public_key: token.public_key
+            pubKey: token.pubKey
         }
     }))
     if (auth !== null) {
         auth = auth.dataValues;
 
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, token.hash);
-        if (verifyKeys(privKey, token.public_key)) {
+        if (verifyKeys(privKey, token.pubKey)) {
             const user = await models.User.findOne({
                 where: {
-                    public_key: token.public_key
+                    pubKey: token.pubKey
                 }
             });
             if (user !== null) {

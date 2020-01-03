@@ -1,9 +1,7 @@
 module Convert = {
   type actions =
     | CreateUser
-    | CreateWare
-    | TransferWare
-    | UpdateWare
+    | SetWare
     | NotDefined;
 
   type data;
@@ -21,10 +19,30 @@ module Convert = {
     timestamp: int,
   };
 
-  type transferWareData = {
-    ean: string,
-    newOwner: string,
-    timestamp: int,
+  module TypesForState = {
+    type ean = {ean: string};
+    type ware = {
+      name: string,
+      timestamp: string,
+    };
+
+    type owner = {
+      user_pubKey: string,
+      timestamp: string,
+    };
+
+    type location = {
+      latitude: string,
+      longitude: string,
+      timestamp: string,
+    };
+
+    type savedWareData = {
+      ean: array(ean),
+      wares: array(ware),
+      owners: array(owner),
+      locations: array(location),
+    };
   };
 
   type decodeActionType = {
@@ -42,16 +60,11 @@ module Convert = {
     data: wareData,
   };
 
-  type transferWarePayload = {
-    action: string,
-    data: transferWareData,
-  };
+
   let toTypeAction = action => {
     switch (action) {
     | "create_user" => CreateUser
-    | "create_ware" => CreateWare
-    | "transfer_ware" => TransferWare
-    | "update_ware" => UpdateWare
+    | "set_ware" => SetWare
     | _ => NotDefined
     };
   };
@@ -65,7 +78,8 @@ module Convert = {
   external convertWarePayload: string => warePayload = "parse";
 
   [@bs.scope "JSON"] [@bs.val]
-  external convertTransferWarePayload: string => transferWarePayload = "parse";
+  external convertSavedWareData: string =>  TypesForState.savedWareData= "parse";
+
 };
 
 let decodeUserData = (buffer: Node.Buffer.t) => {
@@ -76,9 +90,9 @@ let decodeWareData = (buffer: Node.Buffer.t) => {
   Convert.convertWarePayload(Node.Buffer.toString(buffer)).data;
 };
 
-let decodeTransferWareData = (buffer: Node.Buffer.t) => {
-  Convert.convertTransferWarePayload(Node.Buffer.toString(buffer)).data;
-};
+let decodeSavedWareData = (buffer: Node.Buffer.t) => {
+  Convert.convertSavedWareData(Node.Buffer.toString(buffer));
+}
 
 let decodePayloadAction = (buffer: Node.Buffer.t) => {
   Convert.toTypeAction(

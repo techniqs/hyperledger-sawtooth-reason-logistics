@@ -1,8 +1,7 @@
 import { Op } from '../utils/databaseConfig';
 import { sendBatch } from '../components/requestHandler';
-import { getSigner, createKeyPair, batchSigner, batchKeyPair } from '../components/keyHandler';
 import { createWareTransaction, updateWareTransaction, transferWareTransaction } from '../components/transactionCreation';
-import { checkAuth } from '../components/authHandler';
+import { checkAuth, decryptKey } from '../components/authHandler';
 import moment from 'moment';
 
 export default {
@@ -49,14 +48,14 @@ export default {
 
       const updatedAt = moment.unix(updatedAtTimestamp).format('DD/MM/YYYY, H:mm:ss')
 
-      
+
       const wareUser = (await models.User.findOne({
         where: {
-          public_key: wareOwner.user_pubKey
+          pubKey: wareOwner.user_pubKey
         }
       })).dataValues;
 
-      const owner = { pubKey: wareUser.public_key, username: wareUser.username };
+      const owner = { pubKey: wareUser.pubKey, username: wareUser.username };
 
       return { ean: ware.ean, name: ware.name, owner, locations: wareLocations, createdAt, updatedAt };
 
@@ -93,106 +92,128 @@ export default {
       }
 
       const timestamp = moment().unix();
-      // getPrivateKey of authorizedUser
-      
       const auth = (await models.Auth.findOne({
         where: {
-          public_key: authorizedUser.token.public_key
+          pubKey: authorizedUser.token.pubKey
         }
       })).dataValues;
-      
+
       const hash = authorizedUser.token.hash;
       const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
-      
-      const keyObj = { pubKey: authorizedUser.public_key,
-         privKey: getPrivateKey(authorizedUser.public_key) };
+
+      const keyObj = { pubKey: auth.pubKey, privKey };
 
       const batch = createWareTransaction(keyObj, input, timestamp);
 
       try {
-        // await sendBatch(batch);
+        await sendBatch(batch);
 
-
-
+        return { ean: input.ean, status: "OK" };
 
       } catch (err) {
-        // HERE THROW ERROR TO CLIENT!!
-        //check how to throw error
-        console.log("in ware catch")
-        console.log(err)
+
+        throw new Error(err)
+      }
+    },
+
+    // ean has to be same, cant be updated!
+    updateWare: async (parent, { input }, { authorizedUser, models }) => {
+      checkAuth(authorizedUser);
+
+      const ware = (await models.Ware.findOne({
+        where:
+        {
+          ean: input.ean
+        }
+      }));
+
+      if (ware === null) {
+        throw new Error("ware doesnt exist!");
       }
 
+      const wareOwner = (await models.WareOwner.findOne({
+        where:
+        {
+          ware_ean: input.ean
+        }
+      })).dataValues;
 
-    },
-    updateWare: async (parent, { input }, { authorizedUser, models }) => {
-      console.log("INPUT", input);
-
+      if (wareOwner.user_pubKey !== authorizedUser.pubKey) {
+        throw new Error("You are not the owner of this Ware!");
+      }
       const timestamp = moment().unix();
-      // getPrivateKey of authorizedUser
-      const keyObj = { pubKey: authorizedUser.public_key, privKey: getPrivateKey(authorizedUser.public_key)};
+      const auth = (await models.Auth.findOne({
+        where: {
+          pubKey: authorizedUser.token.pubKey
+        }
+      })).dataValues;
 
+      const hash = authorizedUser.token.hash;
+      const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
+
+      const keyObj = { pubKey: auth.pubKey, privKey };
 
       const batch = updateWareTransaction(keyObj, input, timestamp);
 
       try {
-        // await sendBatch(batch);
+        await sendBatch(batch);
 
-
-
-
-      } catch (err) {
-        // HERE THROW ERROR TO CLIENT!!
-        //check how to throw error
-        console.log("in ware catch")
-        console.log(err)
-      }
-
-
-
-    },
-    transferWare: async (parent, { input }, { authorizedUser, models }) => {
-      console.log("INPUT", input);
-      // ean
-      // newOwner
-
-      let newUser = (await models.User.findOne({
-        where:
-        {
-          username : input.newOwner
-        }
-      }));
-
-      if(newUser === null){
-        throw new Error("user doesn't exist!");
-      }
-      
-      newUser= newUser.dataValues;
-
-      console.log(newUser);
-
-      const timestamp = moment().unix();
-      // getPrivateKey of authorizedUser
-      const keyObj = 
-      { pubKey: authorizedUser.public_key, privKey: getPrivateKey(authorizedUser.public_key)};
-
-
-      // const batch = transferWareTransaction(keyObj, input, timestamp);
-
-      try {
-        // await sendBatch(batch);
-
-
-
+        return { ean: input.ean, status: "OK" };
 
       } catch (err) {
-        // HERE THROW ERROR TO CLIENT!!
-        //check how to throw error
-        console.log("in ware catch")
-        console.log(err)
+
+        throw new Error(err)
       }
 
-
-
     },
+    // transferWare: async (parent, { input }, { authorizedUser, models }) => {
+    //   checkAuth(authorizedUser);
+
+    //   const ware = (await models.Ware.findOne({
+    //     where:
+    //     {
+    //       ean: input.ean
+    //     }
+    //   }));
+
+    //   if (ware === null) {
+    //     throw new Error("ware doesnt exist!");
+    //   }
+
+    //   const wareOwner = (await models.WareOwner.findOne({
+    //     where:
+    //     {
+    //       ware_ean: input.ean
+    //     }
+    //   })).dataValues;
+
+    //   if (wareOwner.user_pubKey !== authorizedUser.pubKey) {
+    //     throw new Error("You are not the owner of this Ware!");
+    //   }
+    //   const timestamp = moment().unix();
+    //   const auth = (await models.Auth.findOne({
+    //     where: {
+    //       pubKey: authorizedUser.token.pubKey
+    //     }
+    //   })).dataValues;
+
+    //   const hash = authorizedUser.token.hash;
+    //   const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
+
+    //   const keyObj = { pubKey: auth.pubKey, privKey };
+
+    //   const batch = transferWareTransaction(keyObj, input, timestamp);
+
+    //   try {
+    //     await sendBatch(batch);
+
+    //     return { ean: input.ean, status: "OK" };
+
+    //   } catch (err) {
+
+    //     throw new Error(err)
+    //   }
+
+    // },
   },
 };

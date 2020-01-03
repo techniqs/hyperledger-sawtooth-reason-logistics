@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const Auth = sequelize.define('auth', {
-    public_key: {
+    pubKey: {
       type: DataTypes.STRING,
       unique: true,
       primaryKey: true,
@@ -12,7 +12,7 @@ export default (sequelize, DataTypes) => {
       // but i know its fkey
       // references: {
       //   model: sequelize.models.user,
-      //   key: 'public_key',
+      //   key: 'pubKey',
       // },
     },
     salt: {
@@ -44,7 +44,7 @@ export default (sequelize, DataTypes) => {
 
   // check this
   // Auth.associate = models => {
-  //   Auth.belongsTo(models.User, { foreignKey: 'public_key', onDelete: 'CASCADE' });
+  //   Auth.belongsTo(models.User, { foreignKey: 'pubKey', onDelete: 'CASCADE' });
   // };
 
 
