@@ -14,13 +14,6 @@ export default (sequelize, DataTypes) => {
         }
       },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
     timestamp: {
       type: DataTypes.BIGINT,
       allowNull: false,

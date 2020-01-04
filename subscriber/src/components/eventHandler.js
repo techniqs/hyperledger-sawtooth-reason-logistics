@@ -36,14 +36,12 @@ const parseData = async (db, events, block) => {
         for (let change of stateChanges.filter(stateChange =>
             stateChange.address.substring(0, 6) === NAMESPACE)) {
             //doesnt matter what it is i can save block already
-            await db.insertBlock(block);
+            await db.createBlock(block);
             // check resource type, since we only have two, everything else not valid ..
             const prefix = change.address.substring(6, 8);
             if (prefix === USER_PREFIX) {
                 parseUserData(db, change.value, block.block_num)
             } else if (prefix === WARE_PREFIX) {
-                // ware
-                console.log("ware")
                 parseWareData(db, change.value, block.block_num)
             } else {
                 // unknown type 
@@ -60,15 +58,30 @@ const parseUserData = (db, buffer, block_num) => {
     userData["end_block_num"]=MAX_BLOCK_NUMBER;
 
     console.log("userData: ",userData)
-    db.insertUser(userData);
+    db.createUser(userData);
 }
 
-const parseWareData = (db, buffer, block_num) => {
-    const data = buffer.toString();
-    //start_block_num
-    data.push(block_num);
-    //end_block_num
-    data.push(MAX_BLOCK_NUMBER);
+  //steps for creating / updating 
+  // first check: (ean in db?) if not then normal create and i just parse data to json and get my shit from it.
+  // if already in db check timestamp of last entry in attribute, owner and location. if db entry < parsed timestamp then save into db ez
+  // also dont forget at update i also have to update entries before !! end block num !!
+
+
+  // {"identifier":[{"ean":"1233456789" , "timestamp":"1578102105"}],
+  // "attributes":[{"name":"geil", "upv": "10.0", "timestamp":"1578102105"},{"name":"nichtmehrgeil", "uvp": "13.2", "timestamp":"1578102204"}],
+  // "locations":[{"latitude":"40","longitude":"40","timestamp":"1578102105"},{"latitude":"-40","longitude":"10","timestamp":"1578102204"}],
+  // "owners":[{"pubKey":"026da187fdd1edd89e4e3aaefdbd5d3c29344c790191e67eec184e12763bd4dbe0","timestamp":"1578102105"}]}
+
+const parseWareData = async (db, buffer, block_num) => {
+    const wareData = JSON.parse(buffer.toString());
+
+    if (await db.wareInDb(wareData.identifier[0].ean)) {
+        console.log('\x1b[36m%s\x1b[0m',"UPDATING WARE")
+        db.updateWare(wareData, block_num, MAX_BLOCK_NUMBER);
+    } else {
+        console.log('\x1b[36m%s\x1b[0m',"CREATING CREATE")
+        db.createWare(wareData, block_num, MAX_BLOCK_NUMBER);
+    }
 
 
 }

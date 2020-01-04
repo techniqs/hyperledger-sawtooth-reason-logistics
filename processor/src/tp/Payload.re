@@ -14,20 +14,27 @@ module Convert = {
   type wareData = {
     ean: string,
     name: string,
+    uvp: float,
     longitude: int,
     latitude: int,
     timestamp: int,
+    owner: string,
   };
 
-  module TypesForState = {
-    type ean = {ean: string};
-    type ware = {
+  module TypesForWareState = {
+    type identifier = {
+      ean: string,
+      timestamp: string,
+    };
+
+    type attributes = {
       name: string,
+      uvp: string,
       timestamp: string,
     };
 
     type owner = {
-      user_pubKey: string,
+      pubKey: string,
       timestamp: string,
     };
 
@@ -38,8 +45,8 @@ module Convert = {
     };
 
     type savedWareData = {
-      ean: array(ean),
-      wares: array(ware),
+      identifier: array(identifier),
+      attributes: array(attributes),
       owners: array(owner),
       locations: array(location),
     };
@@ -60,7 +67,6 @@ module Convert = {
     data: wareData,
   };
 
-
   let toTypeAction = action => {
     switch (action) {
     | "create_user" => CreateUser
@@ -78,8 +84,8 @@ module Convert = {
   external convertWarePayload: string => warePayload = "parse";
 
   [@bs.scope "JSON"] [@bs.val]
-  external convertSavedWareData: string =>  TypesForState.savedWareData= "parse";
-
+  external convertSavedWareData: string => TypesForWareState.savedWareData =
+    "parse";
 };
 
 let decodeUserData = (buffer: Node.Buffer.t) => {
@@ -92,7 +98,7 @@ let decodeWareData = (buffer: Node.Buffer.t) => {
 
 let decodeSavedWareData = (buffer: Node.Buffer.t) => {
   Convert.convertSavedWareData(Node.Buffer.toString(buffer));
-}
+};
 
 let decodePayloadAction = (buffer: Node.Buffer.t) => {
   Convert.toTypeAction(

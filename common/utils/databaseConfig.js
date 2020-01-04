@@ -12,12 +12,13 @@ const sequelize = new Sequelize(
 );
 
 const models = {
-    Auth: sequelize.import('../models/auth'),
     Block: sequelize.import('../models/block'),
     User: sequelize.import('../models/user'),
+    Auth: sequelize.import('../models/auth'),
     Ware: sequelize.import('../models/ware'),
     WareLocation: sequelize.import('../models/wareLocation'),
     WareOwner: sequelize.import('../models/wareOwner'),
+    WareAttribute: sequelize.import('../models/wareAttribute'),
 };
 
 // const models = {

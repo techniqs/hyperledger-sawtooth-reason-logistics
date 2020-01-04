@@ -3,8 +3,8 @@ const crypto = require('crypto');
 export const FAMILY_NAME = "sawtooth-reason-supply";
 export const FAMILY_VERSION = "0.1";
 export const NAMESPACE = (crypto.createHash("sha512").update(FAMILY_NAME).digest("hex")).substring(0, 6);
-const USER_PREFIX = "00";
-const WARE_PREFIX = "01";
+export const USER_PREFIX = "00";
+export const WARE_PREFIX = "01";
 
 export const getUserAddress = (pubKey) => {
     return NAMESPACE + USER_PREFIX +

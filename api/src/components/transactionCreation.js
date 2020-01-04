@@ -25,7 +25,6 @@ export const createWareTransaction = (transactionKeyPair, input, timestamp) => {
     const userAddress = getUserAddress(transactionKeyPair.pubKey);
     const wareAddress = getWareAddress(input.ean);
 
-
     let inputAddressList = [userAddress, wareAddress];
     let outputAddressList = [wareAddress];
 
@@ -33,7 +32,7 @@ export const createWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     const payload = {
         action,
-        data: { ean: input.ean, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp }
+        data: { ean: input.ean, owner: input.owner, name: input.name, uvp: input.uvp, longitude: input.longitude, latitude: input.latitude, timestamp }
     };
 
     console.log("payload: ", payload);
@@ -61,7 +60,7 @@ export const updateWareTransaction = (transactionKeyPair, input, timestamp) => {
     // ean has to be same, cant be updated!
     const payload = {
         action,
-        data: { ean: input.ean, owner: input.owner, name: input.name, longitude: input.longitude, latitude: input.latitude, timestamp }
+        data: { ean: input.ean, owner: input.owner, name: input.name, uvp: input.uvp, longitude: input.longitude, latitude: input.latitude, timestamp }
     };
 
     console.log("payload: ", payload);
@@ -71,30 +70,6 @@ export const updateWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     return createBatch(payloadBytes, inputAddressList, outputAddressList, transactionKeyPair)
 }
-
-// export const transferWareTransaction = (transactionKeyPair, input, timestamp) => {
-//     const oldUserAddress = getUserAddress(transactionKeyPair.pubKey);
-//     const newUserAddress = getUserAddress(input.newOwnerPubKey);
-//     const wareAddress = getWareAddress(input.ean);
-
-//     let inputAddressList = [oldUserAddress, newUserAddress, wareAddress];
-//     let outputAddressList = [wareAddress];
-
-//     const action = "transfer_ware";
-
-//     const payload = {
-//         action,
-//         data: { ean: input.ean, newOwnerPubKey: input.newOwnerPubKey, timestamp }
-//     };
-
-//     console.log("payload: ", payload);
-
-//     // encoding with node buffer
-//     const payloadBytes = Buffer.from(JSON.stringify(payload));
-
-//     return createBatch(payloadBytes, inputAddressList, outputAddressList, transactionKeyPair)
-// }
-
 
 const createBatch = (payloadBytes, inputs, outputs, transactionKeyPair) => {
 

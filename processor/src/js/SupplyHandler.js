@@ -9,11 +9,6 @@ class SupplyHandler extends TransactionHandler {
         // Namespace has to be a hash
 
     constructor() {
-        // xo super
-        // super("xo", ["1.0"], ["5b7349"]);
-        // education_simple_supply super
-        // super("simple_supply", ["0.1"], ["212bd8"]);
-        
         // my_sawtooth super
         super("sawtooth-reason-supply", ["0.1"], ["5d347c"]);    
     }

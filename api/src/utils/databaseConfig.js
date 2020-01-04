@@ -18,6 +18,7 @@ const models = {
     Ware: sequelize.import('../models/ware'),
     WareLocation: sequelize.import('../models/wareLocation'),
     WareOwner: sequelize.import('../models/wareOwner'),
+    WareAttribute: sequelize.import('../models/wareAttribute'),
 };
 
 // const models = {

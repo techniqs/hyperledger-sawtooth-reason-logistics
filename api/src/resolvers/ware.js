@@ -1,7 +1,7 @@
 import { Op } from '../utils/databaseConfig';
 import { sendBatch } from '../components/requestHandler';
 import { createWareTransaction, updateWareTransaction, transferWareTransaction } from '../components/transactionCreation';
-import { checkAuth, decryptKey } from '../components/authHandler';
+import { checkAuth, decryptKey, verifyToken } from '../components/authHandler';
 import moment from 'moment';
 
 export default {
@@ -38,13 +38,24 @@ export default {
             [Op.is]: null
           }
         }
+      })).dataValues;
 
+      const wareAttributes = (await models.WareAttribute.findOne({
+        where:
+        {
+          ware_ean: ean,
+          end_block_num: {
+            [Op.is]: null
+          }
+        }
       })).dataValues;
 
       const createdAt = moment.unix(ware.timestamp).format('DD/MM/YYYY, H:mm:ss')
-      const updatedAtTimestamp = wareLocations[wareLocations.length - 1].timestamp < wareOwner.timestamp ?
-        wareOwner.timestamp : wareLocations[wareLocations.length - 1].timestamp;
-
+      const updatedAtTimestamp =
+        (wareLocations[wareLocations.length - 1].timestamp < wareOwner.timestamp) ?
+          (wareOwner.timestamp < wareAttributes.timestamp ? wareAttributes.timestamp : wareOwner.timestamp) :
+          (wareLocations[wareLocations.length - 1].timestamp < wareAttributes.timestamp ? wareAttributes.timestamp :
+            wareLocations[wareLocations.length - 1].timestamp);
 
       const updatedAt = moment.unix(updatedAtTimestamp).format('DD/MM/YYYY, H:mm:ss')
 
@@ -57,11 +68,10 @@ export default {
 
       const owner = { pubKey: wareUser.pubKey, username: wareUser.username };
 
-      return { ean: ware.ean, name: ware.name, owner, locations: wareLocations, createdAt, updatedAt };
+      return { ean: ware.ean, name: ware.name, uvp: input.uvp, owner, locations: wareLocations, createdAt, updatedAt };
 
     },
 
-    // idk depends what i want to show check with client?
     listWares: async (parent, { input }, { authorizedUser, models }) => {
       let wares = (await models.Ware.findAll()).map(ware => {
         const obj = {};
@@ -78,7 +88,9 @@ export default {
   },
   Mutation: {
     createWare: async (parent, { input }, { authorizedUser, models }) => {
-      checkAuth(authorizedUser);
+      // TODOFAKE 
+      // UNCOMMENT
+      // checkAuth(authorizedUser);
 
       const ware = (await models.Ware.findOne({
         where:
@@ -88,17 +100,32 @@ export default {
       }));
 
       if (ware !== null) {
-        throw new Error("ean already used!");
+        throw new Error("ean already taken!");
       }
+
+      // DELETE
+      const token = JSON.parse(verifyToken(input.token));
 
       const timestamp = moment().unix();
       const auth = (await models.Auth.findOne({
         where: {
-          pubKey: authorizedUser.token.pubKey
+          // DELETE
+          pubKey: token.pubKey
+          // UNCOMMENT
+          // pubKey: authorizedUser.token.pubKey
         }
       })).dataValues;
 
-      const hash = authorizedUser.token.hash;
+      //DELETE
+      // maybe not delete? could do something like this 
+      // so its unified and i just dont put owner in request in create
+      if (input["owner"] === null || input["owner"] === undefined) {
+        input["owner"] = auth.pubKey;
+      }
+
+      const hash = token.hash;
+      //UNCOMMENT
+      // const hash = authorizedUser.token.hash;
       const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
 
       const keyObj = { pubKey: auth.pubKey, privKey };
@@ -118,7 +145,10 @@ export default {
 
     // ean has to be same, cant be updated!
     updateWare: async (parent, { input }, { authorizedUser, models }) => {
-      checkAuth(authorizedUser);
+      // TODOFAKE 
+      // UNCOMMENT
+      // checkAuth(authorizedUser);
+
 
       const ware = (await models.Ware.findOne({
         where:
@@ -131,28 +161,44 @@ export default {
         throw new Error("ware doesnt exist!");
       }
 
-      const wareOwner = (await models.WareOwner.findOne({
-        where:
-        {
-          ware_ean: input.ean
-        }
-      })).dataValues;
+      // DELETE
+      const token = JSON.parse(verifyToken(input.token));
 
-      if (wareOwner.user_pubKey !== authorizedUser.pubKey) {
-        throw new Error("You are not the owner of this Ware!");
-      }
+      // UNCOMMENT
+      // const wareOwner = (await models.WareOwner.findOne({
+      //   where:
+      //   {
+      //     ware_ean: input.ean
+      //   }
+      // })).dataValues;
+
+      // if (wareOwner.user_pubKey !== authorizedUser.pubKey) {
+      //   throw new Error("You are not the owner of this Ware!");
+      // }
+
       const timestamp = moment().unix();
       const auth = (await models.Auth.findOne({
         where: {
-          pubKey: authorizedUser.token.pubKey
+          // DELETE
+          pubKey: token.pubKey
+          // UNCOMMENT
+          // pubKey: authorizedUser.token.pubKey
         }
       })).dataValues;
 
-      const hash = authorizedUser.token.hash;
+      // DELETE
+      const hash = token.hash;
+      //UNCOMMENT
+      // const hash = authorizedUser.token.hash;
       const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
 
       const keyObj = { pubKey: auth.pubKey, privKey };
-
+      //DELETE
+      // so its unified and i just dont put owner in request in update
+      // if i dont want to update
+      if (input["owner"] === null || input["owner"] === undefined) {
+        input["owner"] = auth.pubKey;
+      }
       const batch = updateWareTransaction(keyObj, input, timestamp);
 
       try {

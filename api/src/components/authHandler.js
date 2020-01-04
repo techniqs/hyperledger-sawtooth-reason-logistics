@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import models from '../utils/databaseConfig';
 import { batchKeyPair, verifyKeys } from './keyHandler'
 import crypto from 'crypto';
-import {fakeToken} from '../server';
 
 const genSalt = () => {
     return crypto.randomBytes(8).toString('hex');

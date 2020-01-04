@@ -2,7 +2,7 @@ export default (sequelize, DataTypes) => {
   const WareOwner = sequelize.define('wareOwner', {
     user_pubKey: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: false,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -14,7 +14,7 @@ export default (sequelize, DataTypes) => {
     },
     ware_ean: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: false,
       allowNull: false,
       validate: {
         notEmpty: true,

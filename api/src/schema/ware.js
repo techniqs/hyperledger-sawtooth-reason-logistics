@@ -7,10 +7,17 @@ export default gql`
     ean:String!
     name: String!
     owner: User!
+    uvp: Float!
     locations:[Location!]!
     createdAt: String!,
     updatedAt: String!,
   }
+
+  type Location{
+    latitude:Int!
+    longitude:Int!
+  }
+
   type Ware {
     ean:String!
     name: String!
@@ -27,17 +34,19 @@ export default gql`
     status: Status!
   }
 
-  type Location{
-    latitude:Int!
-    longitude:Int!
-  }
-
+  # TODOFAKE 
+  # DELETE TOKEN 
+  # UNCOMMENT OWNER 
   input WareInput {
     ean: String!
     name: String!
     longitude: Int!
     latitude: Int!
-    owner: String!
+    uvp: Float!
+    # owner optional, 
+    # to know if its update of attributes or also transfership 
+    owner: String
+    token: String!
   }
 
   # input WareTransferInput {
