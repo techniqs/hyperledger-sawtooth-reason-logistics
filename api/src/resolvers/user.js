@@ -25,14 +25,13 @@ export default {
         const hash = hashPassword(input.password, auth.salt);
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
         if (verifyKeys(privKey, auth.pubKey)) {
-          return { token: signToken({ pubKey: auth.pubKey, hash: hash }) }
+          return { token: signToken({ pubKey: auth.pubKey, hash: hash }), status: "OK" }
         }
         else {
-          throw new Error("Login not successful, check credentials!");
+          return {token: null, status: "INVALID"};
         }
       }
-      // user not in db check error handling lol
-      throw new Error("Wrong credentials!");
+      return {token: null, status: "INVALID"};
     },
     listUsers: async (parent, { input }, { authorizedUser, models }) => {
       return await models.User.findAll();
@@ -45,12 +44,13 @@ export default {
           pubKey: authorizedUser.token.pubKey
         }
       }))
-      if (auth !== null) {
+      if(auth!==null){
         auth = auth.dataValues;
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, authorizedUser.token.hash);
         return privKey;
+      } else {
+        throw new Error("couldnt find private key!");
       }
-      throw new Error("couldnt get PrivateKey");
     },
   },
   Mutation: {
@@ -82,17 +82,15 @@ export default {
             encrypted_private_key: encryptedKey,
           })
 
-          return { token: signToken({ pubKey: keyObj.pubKey, hash: hash }) }
+          return { token: signToken({ pubKey: keyObj.pubKey, hash: hash }), status: "OK" }
 
 
         } catch (err) {
-          //check how to throw error
+          console.error(err);
           throw new Error(err)
         }
-
       } else {
-        // back to client
-        throw new Error("Username not available.");
+        return {token: "", status: "INVALID"};
       }
     },
   },

@@ -16,6 +16,7 @@ const app = express();
 const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
+  introspection: true,
   formatError: error => {
     // remove the internal sequelize error message
     // leave only the important validation error

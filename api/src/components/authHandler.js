@@ -53,6 +53,8 @@ const authorize = async (ctx) => {
 
     // delete fake token generator
     //get token from header!!
+
+    return null;
     if(fakeToken === null){
         return null;
     }

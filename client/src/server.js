@@ -1,52 +1,91 @@
 import React from 'react';
 import express from 'express';
-import { renderToString } from 'react-dom/server';
+import { renderToStringWithData } from 'react-apollo';
+import { CookiesProvider } from 'react-cookie';
+import ApolloClient from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 
-const wares = require(process.env.RAZZLE_ASSETS_MANIFEST);
-
+const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
+const cookiesMiddleware = require('universal-cookie-express');
 
 // important to read is dynamically via require, because globalConfig has to be processed before it
 const {
   make: App
 } = require('./web/App.bs'); // BuckleScript output directory
 
-function renderTemplate(markup) {
-  return `<!doctype html>
+function detectAndSetUserToken(req, res) {
+  const cookieUserToken = req.universalCookies.get('userToken');
+  return cookieUserToken;
+}
+
+function renderTemplate({ apolloState, markup }) {
+	return `<!doctype html>
   <html lang="">
   <head>
       <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      ${wares.client.js ? `<script src="${wares.client.js}" defer></script>` : ''}
-      ${wares.client.css ? `<link rel="stylesheet" type="text/css" href="${wares.client.css}" />` : ''}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      ${assets.client.js ? `<script src="${assets.client.js}" defer></script>` : ''}
+      ${assets.client.css ? `<link rel="stylesheet" type="text/css" href="${assets.client.css}" />` : ''}
       <link rel="icon" href="/favicon.png" />
-      <title>sawtooth-reason-supply</title>
+      <script>
+		window.__APOLLO_STATE__ = ${apolloState};
+      </script>
+      <title>Sawtooth-Supply-Tracker</title>
     </head>
     <body>
-      <div id="root">${markup}</div>
+        <div id="root">${markup}</div>
+        <div id="modal-root"></div>
      </body>
   </html>`;
 }
 
-async function renderPage(req, res) {
+function getCookies(req, res) {
+	req.universalCookies.cookies =
+		{
+			userToken: detectAndSetUserToken(req, res)
+		};
+	return req.universalCookies;
+};
 
+async function renderPage(req, res) {
+	const token = detectAndSetUserToken(req, res);
+	const cookiesForProvider = getCookies(req, res);
+  const client = createApolloClient(token);
+  
   let appWithData;
   try {
-    appWithData = await renderToString(
-        <App
-          initialUrl = {req._parsedOriginalUrl.pathname}
-          />
+    appWithData = await renderToStringWithData(
+      <CookiesProvider cookies={cookiesForProvider}>
+        <App apolloClient={client} initialUrl={req._parsedOriginalUrl.pathname}
+          isUserLoggedIn={!!token} search={req._parsedOriginalUrl.query} />
+    </CookiesProvider>
       );
   } catch(err) {
     appWithData = "";
+    console.error("SSR ERROR: \n", err);
   }
 
+  return renderTemplate({
+		apolloState: JSON.stringify(client.cache.extract()),
+		markup: (appWithData)
+	});
+}
+const { createLinks } = require('./web/component/Graphql.bs');
 
-  return renderTemplate(appWithData);
+function createApolloClient(token) {
+	return new ApolloClient({
+		ssrMode: true,
+		link: createLinks({
+			credentials: 'same-origin',
+			token: token
+    }),
+    cache: new InMemoryCache()
+	});
 }
 
-
 const server = express();
+server.use(cookiesMiddleware());
 
 const publicPath = process.env.NODE_ENV === 'production' ? resolve(__dirname, 'public') : process.env.RAZZLE_PUBLIC_DIR;
 
@@ -68,6 +107,7 @@ server
       html = await renderPage(req, res);
       res.send(html);
     } catch(err) {
+      console.log(err);
       res.redirect('/error')
     } 
 

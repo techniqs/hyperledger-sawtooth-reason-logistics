@@ -1,10 +1,22 @@
-[@bs.config {jsx: 3}];
+include Style.GlobalStyle;
 
 [@react.component]
-let make = (~initialUrl, ~locale, _children) => {
-  <div>
-    // <ReactIntl.IntlProvider locale="de">
-        <Router initialUrl />
-    // </ReactIntl.IntlProvider>
-  </div>;
+let make =
+    (
+      ~apolloClient,
+      ~initialUrl,
+      // ~isUserLoggedIn,
+      ~search,
+      _children,
+    ) => {
+    <ReasonApollo.Provider client=apolloClient>
+      // <User.Provider value=isUserLoggedIn>
+        // <Responsive.Provider>
+          // <UserEntry.Provider>
+                      <Notification />
+            <Router initialUrl search />
+          // </UserEntry.Provider>
+        // </Responsive.Provider>
+      // </User.Provider>
+    </ReasonApollo.Provider>
 };

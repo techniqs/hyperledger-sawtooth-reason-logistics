@@ -1,3 +1,4 @@
+import 'cross-fetch/polyfill'; // we need to have fetch on both, client and server
 import express from 'express';
 
 let app = require('./server').default;
@@ -14,8 +15,7 @@ if (module.hot) {
   console.info('✅  Server-side HMR Enabled!');
 }
 
-// const port = process.env.PORT || 4000;
-const port = 4000;
+const port = process.env.PORT || 3000;
 
 export default express()
   .use((req, res) => app.handle(req, res))

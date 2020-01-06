@@ -1,11 +1,22 @@
 {
   "name": "sawtooth-reason-supply-client",
-  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
+  "bsc-flags": ["-bs-no-version-header", "-bs-super-errors","-bs-g"],
   "refmt": 3,
   "reason": {
     "react-jsx": 3
   },
-  "bs-dependencies": ["reason-react"],
+  "bs-dependencies": [
+    "reason-react",
+    "reason-apollo",
+    "bs-css",
+    "@glennsl/rebase",
+    "@glennsl/bs-json",
+    "@ahrefs/bs-reactstrap",
+    "re-formality"
+  ],
+  "ppx-flags": [
+    "graphql_ppx/ppx"
+  ],
   "sources": [
     {
       "dir": "src",
@@ -15,7 +26,7 @@
   "suffix": ".bs.js",
   "package-specs": [
     {
-      "module": "es6-global",
+      "module": "commonjs",
       "in-source": true
     }
   ]

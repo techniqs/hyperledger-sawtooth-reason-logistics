@@ -6,8 +6,13 @@ export default gql`
     pubKey: String!
     username: String!
   }
+  enum LoginStatus {
+    OK
+    INVALID
+  }
   type AuthObj {
-    token: String!
+    token: String
+    status: LoginStatus!
   }
 
   input UserInput {
