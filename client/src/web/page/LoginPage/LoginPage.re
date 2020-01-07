@@ -1,7 +1,4 @@
 [@react.component]
 let make = () => {
-
-  <Layout>
-  <LoginForm/>
-  </Layout>
+  <Layout> <LoginForm /> </Layout>;
 };

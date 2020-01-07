@@ -1,8 +1,4 @@
 [@react.component]
 let make = () => {
-
-  <>
-  <Navbar/>
-  <p> {"REGISTERPAGE " |> ReasonReact.string} </p>
-  </>
+  <Layout> <RegistrationForm /> </Layout>;
 };

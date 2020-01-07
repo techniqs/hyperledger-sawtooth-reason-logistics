@@ -1,7 +1,7 @@
 open Css;
 
-
 module GlobalStyle = {
+  Utils.requireCss("bootstrap/dist/css/bootstrap.min.css");
   Utils.requireCss("./Form.css");
   Utils.requireCss("./Fonts.css");
 

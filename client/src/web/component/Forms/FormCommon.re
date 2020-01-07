@@ -75,7 +75,7 @@ module LoginUserDataForm = (UserFormConfig: UserFormConfig) => {
     <>
       <Row>
         <Col className=Styles.paddingLeftAndRight>
-          <FormGroup>
+          <FormGroup >
             <Label>
               <Text> {"Username" |> str} </Text>
               <MandatoryAsterisk />
@@ -91,7 +91,7 @@ module LoginUserDataForm = (UserFormConfig: UserFormConfig) => {
       </Row>
       <Row>
         <Col className=Styles.paddingLeftAndRight>
-          <FormGroup>
+          <FormGroup >
             <Label>
               <Text> {"Password" |> str} </Text>
               <MandatoryAsterisk />

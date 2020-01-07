@@ -1,8 +1,9 @@
+open Utils;
 [@react.component]
 let make = () => {
+  <Layout> 
+  <Flex>
 
-  <>
-  <Navbar/>
-  <p> {"WARERESULTSPAGE " |> ReasonReact.string} </p>
-  </>
+  </Flex>
+  </Layout>;
 };

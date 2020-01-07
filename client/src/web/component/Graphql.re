@@ -30,7 +30,7 @@ let createLinks = (~params: params) => {
         ~credentials=params##credentials,
         ~headers=
           Json.Encode.(
-            object_([("Authorization", Js.Json.string({j|Bearer $t|j}))])
+            object_([("Authorization", Js.Json.string({j|$t|j}))])
           ),
         (),
       )

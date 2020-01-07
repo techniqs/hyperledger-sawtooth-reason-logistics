@@ -21,12 +21,18 @@ export const encryptKey = (privKey, hash) => {
 };
 
 export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
+    try {
     let iv = Buffer.from(ivHex, 'hex');
     let encryptedText = Buffer.from(encryptedPrivKey, 'hex');
     let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(hash, "hex"), iv);
     let decrypted = decipher.update(encryptedText);
     decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString();
+    return decrypted.toString()
+    }
+    catch(error){
+        console.log(error);
+        return null;
+    }
 };
 
 
@@ -37,46 +43,46 @@ const signToken = data => {
 };
 
 const verifyToken = token => {
+    try{
     const data = jwt.verify(token, batchKeyPair.privKey);
     return Buffer.from(data, 'base64').toString('ascii');
+    } catch(error){
+        console.log(error);
+        return null;
+    }
 };
 
 
-// TODO DELETE FAKE TOKEN!! AND GET TOKEN FROM HEADER!!
 const authorize = async (ctx) => {
-    // console.log("CONTEXT REQUEST", ctx.req);
-
-    // find user by header from request.
-    // in token of header should be username, find it through that.
-    // something like in header authorization bearer 
-    // then get token
-
-    // delete fake token generator
-    //get token from header!!
-
-    return null;
-    if(fakeToken === null){
+ 
+    const headers = ctx.req.headers;
+    if(headers.authorization == null ){
+        return null;
+    };
+    const token = headers.authorization;
+    const data = verifyToken(token);
+    if(data === null){
         return null;
     }
-    const data = verifyToken(fakeToken.token);
-    const token = JSON.parse(data);
+    const tokenData = JSON.parse(data);
+    console.log("tokenDAta:", tokenData);
     let auth = (await models.Auth.findOne({
         where: {
-            pubKey: token.pubKey
+            pubKey: tokenData.pubKey
         }
     }))
     if (auth !== null) {
         auth = auth.dataValues;
 
-        const privKey = decryptKey(auth.encrypted_private_key, auth.iv, token.hash);
-        if (verifyKeys(privKey, token.pubKey)) {
+        const privKey = decryptKey(auth.encrypted_private_key, auth.iv, tokenData.hash);
+        if (verifyKeys(privKey, tokenData.pubKey)) {
             const user = await models.User.findOne({
                 where: {
-                    pubKey: token.pubKey
+                    pubKey: tokenData.pubKey
                 }
             });
             if (user !== null) {
-                return { user: user.dataValues, token: token };
+                return { user: user.dataValues, token: tokenData };
             }
         }
     }

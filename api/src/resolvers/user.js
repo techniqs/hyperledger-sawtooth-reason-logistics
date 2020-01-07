@@ -13,6 +13,8 @@ export default {
         }
       });
 
+      console.log("here=?");
+
       if (user !== null) {
         user = user.dataValues;
         console.log("user:", user);
@@ -22,8 +24,14 @@ export default {
           }
         })).dataValues;
 
+        console.log(auth);
+
         const hash = hashPassword(input.password, auth.salt);
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
+        if(privKey=== null){
+          return {token: null, status: "INVALID"};
+        };
+        
         if (verifyKeys(privKey, auth.pubKey)) {
           return { token: signToken({ pubKey: auth.pubKey, hash: hash }), status: "OK" }
         }

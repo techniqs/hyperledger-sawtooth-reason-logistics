@@ -75,7 +75,7 @@ module Make = (FormConfig: FormConfig) => {
           ~children: option(React.element)=?,
         ) => {
       let (valid, errorMessage) = parseResult(~form, ~field);
-      <Flex mt={Css.px(4)}>
+      <Flex mt={Css.px(4)} flexDirection=`column>
         <Input
           id
           _type

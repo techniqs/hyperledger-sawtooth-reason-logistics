@@ -73,7 +73,7 @@ module Form = {
                | Some(token) =>
                  {
                    setCookies("userToken", token, ());
-                   reload();
+                   ReasonReactRouter.replace("/");
                  };
                  Js.Promise.resolve(result);
                | _ =>
@@ -97,18 +97,7 @@ module Form = {
     let (formError, showFormError) = React.useState(() => false);
     let showMainError = formError && !form.valid();
 
-    // Js.log2("Form Status", form.status);
-
-    // switch (form.status) {
-    // | SubmissionFailed(submissionError) =>
-    //   submissionError == FormConfig.BadLogin
-    //     ? Js.log("Badlogin") : Js.log("other error")
-    // | _ => Js.log("Completly other")
-    // };
-
-    // Js.log2("cred", showWrongCredentials);
-
-    <div className=Styles.form>
+    <Flex width=Css.pct(50.) ml=`auto mr=`auto className=Styles.form>
       <LoginForm.Form form showFormError={() => showFormError(_ => true)}>
         <h1 className=Styles.title> <Text> {"Sign in" |> str} </Text> </h1>
         <FormCommon.MainFormError
@@ -120,15 +109,15 @@ module Form = {
           text="To continue, correct the following errors in your input."
         />
         <LoginUserDataForm form />
-        <Row>
-          <Col>
+        <Row className=Css.style([Css.justifyContent(`center)])>
+          <Col xs=6 md=6>
             <button type_="submit" className=Styles.submitButton>
               <Text> {"Log in" |> str} </Text>
             </button>
           </Col>
         </Row>
-        <Row>
-          <Col className=Styles.forgotPassword>
+        <Row className=Css.style([Css.justifyContent(`center)])>
+          <Col xs=6 md=6 className=Styles.forgotPassword>
             <Link.Link2 page=RegisterPage>
               <Flex className=Styles.link m=`auto>
                 <Text> {"No Account yet? Register here!" |> str} </Text>
@@ -137,7 +126,7 @@ module Form = {
           </Col>
         </Row>
       </LoginForm.Form>
-    </div>;
+    </Flex>;
   };
 };
 

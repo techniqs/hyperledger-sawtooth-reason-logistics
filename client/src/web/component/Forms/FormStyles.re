@@ -111,6 +111,7 @@ let link =
       cursor(`pointer),
       color(Colors.marine1),
        fontSize(px(14)), fontWeight(semiBold),
+       justifyContent(center),
       hover([color(Colors.marine2)]),
     ]),
   ]);

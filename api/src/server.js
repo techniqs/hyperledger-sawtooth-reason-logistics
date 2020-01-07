@@ -8,8 +8,12 @@ import { ApolloServer } from 'apollo-server-express';
 
 import schema from './schema';
 import resolvers from './resolvers';
-import { authorize} from './components/authHandler'
+import { authorize } from './components/authHandler'
 import models, { sequelize, Op } from './utils/databaseConfig';
+import { hashPassword, signToken, checkAuth, encryptKey, decryptKey, genSalt } from './components/authHandler';
+import { createKeyPair, verifyKeys } from './components/keyHandler';
+
+
 
 const app = express();
 
@@ -41,8 +45,38 @@ const port = process.env.APP_PORT;
 
 const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
-export let fakeToken = null;
+const test = false;
+
+// eyJhbGciOiJIUzI1NiJ9.ZXlKd2RXSkxaWGtpT2lJd016bGhNVEUwTmpRNVpqSXlOVE5qWVRRM1pEWTBOV0kwWXpnNE5EWTVZV0ZsTUdSbE9EQXlOamd3WlRSaU5tUmlaRGt4TURRME5tUTJaRFZpT0dGa1pHSWlMQ0pvWVhOb0lqb2lNV1ZsTmpBek5UazNPV1U0T1ROaE9UVm1aalV4WTJaa01UVXpaV1UxWldZd1pqZzVOVGd6WWpZek1XUm1ZMlkzWkRZMk5EYzNabVl6WXpjMFlURTFOQ0o5.FelAvvyivrq4aNv4b_-pSO9YRaoPKt5ppBuUlsNMDfg
 sequelize.sync({ force: eraseDB }).then(async () => {
+
+  if (test) {
+    const keyObj = createKeyPair();
+    const salt = genSalt();
+    const hash = hashPassword("asdf", salt);
+
+    const { iv, encryptedKey } = encryptKey(keyObj.privKey, hash);
+
+
+    await models.Block.create({
+      block_num: 1,
+      block_id: "a683e986dee6c559045d9a42c23ebc101f0c0eafddff3aa3aba2cd62c397305b7aecca03d92894c577340df695b17b1890cba0c70c180a99814ee36adf7eb18f",
+    });
+    //pw asdf
+    await models.User.create({
+      pubKey: keyObj.pubKey,
+      username: "techniqs",
+      timestamp: 1578431460,
+      start_block_num: 1,
+      end_block_num: null,
+    });
+    await models.Auth.create({
+      pubKey: keyObj.pubKey,
+      salt,
+      iv,
+      encrypted_private_key: encryptedKey,
+    });
+  }
 
   app.listen({ port }, () => {
     console.log(`Graphiql Server on http://localhost:${port}/graphiql`);

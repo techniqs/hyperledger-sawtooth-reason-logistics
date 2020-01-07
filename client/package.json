@@ -14,6 +14,7 @@
     "@glennsl/bs-json": "^5.0.1",
     "@glennsl/rebase": "^0.2.1",
     "bs-css": "git+https://github.com/SentiaAnalytics/bs-css.git",
+    "bootstrap": "^4.3.1",
     "cross-fetch": "^3.0.4",
     "emotion": "^10.0.17",
     "emotion-server": "^10.0.17",
