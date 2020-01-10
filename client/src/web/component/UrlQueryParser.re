@@ -68,3 +68,12 @@ let parseQueryString = (qString: option(string)): Js.Dict.t(queryItem) =>
       Array.fold_left(addKeyValue, result, kvPairs);
     };
   };
+
+  let getItem = (query: Js.Dict.t(queryItem), key: string): option('a) => {
+  let item = Js.Dict.get(query, key);
+  switch (item) {
+  | Some(Single(s)) => Some(s)
+  | Some(Multiple(_m)) => Some("Multiple not yet supported")
+  | _ => None
+  };
+};

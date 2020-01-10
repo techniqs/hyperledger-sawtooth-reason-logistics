@@ -73,7 +73,8 @@ module Form = {
                | Some(token) =>
                  {
                    setCookies("userToken", token, ());
-                   ReasonReactRouter.replace("/");
+                   setCookies("username", state.username, ());
+                   reload();
                  };
                  Js.Promise.resolve(result);
                | _ =>

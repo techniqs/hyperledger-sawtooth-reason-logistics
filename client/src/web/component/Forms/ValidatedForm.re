@@ -184,6 +184,7 @@ module Validator = {
     };
 
   let maxStringLength = (value: string, maxLength: int) =>
+    
     switch (value |> Js.String.length) {
     | stringLength when stringLength > maxLength =>
       Belt.Result.Error("Too long text")

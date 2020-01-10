@@ -5,6 +5,7 @@ export default gql`
   type User {
     pubKey: String!
     username: String!
+    createdAt: String!
   }
   enum LoginStatus {
     OK

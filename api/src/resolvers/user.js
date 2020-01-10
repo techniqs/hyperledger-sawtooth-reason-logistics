@@ -13,36 +13,37 @@ export default {
         }
       });
 
-      console.log("here=?");
-
       if (user !== null) {
         user = user.dataValues;
-        console.log("user:", user);
         const auth = (await models.Auth.findOne({
           where: {
             pubKey: user.pubKey
           }
         })).dataValues;
 
-        console.log(auth);
-
         const hash = hashPassword(input.password, auth.salt);
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, hash);
-        if(privKey=== null){
-          return {token: null, status: "INVALID"};
+        if (privKey === null) {
+          return { token: null, status: "INVALID"};
         };
-        
+
         if (verifyKeys(privKey, auth.pubKey)) {
-          return { token: signToken({ pubKey: auth.pubKey, hash: hash }), status: "OK" }
+          return { token: signToken({ pubKey: auth.pubKey, hash: hash }), status: "OK"}
         }
         else {
-          return {token: null, status: "INVALID"};
+          return { token: null, status: "INVALID"};
         }
       }
-      return {token: null, status: "INVALID"};
+      return { token: null, status: "INVALID"};
     },
     listUsers: async (parent, { input }, { authorizedUser, models }) => {
-      return await models.User.findAll();
+      return (await models.User.findAll()).map(user => {
+        const obj= {}
+        obj["username"]=user.dataValues.username;
+        obj["pubKey"]=user.dataValues.pubKey;
+        obj["createdAt"] = moment.unix(user.dataValues.timestamp).format('DD/MM/YYYY, H:mm');
+        return obj;
+      });
     },
     getPrivateKey: async (parent, { input }, { authorizedUser, models }) => {
 
@@ -52,7 +53,7 @@ export default {
           pubKey: authorizedUser.token.pubKey
         }
       }))
-      if(auth!==null){
+      if (auth !== null) {
         auth = auth.dataValues;
         const privKey = decryptKey(auth.encrypted_private_key, auth.iv, authorizedUser.token.hash);
         return privKey;
@@ -90,7 +91,7 @@ export default {
             encrypted_private_key: encryptedKey,
           })
 
-          return { token: signToken({ pubKey: keyObj.pubKey, hash: hash }), status: "OK" }
+          return { token: signToken({ pubKey: keyObj.pubKey, hash: hash }), status: "OK"}
 
 
         } catch (err) {
@@ -98,7 +99,7 @@ export default {
           throw new Error(err)
         }
       } else {
-        return {token: "", status: "INVALID"};
+        return { token: null, status: "INVALID"};
       }
     },
   },

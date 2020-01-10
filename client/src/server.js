@@ -19,6 +19,11 @@ function detectAndSetUserToken(req, res) {
   return cookieUserToken;
 }
 
+function detectAndSetUsername(req, res) {
+  const cookieUserToken = req.universalCookies.get('username');
+  return cookieUserToken;
+}
+
 function renderTemplate({ apolloState, markup }) {
 	return `<!doctype html>
   <html lang="">
@@ -43,7 +48,8 @@ function renderTemplate({ apolloState, markup }) {
 function getCookies(req, res) {
 	req.universalCookies.cookies =
 		{
-			userToken: detectAndSetUserToken(req, res)
+			userToken: detectAndSetUserToken(req, res),
+			username: detectAndSetUsername(req, res),
 		};
 	return req.universalCookies;
 };

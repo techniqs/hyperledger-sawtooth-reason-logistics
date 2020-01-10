@@ -22,14 +22,14 @@ export const encryptKey = (privKey, hash) => {
 
 export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
     try {
-    let iv = Buffer.from(ivHex, 'hex');
-    let encryptedText = Buffer.from(encryptedPrivKey, 'hex');
-    let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(hash, "hex"), iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    return decrypted.toString()
+        let iv = Buffer.from(ivHex, 'hex');
+        let encryptedText = Buffer.from(encryptedPrivKey, 'hex');
+        let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(hash, "hex"), iv);
+        let decrypted = decipher.update(encryptedText);
+        decrypted = Buffer.concat([decrypted, decipher.final()]);
+        return decrypted.toString()
     }
-    catch(error){
+    catch (error) {
         console.log(error);
         return null;
     }
@@ -43,10 +43,10 @@ const signToken = data => {
 };
 
 const verifyToken = token => {
-    try{
-    const data = jwt.verify(token, batchKeyPair.privKey);
-    return Buffer.from(data, 'base64').toString('ascii');
-    } catch(error){
+    try {
+        const data = jwt.verify(token, batchKeyPair.privKey);
+        return Buffer.from(data, 'base64').toString('ascii');
+    } catch (error) {
         console.log(error);
         return null;
     }
@@ -54,14 +54,14 @@ const verifyToken = token => {
 
 
 const authorize = async (ctx) => {
- 
+
     const headers = ctx.req.headers;
-    if(headers.authorization == null ){
+    if (headers.authorization == null) {
         return null;
     };
     const token = headers.authorization;
     const data = verifyToken(token);
-    if(data === null){
+    if (data === null) {
         return null;
     }
     const tokenData = JSON.parse(data);

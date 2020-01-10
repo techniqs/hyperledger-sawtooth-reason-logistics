@@ -114,6 +114,17 @@ external reload: unit => unit = "reload";
 [@bs.scope "window.location"] [@bs.val]
 external replace: string => unit = "replace";
 
+[@bs.scope "document"] [@bs.val]
+external addKeybordEventListener:
+  (string, ReactEvent.Keyboard.t => unit) => unit =
+  "addEventListener";
+
+[@bs.scope "document"] [@bs.val]
+external removeKeybordEventListener:
+  (string, ReactEvent.Keyboard.t => unit) => unit =
+  "removeEventListener";
+
+
 let validateEmail = (email: string) => {
   let emailRegex = [%bs.re "/\\S+@\\S+\\.\\S+/"];
   switch (Js.Re.exec_(emailRegex, email)) {

@@ -58,7 +58,8 @@ module Form = {
                  switch (parseToken(data)) {
                  | Some(token) =>
                    setCookies("userToken", token, ());
-                   ReasonReactRouter.replace("/");
+                   setCookies("username", state.username, ());
+                   reload();
                    Js.Promise.resolve(result);
                  | _ =>
                    submissionCallback.notifyOnFailure(

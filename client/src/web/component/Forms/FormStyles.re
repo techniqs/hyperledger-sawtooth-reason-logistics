@@ -64,14 +64,14 @@ let label =
 let submitButton =
   style([
     width(pct(100.0)),
-    background(Colors.marine1),
+    background(Colors.orange),
     height(px(44)),
     marginTop(px(28)),
     borderRadius(px(4)),
-    border(px(0), `none, Colors.marine1),
+    border(px(0), `none, Colors.orange),
     color(white),
     fontSize(px(14)), fontWeight(semiBold),
-    hover([backgroundColor(Colors.marine2)]),
+    hover([backgroundColor(Colors.orange2)]),
   ]);
 
 let submitButtonWithM = merge([submitButton, style([marginTop(px(24))])]);
@@ -109,10 +109,10 @@ let link =
   merge([
     style([
       cursor(`pointer),
-      color(Colors.marine1),
+      color(Colors.orange),
        fontSize(px(14)), fontWeight(semiBold),
        justifyContent(center),
-      hover([color(Colors.marine2)]),
+      hover([color(Colors.orange2)]),
     ]),
   ]);
 

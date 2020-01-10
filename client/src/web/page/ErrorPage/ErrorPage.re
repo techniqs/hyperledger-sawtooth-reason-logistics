@@ -1,6 +1,11 @@
+open Utils
 [@react.component]
 let make = () => {
 
 
-  <div> <p> {"Error " |> ReasonReact.string} </p> </div>;
+  <Layout>
+  <Text fontSize=Css.px(21) color=Colors.warning1>
+  {"Error, nothing to see here :)" |> str}
+  </Text>
+  </Layout>
 };

@@ -167,14 +167,12 @@ module StateFunctions = {
                let locationLength = Array.length(savedWareData.locations) - 1;
 
                if (parsedData.longitude
-                   |> string_of_int
-                   !== savedWareData.locations[locationLength].longitude
+                   !== (savedWareData.locations[locationLength].longitude |> float_of_string)
                    || parsedData.latitude
-                   |> string_of_int
-                   !== savedWareData.locations[locationLength].latitude) {
+                   !== (savedWareData.locations[locationLength].latitude  |> float_of_string)) {
                  let newLocation: location = {
-                   latitude: parsedData.latitude |> string_of_int,
-                   longitude: parsedData.longitude |> string_of_int,
+                   latitude: parsedData.latitude |> Js.Float.toString,
+                   longitude: parsedData.longitude |> Js.Float.toString,
                    timestamp: parsedData.timestamp |> string_of_int,
                  };
 
@@ -279,12 +277,12 @@ module StateFunctions = {
                Js.Dict.set(
                  locationDict,
                  "latitude",
-                 parsedData.latitude |> string_of_int,
+                 parsedData.latitude |> Js.Float.toString,
                );
                Js.Dict.set(
                  locationDict,
                  "longitude",
-                 parsedData.longitude |> string_of_int,
+                 parsedData.longitude |> Js.Float.toString,
                );
                Js.Dict.set(
                  locationDict,

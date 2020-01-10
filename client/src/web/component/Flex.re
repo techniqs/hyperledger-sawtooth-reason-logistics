@@ -146,6 +146,7 @@ let make =
     <button
       type_="button"
       ?id
+      // ?key
       ?onMouseEnter
       ?onMouseLeave
       className=elementClassName
@@ -153,7 +154,7 @@ let make =
       {children |> renderOpt(children => children)}
     </button>
   | None =>
-    <div ?id ?onMouseEnter ?onMouseLeave className=elementClassName>
+    <div  ?id ?onMouseEnter ?onMouseLeave className=elementClassName>
       {children |> renderOpt(children => children)}
     </div>
   };

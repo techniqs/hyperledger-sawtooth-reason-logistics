@@ -61,8 +61,8 @@ export default class Database {
         models.WareLocation.create({
             ware_ean: ware.identifier[0].ean,
             timestamp: parseInt(ware.locations[0].timestamp),
-            latitude: parseInt(ware.locations[0].latitude),
-            longitude: parseInt(ware.locations[0].longitude),
+            latitude: parseFloat(ware.locations[0].latitude),
+            longitude: parseFloat(ware.locations[0].longitude),
             start_block_num,
             end_block_num,
         });
@@ -95,8 +95,8 @@ export default class Database {
             defaults: {
                 ware_ean: ware.identifier[0].ean,
                 timestamp: parseInt(location.timestamp),
-                latitude: parseInt(location.latitude),
-                longitude: parseInt(location.longitude),
+                latitude: parseFloat(location.latitude),
+                longitude: parseFloat(location.longitude),
                 start_block_num,
                 end_block_num,
             },

@@ -16,8 +16,8 @@ const rootSchema = gql`
 
     #ware queries
     getWare(ean:String!): WareWithDetails!
-    # check what i want to show!
     listWares: [Ware!]!
+    getUpdateHistory(ean:String!): [WareUpdates!]!
   }
 
 

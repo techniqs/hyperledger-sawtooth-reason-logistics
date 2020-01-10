@@ -1,4 +1,7 @@
 module Result = Utils.Result;
+let parseUrlWareDetailPage = Routes.WareDetailPage.parseParams;
+let parseUrlWareHistoryPage = Routes.WareHistoryPage.parseParams;
+let parseUrlWareEditPage = Routes.WareEditPage.parseParams;
 let parseQuery = url => UrlQueryParser.parseQueryString(Some(url));
 
 let urlToUrlList = url =>
@@ -39,8 +42,19 @@ let urlToPage = (url: ReasonReactRouter.url, cookies: Cookie.cookies) => {
   switch (url.path) {
   | ["users"] => Result.Ok(<UserResultsPage />)
   | ["wares"] => Result.Ok(<WareResultsPage />)
-  | ["ware"] => Result.Ok(<WareDetailPage />)
-  | ["user"] => Result.Ok(<UserDetailPage />)
+  | ["ware", url] =>
+    renderWithParams(url, parseUrlWareDetailPage, params =>
+      <WareDetailPage params />
+    )
+  | ["history", url] =>
+    renderWithParams(url, parseUrlWareHistoryPage, params =>
+      <WareHistoryPage params />
+    )
+  | ["edit", url] =>
+    renderWithParams(url, parseUrlWareEditPage, params =>
+      <WareEditPage params />
+    )
+  | ["create"] => Result.Ok(<WareCreatePage />)
   | ["login"] => Result.Ok(<LoginPage />)
   | ["register"] => Result.Ok(<RegisterPage />)
   | [] => Utils.Result.Ok(<HomePage />)
@@ -75,5 +89,5 @@ let make =
   let url = getUrlList(~initialUrl?, ~search?, ());
 
   // change to errorPage
-  urlToPage(url, cookies) |> Result.getWithDefault(<HomePage />);
+  urlToPage(url, cookies) |> Result.getWithDefault(<ErrorPage />);
 };

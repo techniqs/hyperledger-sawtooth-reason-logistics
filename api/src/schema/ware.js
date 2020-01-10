@@ -13,19 +13,28 @@ export default gql`
     updatedAt: String!,
   }
 
+  type WareUpdates {
+    location:Location!
+    owner: String!,
+    createdAt: String!,
+  }
+
   type Location{
-    latitude:Int!
-    longitude:Int!
+    latitude:Float!
+    longitude:Float!
   }
 
   type Ware {
     ean:String!
     name: String!
+    uvp: Float!
     createdAt: String!,
   }
 
   enum Status {
     OK
+    INVALIDEAN
+    INVALIDUSER
     ERROR
   }
 
@@ -34,24 +43,15 @@ export default gql`
     status: Status!
   }
 
-  # TODOFAKE 
-  # DELETE TOKEN 
-  # UNCOMMENT OWNER 
   input WareInput {
     ean: String!
     name: String!
-    longitude: Int!
-    latitude: Int!
+    longitude: Float!
+    latitude: Float!
     uvp: Float!
     # owner optional, 
     # to know if its update of attributes or also transfership 
     owner: String
-    token: String!
   }
-
-  # input WareTransferInput {
-  #   ean: String!
-  #   newOwnerPubKey: String!
-  # }
 `;
  

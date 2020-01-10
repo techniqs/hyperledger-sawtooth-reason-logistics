@@ -15,8 +15,8 @@ module Convert = {
     ean: string,
     name: string,
     uvp: float,
-    longitude: int,
-    latitude: int,
+    longitude: float,
+    latitude: float,
     timestamp: int,
     owner: string,
   };

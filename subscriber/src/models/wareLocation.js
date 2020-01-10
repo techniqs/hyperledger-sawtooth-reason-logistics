@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
     },
     //range from -180 - +180    
     longitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -31,7 +31,7 @@ export default (sequelize, DataTypes) => {
     },
     //range from -90 - +90
     latitude: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         notEmpty: true,

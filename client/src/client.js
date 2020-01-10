@@ -12,6 +12,7 @@ const { createLinks } = require('./web/component/Graphql.bs');
 const cookies = new Cookies();
 
 const userToken = cookies.get('userToken');
+const username = cookies.get('username');
 
 const client = new ApolloClient({
 	ssrForceFetchDelay: 100,

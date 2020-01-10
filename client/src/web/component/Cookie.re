@@ -2,6 +2,7 @@
 [@bs.deriving abstract]
 type cookies = {
   userToken: option(string),
+  username: option(string),
 };
 
 [@bs.deriving abstract]
@@ -29,6 +30,11 @@ external removeCookie: unit => (_, _, (. string) => unit) = "useCookies";
 let getUserToken = (cookies: cookies) => {
   cookies |> userTokenGet;
 };
+
+let getUsername = (cookies: cookies) => {
+  cookies |> usernameGet;
+};
+
 
 let userLoggedIn = (cookies: cookies) => {
   switch (cookies |> getUserToken) {

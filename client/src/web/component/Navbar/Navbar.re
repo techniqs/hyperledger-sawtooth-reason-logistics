@@ -14,17 +14,24 @@ let make = () => {
     full=true>
     <Flex alignItems=`center>
       <Link.Link2 page=Routes.HomePage className=Styles.shHover>
-        <Text fontSize={Css.px(16)} color=Colors.marine1>
+        <Text fontSize={Css.px(16)} color=Colors.orange>
           {"Home" |> str}
         </Text>
       </Link.Link2>
+      {userLoggedIn(cookies) ? 
+      <Link.Link2 page=Routes.WareCreatePage className=Styles.shHover>
+        <Text fontSize={Css.px(16)} color=Colors.orange>
+          {"Create Ware" |> str}
+        </Text>
+      </Link.Link2>
+      : React.null}
       <Link.Link2 page=Routes.WareResultsPage className=Styles.shHover>
-        <Text fontSize={Css.px(16)} color=Colors.marine1>
+        <Text fontSize={Css.px(16)} color=Colors.orange>
           {"View Wares" |> str}
         </Text>
       </Link.Link2>
       <Link.Link2 page=Routes.UserResultsPage className=Styles.shHover>
-        <Text fontSize={Css.px(16)} color=Colors.marine1>
+        <Text fontSize={Css.px(16)} color=Colors.orange>
           {"View Users" |> str}
         </Text>
       </Link.Link2>
@@ -33,11 +40,11 @@ let make = () => {
       {userLoggedIn(cookies)
          ? <Flex
              className=Styles.loginButton
-             onClick={_ => removeCookie(. "userToken")}>
-             <Text color=Colors.marine1> {"Logout" |> str} </Text>
+             onClick={_ => {removeCookie(. "userToken"); removeCookie(. "username"); reload();}}>
+             <Text> {"Logout" |> str} </Text>
            </Flex>
          : <Link.Link2 page=Routes.LoginPage className=Styles.loginButton>
-             <Text color=Colors.marine1> {"Login / Register" |> str} </Text>
+             <Text> {"Login / Register" |> str} </Text>
            </Link.Link2>}
     </Flex>
   </Flex>;
