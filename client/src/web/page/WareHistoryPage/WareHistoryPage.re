@@ -97,18 +97,6 @@ let make = (~params: string) => {
                    </Flex>
                    {renderAttributes(~response, true)}
                  </Flex>
-                 <Flex full=true flexDirection=`column>
-                   <Flex
-                     py={Css.px(12)}
-                     full=true
-                     justifyContent=`center
-                     className=Styles.nav>
-                     <Text fontSize={Css.px(16)} fontWeight=`semiBold>
-                       {"Added" |> str}
-                     </Text>
-                   </Flex>
-                   {renderAttributes(~response, true)}
-                 </Flex>
                </Flex>
              </Flex>;
            }}

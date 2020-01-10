@@ -1,15 +1,10 @@
-status:
-    from api to sub everything done
-    only thing i shouldnt forget is to uncomment and undo changes for testing (TODOFAKE)
-    client:
-        i connected graphql, dont forget on every api change to clean and run schema 
-        also implemented forms 
-        check cookie, but should work and token (header), then i can also undo TODOFAKE
-        normal web shit then 
-    
+TODO:
+    updateHistory gives wrong owners back
+    code cleanup
+    refactor ? look below
+    readme update
+    also homepage text update    
 
-for testing purposes of create and update ware i fake token dont forget to delete in ware resolver!
-called: TODOFAKE (in ware resolver + ware schema check with whole project search tho) !!! KILL THIS AFTER TESTING DONE !!
 
 I implemented user auth structure like this:
 on create salt gets generated, password gets hashed through salt
@@ -19,11 +14,6 @@ in auth will be then iv, encryptedpw and salt saved and in token we save the has
 for login we hash pw with salt and verifykeys
 
 for auth we can get the hash through token and check whatever
-
-API STILL NEED TODO: 
-    authorizationrequest done, uncomment for client DONT FORGET TO DELETE FAKETOKEN GENERATOR !!
-
-Important: how to translate none from reason to graphql? !!!! xD grapglq ppx 
 
 how i got into db of education
     docker exec -it simple-supply-postgres bash

@@ -17,7 +17,7 @@ export default {
         throw Error("Invalid EAN, ware couldn't be found!");
       }
       ware = ware.dataValues
-      
+
       const wareLocations = (await models.WareLocation.findAll({
         where: {
           ware_ean: ean
@@ -91,7 +91,7 @@ export default {
 
         return obj;
       });
-      
+
       return wares;
     },
     getUpdateHistory: async (parent, { ean }, { authorizedUser, models }) => {
@@ -117,11 +117,53 @@ export default {
         }
       }))
 
-      const updates = await (wareLocations.map(async location =>{
-        const obj= {};
-        obj["location"] = {longitude: location.dataValues.longitude, latitude: location.dataValues.latitude};
-        let ownerFound = wareOwners.find(owner => owner.dataValues.start_block_num === location.dataValues.start_block_num);
-        ownerFound = ownerFound === undefined ? wareOwners.find(owner => owner.dataValues.end_block_num === null): ownerFound;
+      // const updates = await (wareLocations.map(async location =>{
+      //   const obj= {};
+      //   obj["location"] = {longitude: location.dataValues.longitude, latitude: location.dataValues.latitude};
+      //   let ownerFound = wareOwners.find(owner => owner.dataValues.start_block_num === location.dataValues.start_block_num);
+      //   ownerFound = ownerFound === undefined ? wareOwners.find(owner => owner.dataValues.end_block_num === null): ownerFound;
+      //   const user = (await models.User.findOne({
+      //     where: {
+      //       pubKey: ownerFound.dataValues.user_pubKey
+      //     }
+      //   })).dataValues;
+      //   obj["owner"] = user.username;
+      //   obj["createdAt"] = moment.unix(location.dataValues.timestamp).format('DD/MM/YYYY, H:mm');
+      //   return obj;
+      // }));
+
+      const updates = await (wareLocations.map(async location => {
+        let ownerFound;
+        if (location.dataValues.end_block_num !== null) {
+          ownerFound = wareOwners.find(owner => {
+            if (owner.dataValues.end_block_num !== null) {
+              if (
+                owner.dataValues.start_block_num < location.dataValues.end_block_num &&
+                owner.dataValues.end_block_num >= location.dataValues.end_block_num) {
+                return owner;
+              }
+
+            } else {
+              return owner;
+            }
+          })
+        } else {
+          ownerFound = wareOwners.find(owner => {
+            if (owner.dataValues.end_block_num !== null) {
+              if (location.dataValues.start_block_num <= owner.dataValues.end_block_num) {
+                return owner;
+              }
+            } else {
+              return owner;
+            }
+          })
+        }
+
+
+        const obj = {};
+        obj["location"] = { longitude: location.dataValues.longitude, latitude: location.dataValues.latitude };
+        // let ownerFound = wareOwners.find(owner => owner.dataValues.start_block_num === location.dataValues.start_block_num);
+        // ownerFound = ownerFound === undefined ? wareOwners.find(owner => owner.dataValues.end_block_num === null): ownerFound;
         const user = (await models.User.findOne({
           where: {
             pubKey: ownerFound.dataValues.user_pubKey
@@ -235,10 +277,10 @@ export default {
             username: input.owner
           }
         }));
-        if(user === null){
-        return { ean: input.ean, status: "INVALIDUSER" };
+        if (user === null) {
+          return { ean: input.ean, status: "INVALIDUSER" };
         }
-        input["owner"]= user.dataValues.pubKey;
+        input["owner"] = user.dataValues.pubKey;
       }
       const batch = updateWareTransaction(keyObj, input, timestamp);
 

@@ -29,13 +29,13 @@ module WareDataForm = WareFormCommon.EditWareDataForm(WareFormConfig);
 
 module Form = {
   [@react.component]
-  let make = (~mutation: SubmitWare.apolloMutation, ~ean: string) => {
+  let make = (~mutation: SubmitWare.apolloMutation, ~ean: string, ~initialState:FormConfig.state) => {
     let (showInvalidEan, setShowInvalidEan) = React.useState(() => false);
     let (showInvalidUser, setShowInvalidUser) = React.useState(() => false);
 
     let form =
       EditWareForm.useForm(
-        ~initialState=FormConfig.initialState,
+        ~initialState,
         ~onSubmit=(state, submissionCallback) => {
           let variables =
             SubmitWareQuery.makeWithVariables({
@@ -65,7 +65,7 @@ module Form = {
                | Data(data) =>
                  switch (parseToken(data)) {
                  | Some(ean) =>
-                   let url = "/wares";
+                   let url = "/";
                   //  let url = "/ware/ean=" ++ ean;
                    ReasonReactRouter.replace(url);
                    Js.Promise.resolve(result);
@@ -132,5 +132,31 @@ module Form = {
 
 [@react.component]
 let make = (~ean:string) => {
-  <SubmitWare> {(mutation, _) => <Form mutation ean />} </SubmitWare>;
+        <GetWareQuery ean>
+        {response => {
+          let location =Array.get(response##getWare##locations,(Array.length(response##getWare##locations)-1));
+
+          let longitude= switch(location){
+            | Some(location) => location##longitude
+            | _ => 0.0
+          };
+          let latitude = switch(location){
+            | Some(location) => location##latitude
+            | _ => 0.0
+          };
+
+          // let latitude =Array.get(response##getWare##locations,(Array.length(response##getWare##locations)-1))##longitude;
+
+          let initialState:FormConfig.state = {
+            ean,
+            name: response##getWare##name,
+            longitude,
+            latitude,
+            uvp: response##getWare##uvp,
+            owner: response##getWare##owner##username,
+          };
+
+  <SubmitWare> {(mutation, _) => <Form mutation ean initialState/>} </SubmitWare>
+         }} </GetWareQuery>
+  ;
 }

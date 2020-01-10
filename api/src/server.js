@@ -43,6 +43,8 @@ server.applyMiddleware({ app, path: '/graphiql' });
 
 const port = process.env.APP_PORT;
 
+
+
 const eraseDB = false;
 // const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
