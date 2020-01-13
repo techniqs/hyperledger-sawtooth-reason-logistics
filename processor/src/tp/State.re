@@ -5,8 +5,6 @@ external stringDictToJson: Js.Dict.t(string) => Js.Json.t = "%identity";
 external arrayDictToJson: Js.Dict.t(array(Js.Dict.t(string))) => Js.Json.t =
   "%identity";
 
-// from sawtooth-sdk-javascript/processor/context.js
-// context is our state
 class type _context =
   [@bs]
   {
@@ -23,7 +21,7 @@ type state = {
   timeout: int,
 };
 
-//returns dict if nothing in that dict at adress returns empty array else buffer
+//returns dict, if dict is empty at key: adress returns empty array as value, else buffer
 let getState = (address: array(string), state: state) => {
   state.context##getState(address, state.timeout);
 };
@@ -87,15 +85,9 @@ module StateFunctions = {
 
   // set has no data at address
   // update without transfer has data
-  //     at address but only 2 input adresses
+  //     but tpRequest has 2 addresses as inputs
   // update with transfer has data
-  //     at address but 3 adresses at inputs
-
-  // data saved at adress looks like this:
-  // {"identifier":[{"ean":"1233456789" , "timestamp":"1578102105"}],
-  // "attributes":[{"name":"geil", "upv": "10.0", "timestamp":"1578102105"},{"name":"nichtmehrgeil", "uvp": "13.2", "timestamp":"1578102204"}],
-  // "locations":[{"latitude":"40","longitude":"40","timestamp":"1578102105"},{"latitude":"-40","longitude":"10","timestamp":"1578102204"}],
-  // "owners":[{"pubKey":"026da187fdd1edd89e4e3aaefdbd5d3c29344c790191e67eec184e12763bd4dbe0","timestamp":"1578102105"}]}
+  //     but tpRequest has 3 addresses as inputs
 
   let setWare = (buffer: Node.Buffer.t, state: state, inputs: array(string)) => {
     let parsedData = Payload.decodeWareData(buffer);

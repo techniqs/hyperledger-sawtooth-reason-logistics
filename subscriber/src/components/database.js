@@ -10,7 +10,6 @@ export default class Database {
     }
 
     async createBlock(block) {
-        console.log('\x1b[36m%s\x1b[0m', "INSERTING BLOCK ---------------", block);
         await models.Block.create({
             block_num: block.block_num,
             block_id: block.block_id,
@@ -18,25 +17,16 @@ export default class Database {
     };
 
     createUser(user) {
-        console.log('\x1b[36m%s\x1b[0m', "INSERTING USER ------------------", user);
         models.User.create({
             pubKey: user.pubKey,
             username: user.username,
             timestamp: user.timestamp,
             start_block_num: user.start_block_num,
             end_block_num: user.end_block_num,
-        }).catch(function (err) {
-            console.log("VALIDATION ERROR", err);
-        });
+        })
     };
 
     createWare(ware, start_block_num, end_block_num) {
-        // {"identifier":[{"ean":"1233456789" , "timestamp":"1578102105"}],
-        // "attributes":[{"name":"geil", "upv": "10.0", "timestamp":"1578102105"},{"name":"nichtmehrgeil", "uvp": "13.2", "timestamp":"1578102204"}],
-        // "locations":[{"latitude":"40","longitude":"40","timestamp":"1578102105"},{"latitude":"-40","longitude":"10","timestamp":"1578102204"}],
-        // "owners":[{"pubKey":"026da187fdd1edd89e4e3aaefdbd5d3c29344c790191e67eec184e12763bd4dbe0","timestamp":"1578102105"}]}
-
-
         models.Ware.create({
             ean: ware.identifier[0].ean,
             timestamp: parseInt(ware.identifier[0].timestamp),
@@ -69,11 +59,6 @@ export default class Database {
     };
 
     async updateWare(ware, start_block_num, end_block_num) {
-        // {"identifier":[{"ean":"1233456789" , "timestamp":"1578102105"}],
-        // "attributes":[{"name":"geil", "upv": "10.0", "timestamp":"1578102105"},{"name":"nichtmehrgeil", "uvp": "13.2", "timestamp":"1578102204"}],
-        // "locations":[{"latitude":"40","longitude":"40","timestamp":"1578102105"},{"latitude":"-40","longitude":"10","timestamp":"1578102204"}],
-        // "owners":[{"pubKey":"026da187fdd1edd89e4e3aaefdbd5d3c29344c790191e67eec184e12763bd4dbe0","timestamp":"1578102105"}]}
-
         const owner = ware.owners[ware.owners.length - 1];
         const attribute = ware.attributes[ware.attributes.length - 1];
         const location = ware.locations[ware.locations.length - 1];
@@ -164,8 +149,7 @@ export default class Database {
         })
     }
 
-    // true in db, else false 
-    async  wareInDb(ean) {
+    async wareInDb(ean) {
         const ware = (await models.Ware.findOne({
             where:
             {

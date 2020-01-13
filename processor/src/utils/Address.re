@@ -1,4 +1,3 @@
-//Binding to class Hash from crypto module
 class type _hash =
   [@bs]
   {
@@ -26,7 +25,6 @@ type addressTypes =
 
 let familyName = "sawtooth-reason-supply";
 let familyVersion = "0.1";
-// first 3 bytes of address from 35
 let nameSpace =
   String.sub(
     createHash("sha512")##update(familyName)##digest("hex"),

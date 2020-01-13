@@ -45,7 +45,7 @@ const port = process.env.APP_PORT;
 
 
 
-const eraseDB = false;
+const eraseDB = true;
 // const eraseDB = process.env.DB_ERASE === "true" ? true : false;
 
 const test = false;

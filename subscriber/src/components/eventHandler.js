@@ -3,7 +3,6 @@ import { NAMESPACE, USER_PREFIX, WARE_PREFIX } from "../utils/addressHandler";
 const protobuf = require('../../sawtooth-transpiled/protobuf')
 
 const MAX_BLOCK_NUMBER = null;
-// const MAX_BLOCK_NUMBER = Number.MAX_SAFE_INTEGER - 1;
 
 export const handle_events = async (db, events, subscriberRef) => {
     console.log("EVENTHANDLER CALLED");
@@ -11,15 +10,11 @@ export const handle_events = async (db, events, subscriberRef) => {
     if (block.block_id !== null && block.block_num !== null) {
         const duplicate = await resolveFork(db, block);
         if (!duplicate) {
-            // here parse state changes, deserialize data and save it to db
-            // look at education stuff 
-            console.log("parsing data!!!");
             parseData(db, events, block);
         }
         else {
-            console.log("duplicate block!!!!!!");
+            console.log("found duplicate block!");
         }
-
     } else {
         throwExceptionAndClose(subscriberRef,
             "Unable to handle event, blockID and/or blockNum couldnt be found");
@@ -27,7 +22,6 @@ export const handle_events = async (db, events, subscriberRef) => {
 }
 
 // here parse state changes, deserialize data and save it to db
-// look at education stuff 
 const parseData = async (db, events, block) => {
 
     for (let event of sortEvents(events, false)) {
@@ -61,16 +55,6 @@ const parseUserData = (db, buffer, block_num) => {
     db.createUser(userData);
 }
 
-  //steps for creating / updating 
-  // first check: (ean in db?) if not then normal create and i just parse data to json and get my shit from it.
-  // if already in db check timestamp of last entry in attribute, owner and location. if db entry < parsed timestamp then save into db ez
-  // also dont forget at update i also have to update entries before !! end block num !!
-
-
-  // {"identifier":[{"ean":"1233456789" , "timestamp":"1578102105"}],
-  // "attributes":[{"name":"geil", "upv": "10.0", "timestamp":"1578102105"},{"name":"nichtmehrgeil", "uvp": "13.2", "timestamp":"1578102204"}],
-  // "locations":[{"latitude":"40","longitude":"40","timestamp":"1578102105"},{"latitude":"-40","longitude":"10","timestamp":"1578102204"}],
-  // "owners":[{"pubKey":"026da187fdd1edd89e4e3aaefdbd5d3c29344c790191e67eec184e12763bd4dbe0","timestamp":"1578102105"}]}
 
 const parseWareData = async (db, buffer, block_num) => {
     const wareData = JSON.parse(buffer.toString());
@@ -114,7 +98,6 @@ const parseNewBlock = (events) => {
     let block_id = null;
     for (let event of sortEvents(events, true)) {
         const attributes = event.attributes;
-        // console.log("attributes", attributes);
         for (let attr of attributes) {
             if (attr.key === "block_id") {
                 block_id = attr.value;

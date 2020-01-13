@@ -38,7 +38,7 @@ let authorizedPage = (page, cookies: Cookie.cookies) => {
     };
 };
 
-let urlToPage = (url: ReasonReactRouter.url, cookies: Cookie.cookies) => {
+let urlToPage = (url: ReasonReactRouter.url, _cookies: Cookie.cookies) => {
   switch (url.path) {
   | ["users"] => Result.Ok(<UserResultsPage />)
   | ["wares"] => Result.Ok(<WareResultsPage />)

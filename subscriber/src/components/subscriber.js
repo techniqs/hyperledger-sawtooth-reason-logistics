@@ -12,13 +12,10 @@ export default class Subscriber extends Stream {
 
     async start() {
         await this.connect(function () {
-            // callback for connection / disconnect like do something here probably 
             console.log("connection changed");
-
         })
 
         const self = this;
-
         // get lastKnownBlockIds 
         let known_ids = ['0000000000000000'];
         const blockSub = protobuf.EventSubscription.create({
@@ -41,7 +38,6 @@ export default class Subscriber extends Stream {
 
 
         this.onReceive(function (message) {
-            // messageStatus = 504 / CLIENT_EVENTS 
             console.log("-------------------------------------");
             const events = protobuf.EventList.decode(message.content).events;
             handle_events(self.database, events, self);
