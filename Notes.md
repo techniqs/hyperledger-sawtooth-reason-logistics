@@ -1,7 +1,6 @@
 TODO:
     updateHistory gives wrong owners back
     code cleanup for client and api
-    refactor ? repo name, family name, (dont forget to rename sawtooth-reason-supply family name in source code)
     readme update
     also homepage text update
     docker container -> dont forget to change localhost ip to docker ips (search for localhost)
@@ -29,8 +28,6 @@ Values that are valid as of the current block have end_block_num set to NULL.
 info: 
 Event with eventtype sawtooth/block-commit has attributes:
 block_id, block_num, state_root_hash, previous_block_id,
-------
-
 
 
 docker postgres commands: 

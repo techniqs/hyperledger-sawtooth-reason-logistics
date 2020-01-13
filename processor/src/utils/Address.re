@@ -23,7 +23,7 @@ type addressTypes =
   | Ware
   | OtherFamily;
 
-let familyName = "sawtooth-reason-supply";
+let familyName = "hyperledger-sawtooth-reason-logistics";
 let familyVersion = "0.1";
 let nameSpace =
   String.sub(
@@ -33,7 +33,6 @@ let nameSpace =
   );
 let userPrefix = "00";
 let warePrefix = "01";
-
 
 let getIdentifierHash = (x: string) => {
   String.lowercase_ascii(

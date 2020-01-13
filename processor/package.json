@@ -1,5 +1,5 @@
 {
-  "name": "sawtooth-reason-supply-processor",
+  "name": "hyperledger-sawtooth-reason-logistics-processor",
   "version": "0.1.0",
   "scripts": {
     "dev": "bsb -make-world -w",

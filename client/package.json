@@ -1,5 +1,5 @@
 {
-  "name": "sawtooth-reason-supply-client",
+  "name": "hyperledger-sawtooth-reason-logistics-client",
   "version": "0.1.0",
   "scripts": {
     "start": "bsb -make-world && razzle start",

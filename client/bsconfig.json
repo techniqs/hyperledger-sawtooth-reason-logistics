@@ -1,5 +1,5 @@
 {
-  "name": "sawtooth-reason-supply-client",
+  "name": "hyperledger-sawtooth-reason-logistics-client",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors","-bs-g"],
   "refmt": 3,
   "reason": {

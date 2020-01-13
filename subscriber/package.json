@@ -1,5 +1,5 @@
 {
-  "name": "sawtooth-reason-supply-subscriber",
+  "name": "hyperledger-sawtooth-reason-logistics-subscriber",
   "version": "0.1.0",
   "scripts": {
     "build-sawtooth": "babel node_modules/sawtooth-sdk -d sawtooth-transpiled && cp node_modules/sawtooth-sdk/protobuf/protobuf_bundle.json sawtooth-transpiled/protobuf",

@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-export const FAMILY_NAME = "sawtooth-reason-supply";
+export const FAMILY_NAME = "hyperledger-sawtooth-reason-logistics";
 export const FAMILY_VERSION = "0.1";
 export const NAMESPACE = (crypto.createHash("sha512").update(FAMILY_NAME).digest("hex")).substring(0, 6);
 export const USER_PREFIX = "00";

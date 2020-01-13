@@ -36,7 +36,7 @@ function renderTemplate({ apolloState, markup }) {
       <script>
 		window.__APOLLO_STATE__ = ${apolloState};
       </script>
-      <title>Sawtooth-Supply-Tracker</title>
+      <title>Hyperledger-Sawtooth-Reason-Logistics</title>
     </head>
     <body>
         <div id="root">${markup}</div>

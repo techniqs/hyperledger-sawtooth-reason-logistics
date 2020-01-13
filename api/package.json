@@ -1,5 +1,5 @@
 {
-  "name": "sawtooth-reason-supply-apollo-api",
+  "name": "hyperledger-sawtooth-reason-logistics-apollo-api",
   "version": "0.1.0",
   "scripts": {
     "dev": "nodemon --exec babel-node src/server.js"
