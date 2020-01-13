@@ -2,7 +2,6 @@ TODO:
     updateHistory gives wrong owners back
     code cleanup for client and api
     readme update
-    also homepage text update
     docker container -> dont forget to change localhost ip to docker ips (search for localhost)
     tests
     check package.json for naming and scripts
