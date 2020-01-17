@@ -9,7 +9,6 @@ export default (sequelize, DataTypes) => {
         notEmpty: true,
       },
       // cannot reference because on time of save user not in db yet
-      // but i know its fkey
       // references: {
       //   model: sequelize.models.user,
       //   key: 'pubKey',
@@ -41,11 +40,6 @@ export default (sequelize, DataTypes) => {
       },
     },
   });
-
-  // check this
-  // Auth.associate = models => {
-  //   Auth.belongsTo(models.User, { foreignKey: 'pubKey', onDelete: 'CASCADE' });
-  // };
 
 
   return Auth;

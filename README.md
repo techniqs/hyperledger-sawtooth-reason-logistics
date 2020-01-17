@@ -1,6 +1,7 @@
 # Hyperledger Sawtooth Reason Logistics
 <div  style="width: 100%; text-align:center;"><img align="center" width="333" alt="Sawtooth Icon" src="sawtooth_logo.png">
 </div>
+<br/>
 
 This project was created during the course of a Bachelor's Thesis at the Vienna University of Technology. 
 The goal is to provide a proof of concept of a blockchain application using ReasonML in combination with Hyperledger Sawtooth
@@ -23,6 +24,20 @@ In it's end state, this project will provide the following features:
 	to provide faster Query calls for the api
 
 ## Quickstart
+### Cross-plattform Instructions
+To run the application you must have installed [docker](https://docs.docker.com/install/#server) and [docker-compose](https://docs.docker.com/compose/install/).
+
+### Installing and Hyperledger Sawtooth Reason Logistics
+```
+git clone https://github.com/techniqs/hyperledger-sawtooth-reason-logistics.git
+
+cd hyperledger-sawtooth-reason-logistics/
+
+docker-compose up
+````
+
+
+
 ## Usage
 ### Loading a contract
 ### Sending a Transaction

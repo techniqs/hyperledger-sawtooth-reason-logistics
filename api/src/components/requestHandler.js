@@ -1,6 +1,7 @@
 import rp from 'request-promise';
 import protobuf from 'sawtooth-sdk/protobuf';
 
+// sends a ready batch to the validator
 export const sendBatch = async (batch) => {
 
     // IMPORTANT REST API LINKS

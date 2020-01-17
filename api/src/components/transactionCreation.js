@@ -2,6 +2,7 @@ import protobuf from 'sawtooth-sdk/protobuf';
 import { batchKeyPair, batchSigner, getSigner } from './keyHandler';
 import { hash, getUserAddress, getWareAddress, FAMILY_NAME, FAMILY_VERSION, NAMESPACE } from '../utils/addressHandler';
 
+// creates a user transaction for the processor with given input
 export const createUserTransaction = (transactionKeyPair, username, timestamp) => {
     const userAddress = getUserAddress(transactionKeyPair.pubKey);
 
@@ -20,6 +21,8 @@ export const createUserTransaction = (transactionKeyPair, username, timestamp) =
 
     return createBatch(payloadBytes, inputAddressList, outputAddressList, transactionKeyPair)
 }
+
+// creates a ware transaction for the processor with given input
 
 export const createWareTransaction = (transactionKeyPair, input, timestamp) => {
     const userAddress = getUserAddress(transactionKeyPair.pubKey);
@@ -42,6 +45,8 @@ export const createWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     return createBatch(payloadBytes, inputAddressList, outputAddressList, transactionKeyPair)
 }
+
+// updates ware attributes or owner for the processor with given input
 
 export const updateWareTransaction = (transactionKeyPair, input, timestamp) => {
     const userAddress = getUserAddress(transactionKeyPair.pubKey);
@@ -70,6 +75,8 @@ export const updateWareTransaction = (transactionKeyPair, input, timestamp) => {
 
     return createBatch(payloadBytes, inputAddressList, outputAddressList, transactionKeyPair)
 }
+
+// creates the batch with given payload, addresses to read and write from and the transaction key pair
 
 const createBatch = (payloadBytes, inputs, outputs, transactionKeyPair) => {
 

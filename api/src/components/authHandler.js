@@ -3,15 +3,18 @@ import models from '../utils/databaseConfig';
 import { batchKeyPair, verifyKeys } from './keyHandler'
 import crypto from 'crypto';
 
+// generates random Salt
 const genSalt = () => {
     return crypto.randomBytes(8).toString('hex');
 };
 
+// hashes password with given salt
 const hashPassword = (pw, salt) => {
     const hash = crypto.createHmac("sha256", salt).update(pw).digest("hex");
     return hash;
 }
 
+// encrypts a privatekey with the hashed password
 export const encryptKey = (privKey, hash) => {
     const iv = crypto.randomBytes(16);
     let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(hash, "hex"), iv);
@@ -20,6 +23,8 @@ export const encryptKey = (privKey, hash) => {
     return { iv: iv.toString('hex'), encryptedKey: encrypted.toString('hex') };
 };
 
+
+// decrypts a private key
 export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
     try {
         let iv = Buffer.from(ivHex, 'hex');
@@ -35,13 +40,13 @@ export const decryptKey = (encryptedPrivKey, ivHex, hash) => {
     }
 };
 
-
-// signToken({ pubKey: auth.pubKey, hash: hash })
+// signing a jwt token
 const signToken = data => {
     const token = jwt.sign(Buffer.from(JSON.stringify(data)).toString('base64'), batchKeyPair.privKey);
     return token;
 };
 
+// verifies a jwt token
 const verifyToken = token => {
     try {
         const data = jwt.verify(token, batchKeyPair.privKey);
@@ -52,7 +57,7 @@ const verifyToken = token => {
     }
 };
 
-
+// checks if user is already login on request (to not authorize again in resolver methods)
 const authorize = async (ctx) => {
 
     const headers = ctx.req.headers;

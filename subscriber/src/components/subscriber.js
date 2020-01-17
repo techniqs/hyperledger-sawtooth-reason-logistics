@@ -10,6 +10,7 @@ export default class Subscriber extends Stream {
         this.database = new Database();
     }
 
+    // starts the subscriber
     async start() {
         await this.connect(function () {
             console.log("connection changed");

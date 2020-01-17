@@ -4,10 +4,12 @@ import { hydrate } from 'react-dom';
 import ApolloClient from 'apollo-client';
 import Cookies from 'universal-cookie';
 import { CookiesProvider } from 'react-cookie';
-const { make: App } = require('./web/App.bs'); // BuckleScript output directory
 import { InMemoryCache } from 'apollo-cache-inmemory';
-
+const { make: App } = require('./web/App.bs'); // BuckleScript output directory
 const { createLinks } = require('./web/component/Graphql.bs');
+
+// entrypoint for client (SSR)
+
 
 const cookies = new Cookies();
 

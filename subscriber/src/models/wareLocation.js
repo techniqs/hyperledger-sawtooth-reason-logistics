@@ -61,11 +61,6 @@ export default (sequelize, DataTypes) => {
     },
   });
 
-  // this doesnt work 
-  // WareLocation.associate = models => {
-  //   WareLocation.belongsTo(models.Ware, { foreignKey: 'id', onDelete: 'CASCADE' });
-  // };
-
 
   return WareLocation;
 };

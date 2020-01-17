@@ -4,8 +4,6 @@ open Utils;
 module type FormConfig = {
   type field;
   type state;
-  // type message = string;
-  //   type submissionError;
   let validators:
     list(Formality__Validation.validator(field, state, string));
   type submissionError;

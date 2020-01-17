@@ -4,6 +4,7 @@ const protobuf = require('../../sawtooth-transpiled/protobuf')
 
 const MAX_BLOCK_NUMBER = null;
 
+// entrypoint for each event
 export const handle_events = async (db, events, subscriberRef) => {
     console.log("EVENTHANDLER CALLED");
     const block = parseNewBlock(events);

@@ -1,25 +1,9 @@
 TODO:
     updateHistory gives wrong owners back
-    code cleanup for client and api
-    comments! (processor done)
     readme update
     tests
-    check package.json for naming and scripts(dev should be for developing, probably delete start if im going to start everything with node)
     somewhere note if you want to do everything local then change 172. whatever to localhost
-
-
-  # hsrl-api:
-  #   build:
-  #     dockerfile: ./api/Dockerfile
-  #   # volumes:
-  #   #   - .:/project/hsrl-api
-  #   image: hsrl/api
-  #   container_name: hsrl-api
-  #   ports:
-  #     - '4000:4000'
-  #   # depends_on:
-  #   #   - hsrl-postgres
-
+    clear notes
 
 api: 
     docker build -t hsrl/api .

@@ -88,6 +88,5 @@ let make =
 
   let url = getUrlList(~initialUrl?, ~search?, ());
 
-  // change to errorPage
   urlToPage(url, cookies) |> Result.getWithDefault(<ErrorPage />);
 };

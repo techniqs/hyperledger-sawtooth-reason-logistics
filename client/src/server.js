@@ -6,6 +6,8 @@ import { CookiesProvider } from 'react-cookie';
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 
+// entrypoint for server (SSR)
+
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const cookiesMiddleware = require('universal-cookie-express');
