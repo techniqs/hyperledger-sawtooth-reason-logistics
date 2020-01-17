@@ -1,5 +1,5 @@
 # Hyperledger Sawtooth Reason Logistics
-<p align="center" style="margin-top:16px; margin-bottom:0;"><img align="center" width="333" alt="Sawtooth Icon" src="sawtooth_logo.png">
+<p align="center"><img align="center" width="333" alt="Sawtooth Icon" src="./public/sawtooth_logo.png">
 </p>
 <br/>
 
@@ -40,7 +40,7 @@ docker-compose up
 
 ### Client
 
-<p align="center"><img align="center" alt="Sawtooth Icon" src="frontend.png">
+<p align="center"><img align="center" alt="Frontend" src="./public/frontend.png">
 </p>
 
 The above image shows the frontend/client-side of the application, where you can easily create transactions which then get forwarded to the custom graphql api.
@@ -54,7 +54,7 @@ Possible transactions are:
 
 ### Custom graphql API
 
-<p align="center"><img align="center" alt="Sawtooth Icon" src="graphql.png">
+<p align="center"><img align="center" alt="Graphql API" src="./public/graphql.png">
 </p>
 
 The above image shows the graphql-api playground of the application, where you can create transactions through mutations which get sent to the sawtooth validator and access the database with the given queries.
