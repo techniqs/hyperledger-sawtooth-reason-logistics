@@ -1,0 +1,113 @@
+# Copyright 2017 Intel Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ------------------------------------------------------------------------------
+
+version: "2.1"
+
+services:
+
+  hsrl-postgres:
+    image: mdillon/postgis
+    container_name: hsrl-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: hsrl
+      POSTGRES_DB: hsrlDB
+    ports:
+      - '5432:5432'
+
+  hsrl-api:
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: hsrl/api
+    container_name: hsrl-api
+    ports:
+      - '4000:4000'
+    depends_on:
+      - hsrl-postgres
+    command: ["wait-for-it/wait-for-it.sh", "db:5432","-t","10","--", "npm", "start"]
+
+  hsrl-subscriber:
+    build:
+      context: ./subscriber
+      dockerfile: ./Dockerfile
+    image: hsrl/subscriber
+    container_name: hsrl-subscriber
+    ports:
+      - '4004'
+    depends_on:
+      - validator
+      # - hsrl-api
+      - hsrl-postgres
+    command: ["wait-for-it/wait-for-it.sh","db:5432","-t","15", "--", "npm", "start"]
+
+  hsrl-processor:
+    build:
+      context: ./processor
+      dockerfile: ./Dockerfile
+    image: hsrl/processor
+    container_name: hsrl-processor
+    ports:
+      - '4004'
+    depends_on:
+      - validator
+    command: ["wait-for-it/wait-for-it.sh","localhost:4004","-t","5", "--", "npm", "start"]
+
+
+  settings-tp:
+    image: hyperledger/sawtooth-settings-tp:1.0
+    container_name: sawtooth-settings-tp-default
+    depends_on:
+      - validator
+    entrypoint: settings-tp -vv -C tcp://validator:4004
+    
+  validator:
+    image: hyperledger/sawtooth-validator:1.0
+    container_name: sawtooth-validator-default
+    expose:
+      - 4004
+    ports:
+      - "4004:4004"
+    # start the validator with an empty genesis batch
+    entrypoint: "bash -c \"\
+        sawadm keygen && \
+        sawtooth keygen my_key && \
+        sawset genesis -k /root/.sawtooth/keys/my_key.priv && \
+        sawadm genesis config-genesis.batch && \
+        sawtooth-validator -vv \
+          --endpoint tcp://validator:8800 \
+          --bind component:tcp://eth0:4004 \
+          --bind network:tcp://eth0:8800 \
+        \""
+
+  rest-api:
+    image: hyperledger/sawtooth-rest-api:1.0
+    container_name: sawtooth-rest-api-default
+    ports:
+      - "8008:8008"
+    depends_on:
+      - validator
+    entrypoint: sawtooth-rest-api -C tcp://validator:4004 --bind rest-api:8008
+
+  shell:
+    image: hyperledger/sawtooth-all:1.0
+    container_name: sawtooth-shell-default
+    depends_on:
+      - rest-api
+    entrypoint: "bash -c \"\
+        sawtooth keygen && \
+        tail -f /dev/null \
+        \""

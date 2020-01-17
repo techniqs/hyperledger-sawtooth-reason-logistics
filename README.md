@@ -1,5 +1,5 @@
 # Hyperledger Sawtooth Reason Logistics
-<p align="center"><img align="center" width="333" alt="Sawtooth Icon" src="sawtooth_logo.png">
+<p align="center" style="margin-top:16px; margin-bottom:0;"><img align="center" width="333" alt="Sawtooth Icon" src="sawtooth_logo.png">
 </p>
 <br/>
 
