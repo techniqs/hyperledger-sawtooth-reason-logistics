@@ -1,8 +1,6 @@
 TODO:
     updateHistory gives wrong owners back
-    readme update
     tests
-    somewhere note if you want to do everything local then change 172. whatever to localhost
     clear notes
 
 api: 
