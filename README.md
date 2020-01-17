@@ -81,6 +81,10 @@ If some data is saved on this address, but the input of the transaction consists
 
 If some data is saved on this address, and the input of the transaction consists of 3 addresses (ware-, oldowner-, newowner-address) then the blockchain stores additional information about this ware and its result is the transfer of a ware from one owner to another.
 
+### Subscriber
+After a payload gets saved on the blockchain, the sawtooth validator broadcasts an event with the data which gets caught by the subscriber.
+The only functionality the subscriber has, is to create a new block for every event and save the broadcasted data in the reporting database. The Usefullness of this action is that the custom graphql api doesnt have to access the blockchain for every query instead queries over the reporting database for way faster query respones.
+
 ## Some Thoughts
 
 The main challenge I had to face at the start of implementation was the lack of knowledge in ReasonML. 
