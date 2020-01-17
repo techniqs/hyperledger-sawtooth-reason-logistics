@@ -74,6 +74,7 @@ services:
     container_name: hsrl-client
     ports:
       - '3000:3000'
+      - '4000'
 
   settings-tp:
     image: hyperledger/sawtooth-settings-tp:1.0

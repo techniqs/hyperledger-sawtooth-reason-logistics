@@ -1,6 +1,6 @@
 # Hyperledger Sawtooth Reason Logistics
-<div  style="width: 100%; text-align:center;"><img align="center" width="333" alt="Sawtooth Icon" src="sawtooth_logo.png">
-</div>
+<p align="center"><img align="center" width="333" alt="Sawtooth Icon" src="sawtooth_logo.png">
+</p>
 <br/>
 
 This project was created during the course of a Bachelor's Thesis at the Vienna University of Technology. 
@@ -36,13 +36,51 @@ cd hyperledger-sawtooth-reason-logistics/
 docker-compose up
 ````
 
+## Usage (right name?)
 
+### Client
 
-## Usage
-### Loading a contract
-### Sending a Transaction
-#### Notes on Input Format
-## Known Issues
+<p align="center"><img align="center" alt="Sawtooth Icon" src="frontend.png">
+</p>
+
+The above image shows the frontend/client-side of the application, where you can easily create transactions which then get forwarded to the custom graphql api.
+
+Possible transactions are: 
+-	Create a new user
+-	Create a new ware
+-	Update attributes of existing ware like (name, uvp)
+-	Update location of existing ware like (longitude, latitude)
+-	Transfer ware to a new existing owner
+
+### Custom graphql API
+
+<p align="center"><img align="center" alt="Sawtooth Icon" src="graphql.png">
+</p>
+
+The above image shows the graphql-api playground of the application, where you can create transactions through mutations which get sent to the sawtooth validator and access the database with the given queries.
+
+The api itsself doesnt store data in the reporting database except in the Auth table to instantly return a JWT token for the client.
+
+Also the playground provides documentation about every query and mutation the api has to offer.
+
+### Processor
+
+After the transaction got validated by the sawtooth validator, the processor receives the transaction requests and stores data dependent on the action of the transaction and on the addresses which the processor can read from/ write to.
+
+#### CreateUser Action
+The processor receives a transaction with user relevant information and the action "create_user". 
+This data gets only saved if, the created address from the signerPublicKey is the same as output address from the transaction request and nothing is saved on this specific address. 
+
+#### SetWare Action
+The processor receives a transaction with ware relevant information and the action "set_ware". This action can output 3 different results.
+The address to store or look up data for the ware always gets created by the EAN of the ware. 
+
+If there is no data saved on this specific address, then the ware payload gets stored on this address and it`s result is the creation of a ware.
+
+If some data is saved on this address, but the input of the transaction consists only of 2 addresses (ware- and old-address) then the blockchain stores additional information about this ware and its result is the update of a ware.
+
+If some data is saved on this address, and the input of the transaction consists of 3 addresses (ware-, oldowner-, newowner-address) then the blockchain stores additional information about this ware and its result is the transfer of a ware from one owner to another.
+
 ## Some Thoughts
 
 The main challenge I had to face at the start of implementation was the lack of knowledge in ReasonML. 
