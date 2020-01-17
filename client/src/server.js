@@ -1,5 +1,6 @@
 import React from 'react';
 import express from 'express';
+import { resolve } from 'path';
 import { renderToStringWithData } from 'react-apollo';
 import { CookiesProvider } from 'react-cookie';
 import ApolloClient from 'apollo-client';

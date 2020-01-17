@@ -2,12 +2,11 @@
   "name": "hyperledger-sawtooth-reason-logistics-client",
   "version": "0.1.0",
   "scripts": {
-    "start": "bsb -make-world && razzle start",
     "dev": "bsb -make-world && razzle start",
     "clean": "bsb -clean-world && rm -rf lib build && find . -type f -name '*.bs.js' -delete",
     "build": "bsb -make-world && razzle build",
+    "start": "node build/server.js",
     "schema": "send-introspection-query http://localhost:4000/graphiql",
-    "test": "razzle test --env=jsdom"
   },
   "dependencies": {
     "@ahrefs/bs-reactstrap": "1.0.3",

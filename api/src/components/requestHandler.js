@@ -16,14 +16,18 @@ export const sendBatch = async (batch) => {
 
     const batchOptions = {
         method: 'POST',
-        uri: 'http://localhost:8008/batches',
+        uri: 'http://172.17.0.1:8008/batches',
+        // for localhost
+        // uri: 'http://localhost:8008/batches',
         body: batchList,
         headers: {
             'Content-Type': 'application/octet-stream'
         },
     }
 
-    const uri = 'http://localhost:8008/batch_statuses?wait=1&id=' + batch.headerSignature;
+    const uri = 'http://172.17.0.1:8008/batch_statuses?wait=1&id=' + batch.headerSignature;
+    // for localhost 
+    // const uri = 'http://localhost:8008/batch_statuses?wait=1&id=' + batch.headerSignature;
 
     const statusOptions = {
         method: 'GET',

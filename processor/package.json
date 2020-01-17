@@ -2,9 +2,9 @@
   "name": "hyperledger-sawtooth-reason-logistics-processor",
   "version": "0.1.0",
   "scripts": {
+    "build": "bsb -make-world",
     "dev": "bsb -make-world -w",
-    "node-docker": "bsb -make-world && node src/nodeIndex.js",
-    "start": "bsb -make-world && node src/sdkIndex.js",
+    "start": "bsb -make-world && node src/index.js",
     "clean": "bsb -clean-world && rm -rf lib build && find . -type f -name '*.bs.js' -delete"
   },
   "dependencies": {

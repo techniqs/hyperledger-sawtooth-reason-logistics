@@ -1,3 +1,4 @@
+// binding to class Hash of crypto module
 class type _hash =
   [@bs]
   {
@@ -16,13 +17,14 @@ type hash = Js.t(_hash);
 // Ware: 01
 // Bytes 5-35
 // User: First 62 chars of hash of public key
-// Ware: First 62 chars of hash of identifier
+// Ware: First 62 chars of hash of EAN(identifier)
 
 type addressTypes =
   | User
   | Ware
   | OtherFamily;
 
+// specifies which transactions my processor takes 
 let familyName = "hyperledger-sawtooth-reason-logistics";
 let familyVersion = "0.1";
 let nameSpace =
@@ -40,10 +42,12 @@ let getIdentifierHash = (x: string) => {
   );
 };
 
+// useradress through pubKey
 let getUserAddress = (pubKey: string) => {
   nameSpace ++ userPrefix ++ getIdentifierHash(pubKey);
 };
 
+// wareAddress through ean
 let getWareAddress = (ean: string) => {
   nameSpace ++ warePrefix ++ getIdentifierHash(ean);
 };

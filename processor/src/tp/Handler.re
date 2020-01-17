@@ -1,3 +1,4 @@
+//transaction header
 type header = {
   batcherPublicKey: string,
   dependencies: array(string),
@@ -10,6 +11,7 @@ type header = {
   signerPublicKey: string,
 };
 
+// request which i get from the transaction processor
 type transactionRequest = {
   payload: Node.Buffer.t,
   header,
@@ -31,6 +33,7 @@ module SupplyHandlerImpl = {
     let state = {context, timeout: 500};
     let payloadAction = decodePayloadAction(payloadBuffer);
 
+    // only accepts CreateUser and SetWare as actions
     switch (payloadAction) {
     | CreateUser =>  
       StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state)

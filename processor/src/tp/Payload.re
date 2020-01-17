@@ -1,3 +1,4 @@
+//whole file is only here for type conversion
 module Convert = {
   type actions =
     | CreateUser

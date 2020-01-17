@@ -1,17 +1,5 @@
 
-[@bs.val] external requireModule: string => unit = "require";
-
-module Result = {
-  include Belt.Result;
-  let mapWithDefault = (map, default, data) =>
-    Belt.Result.mapWithDefault(data, default, map);
-  let map = (map, data) => Belt.Result.map(data, map);
-  let getWithDefault = (default, data) =>
-    Belt.Result.getWithDefault(data, default);
-};
-
-external stringToJson : string => Js.Json.t = "%identity";
-
+//binding to JS exceptions
 module Exceptions = {
   exception StateError(string);
 

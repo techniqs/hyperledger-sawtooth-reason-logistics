@@ -11,9 +11,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-RUN git clone https://github.com/vishnubob/wait-for-it.git
+EXPOSE 4000
+RUN npm run build
 
-RUN npm run build-sawtooth
-
-# for docker build without docker-compose
-# CMD npm run start
+CMD ["node", "build/server.js"]

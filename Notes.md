@@ -1,10 +1,45 @@
 TODO:
     updateHistory gives wrong owners back
     code cleanup for client and api
+    comments! (processor done)
     readme update
-    docker container -> dont forget to change localhost ip to docker ips (search for localhost)
     tests
-    check package.json for naming and scripts
+    check package.json for naming and scripts(dev should be for developing, probably delete start if im going to start everything with node)
+    somewhere note if you want to do everything local then change 172. whatever to localhost
+
+
+  # hsrl-api:
+  #   build:
+  #     dockerfile: ./api/Dockerfile
+  #   # volumes:
+  #   #   - .:/project/hsrl-api
+  #   image: hsrl/api
+  #   container_name: hsrl-api
+  #   ports:
+  #     - '4000:4000'
+  #   # depends_on:
+  #   #   - hsrl-postgres
+
+
+api: 
+    docker build -t hsrl/api .
+    docker run -p 4000:4000 -d --name hsrl-api hsrl/api 
+
+client: 
+    docker build -t hsrl/client .
+    docker run -p 3000:3000 -d --name hsrl-client hsrl/client
+
+postgres:
+    postgres already in docker compose :)
+
+processor:
+    docker build -t hsrl/processor .
+    docker run -p 4004 -d --name hsrl-processor hsrl/processor
+sub:
+    docker build -t hsrl/subscriber .
+    docker run -p 4004 -d --name hsrl-subscriber hsrl/subscriber
+
+
 
 I implemented user auth structure like this:
 on createUSer salt gets generated, password gets hashed through salt
@@ -33,10 +68,10 @@ docker postgres commands:
 
 docker run --name supply-postgres -p 5432:5432 -e POSTGRES_PASSWORD=supply -d mdillon/postgis
 
-docker exec -u postgres supply-postgres createdb supplyDB
-docker exec -u postgres supply-postgres dropdb supplyDB
+docker exec -u postgres supply-postgres createdb hsrlDB
+docker exec -u postgres supply-postgres dropdb hsrlDB
 
 
 // username == postgres, userpw = supply
 // idk if needed
-docker exec supply-postgres bash -c "PGPASSWORD=supply createdb -U postgres supplyDB"
+docker exec supply-postgres bash -c "PGPASSWORD=supply createdb -U postgres hsrlDB"

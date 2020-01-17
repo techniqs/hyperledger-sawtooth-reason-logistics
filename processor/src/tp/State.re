@@ -5,6 +5,7 @@ external stringDictToJson: Js.Dict.t(string) => Js.Json.t = "%identity";
 external arrayDictToJson: Js.Dict.t(array(Js.Dict.t(string))) => Js.Json.t =
   "%identity";
 
+//binding to class Context of sawtooth which provides an interface for our blockchain
 class type _context =
   [@bs]
   {
@@ -21,11 +22,13 @@ type state = {
   timeout: int,
 };
 
-//returns dict, if dict is empty at key: adress returns empty array as value, else buffer
+// returns dict, if dict is empty at key: adress returns empty array as value, else buffer
 let getState = (address: array(string), state: state) => {
   state.context##getState(address, state.timeout);
 };
 
+// sets data on specific address of blockchain
+// data has to be a dict of address as key and buffer of data as value for setState to accept it
 let setState = (stateDict: Js.Dict.t(Node.Buffer.t), state: state) => {
   state.context##setState(stateDict, state.timeout)
   |> Js.Promise.then_((res: array(string)) => {
@@ -39,6 +42,7 @@ let setState = (stateDict: Js.Dict.t(Node.Buffer.t), state: state) => {
 };
 
 module StateFunctions = {
+  //creates a user
   let setUser = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
     let address = Address.getUserAddress(pubKey);
     getState([|address|], state)
@@ -83,12 +87,12 @@ module StateFunctions = {
        );
   };
 
-  // set has no data at address
-  // update without transfer has data
-  //     but tpRequest has 2 addresses as inputs
-  // update with transfer has data
-  //     but tpRequest has 3 addresses as inputs
-
+  // creates/updates/transfers a ware
+  // for creation of a ware there isn't any data at wareAddress
+  // for update WITHOUT transfering the ware to another user, there is data at wareAddress
+  //     but the transaction Request has 2!! addresses as inputs
+  // for update WITH transfering the ware to another user, there is data at wareAddress
+  //     but the transaction Request has 3!! addresses as inputs
   let setWare = (buffer: Node.Buffer.t, state: state, inputs: array(string)) => {
     let parsedData = Payload.decodeWareData(buffer);
     Js.log2("Parsed Payload Data", parsedData);

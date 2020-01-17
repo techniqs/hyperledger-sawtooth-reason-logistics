@@ -8,10 +8,12 @@ const { nameSpace } = require('../utils/Address.bs');
 class SupplyHandler extends TransactionHandler {
 
     constructor() {
+        // specifies which transaction requests my processor accepts 
         super("hyperledger-sawtooth-reason-logistics", ["0.1"], [nameSpace]);
     }
 
     apply(transactionProcessRequest, context) {
+        // calling my Reason Implementation of the SupplyHandler
         return SupplyHandlerImpl.apply(this, transactionProcessRequest, context);
     }
 }
