@@ -52,7 +52,7 @@ services:
       - validator
       # - hsrl-api
       - hsrl-postgres
-    command: ["wait-for-it/wait-for-it.sh","db:5432","-t","15", "--", "npm", "start"]
+    command: ["wait-for-it/wait-for-it.sh","db:5432","-t","20", "--", "npm", "start"]
 
   hsrl-processor:
     build:
