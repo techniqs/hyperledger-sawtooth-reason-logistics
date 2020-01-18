@@ -35,12 +35,13 @@ module SupplyHandlerImpl = {
 
     // only accepts CreateUser and SetWare as actions
     switch (payloadAction) {
-    | CreateUser =>  
-      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state)
-    | SetWare => 
-      StateFunctions.setWare(payloadBuffer, state, header.inputs)
-    | _ =>
-      Js.Promise.resolve(Js.Dict.empty());
+    | CreateUser =>
+      Validation.validateNewUser(header.signerPublicKey, state);
+      StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state);
+    | SetWare =>
+      Validation.validateWare(payloadBuffer, state, header.inputs);
+      StateFunctions.setWare(payloadBuffer, state, header.inputs);
+    | _ => Js.Promise.resolve(Js.Dict.empty())
     };
   };
 };

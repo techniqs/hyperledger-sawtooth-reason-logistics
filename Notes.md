@@ -1,7 +1,8 @@
 TODO:
     updateHistory gives wrong owners back
     tests
-    clear notes
+    clear notes / or maybe do another dev notes thingy
+    maybe remove sawtooth-shell-default out of docker-compose?
 
 api: 
     docker build -t hsrl/api .
@@ -22,7 +23,6 @@ sub:
     docker run -p 4004 -d --name hsrl-subscriber hsrl/subscriber
 
 
-
 I implemented user auth structure like this:
 on createUSer salt gets generated, password gets hashed through salt
 privatekey gets encrypted with hashed pw. 
@@ -40,20 +40,6 @@ if i can decrypt the encrypted private key with the hashed pw and check if publi
 The start_block_num and end_block_num columns specify the range in which that state value is set or exists.
 Values that are valid as of the current block have end_block_num set to NULL.
 
-
 info: 
 Event with eventtype sawtooth/block-commit has attributes:
 block_id, block_num, state_root_hash, previous_block_id,
-
-
-docker postgres commands: 
-
-docker run --name supply-postgres -p 5432:5432 -e POSTGRES_PASSWORD=supply -d mdillon/postgis
-
-docker exec -u postgres supply-postgres createdb hsrlDB
-docker exec -u postgres supply-postgres dropdb hsrlDB
-
-
-// username == postgres, userpw = supply
-// idk if needed
-docker exec supply-postgres bash -c "PGPASSWORD=supply createdb -U postgres hsrlDB"
