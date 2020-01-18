@@ -83,7 +83,7 @@ let validateLatitude = (latitude: float) => {
 // latitude and longitude are valid
 
 let validateWare =
-    (buffer: Node.Buffer.t, state: state, inputs: array(string)) => {
+    (buffer: Node.Buffer.t, state: state) => {
   let parsedData = Payload.decodeWareData(buffer);
   let address = Address.getWareAddress(parsedData.ean);
   getState([|address|], state)

@@ -39,7 +39,7 @@ module SupplyHandlerImpl = {
       Validation.validateNewUser(header.signerPublicKey, state);
       StateFunctions.setUser(header.signerPublicKey, payloadBuffer, state);
     | SetWare =>
-      Validation.validateWare(payloadBuffer, state, header.inputs);
+      Validation.validateWare(payloadBuffer, state);
       StateFunctions.setWare(payloadBuffer, state, header.inputs);
     | _ => Js.Promise.resolve(Js.Dict.empty())
     };

@@ -51,10 +51,6 @@ module StateFunctions = {
          | Some(adressData) =>
            Node.Buffer.isBuffer(adressData)
              ? {
-              //  Js.log2("Data already saved at address: ", address);
-              //  Exceptions.newInvalidTransactionException(
-              //    {j|Cannot create User! Public_key: $pubKey already exists!|j},
-              //  );
                Js.Promise.resolve(result);
              }
              : {
