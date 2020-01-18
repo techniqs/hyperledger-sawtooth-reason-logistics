@@ -41,8 +41,29 @@ let setState = (stateDict: Js.Dict.t(Node.Buffer.t), state: state) => {
      });
 };
 
+module Validation = {
+  let validateLongitude = (longitude: float) => {
+    longitude >= (-180.) && longitude <= 180.
+      ? ()
+      : Exceptions.newInvalidTransactionException(
+          {j|Longitude must be between -180 and 180. Got $longitude|j},
+        );
+  };
+
+  let validateLatitude = (latitude: float) => {
+    latitude >= (-90.) && latitude <= 90.
+      ? ()
+      : Exceptions.newInvalidTransactionException(
+          {j|Latitude must be between -90 and 90. Got $latitude|j},
+        );
+  };
+};
+
 module StateFunctions = {
   //creates a user
+  // create user validation rules
+  // pubkey must be unique
+
   let setUser = (pubKey: string, buffer: Node.Buffer.t, state: state) => {
     let address = Address.getUserAddress(pubKey);
     getState([|address|], state)
@@ -51,6 +72,9 @@ module StateFunctions = {
          | Some(adressData) =>
            Node.Buffer.isBuffer(adressData)
              ? {
+               Exceptions.newInvalidTransactionException(
+                 {j|Cannot create User! Public_key: $pubKey already exists!|j},
+               );
                Js.Promise.resolve(result);
              }
              : {
@@ -89,17 +113,51 @@ module StateFunctions = {
   //     but the transaction Request has 2!! addresses as inputs
   // for update WITH transfering the ware to another user, there is data at wareAddress
   //     but the transaction Request has 3!! addresses as inputs
+
+  // create ware validation rules
+  // owner is already user
+  // latitude and longitude are valid
+
+  // update ware validation rules
+  // owner is already user
+  // latitude and longitude are valid
+
+  // transfer ware validation rules
+  // newOwner is already user
+  // latitude and longitude are valid
+
   let setWare = (buffer: Node.Buffer.t, state: state, inputs: array(string)) => {
     let parsedData = Payload.decodeWareData(buffer);
     Js.log2("Parsed Payload Data", parsedData);
     let address = Address.getWareAddress(parsedData.ean);
-    getState([|address|], state)
-    |> Js.Promise.then_((result: Js.Dict.t(Node.Buffer.t)) =>
+    let ownerKey = parsedData.owner;
+    let ownerAddress = Address.getUserAddress(parsedData.owner);
+    getState([|address, ownerAddress|], state)
+    |> Js.Promise.then_((result: Js.Dict.t(Node.Buffer.t)) => {
+         // validation of owner
+         switch (Js.Dict.get(result, ownerAddress)) {
+         | Some(adressData) =>
+           Node.Buffer.isBuffer(adressData)
+             ? {
+               ();
+             }
+             : {
+               Exceptions.newInvalidTransactionException(
+                 {j|User with public_key: $ownerKey doesn't exist!|j},
+               );
+             }
+         | _ =>
+           raise(Exceptions.StateError("Couldnt get Dict from getState"))
+         };
+
          switch (Js.Dict.get(result, address)) {
          | Some(adressData) =>
            Node.Buffer.isBuffer(adressData)
              // UPDATE / TRANSFER
              ? {
+               Validation.validateLongitude(parsedData.longitude);
+               Validation.validateLatitude(parsedData.latitude);
+
                let savedWareData = Payload.decodeSavedWareData(adressData);
                Js.log2("Data saved at address: ", savedWareData);
 
@@ -121,9 +179,12 @@ module StateFunctions = {
                  Array.length(savedWareData.attributes) - 1;
 
                if (parsedData.name
-                   !== savedWareData.attributes[attributesLength].name  ||
-                   parsedData.uvp
-                   !== (savedWareData.attributes[attributesLength].uvp |> float_of_string)) {
+                   !== savedWareData.attributes[attributesLength].name
+                   || parsedData.uvp
+                   !== (
+                         savedWareData.attributes[attributesLength].uvp
+                         |> float_of_string
+                       )) {
                  let newAttribute: attributes = {
                    name: parsedData.name,
                    uvp: parsedData.uvp |> Js.Float.toString,
@@ -159,9 +220,15 @@ module StateFunctions = {
                let locationLength = Array.length(savedWareData.locations) - 1;
 
                if (parsedData.longitude
-                   !== (savedWareData.locations[locationLength].longitude |> float_of_string)
+                   !== (
+                         savedWareData.locations[locationLength].longitude
+                         |> float_of_string
+                       )
                    || parsedData.latitude
-                   !== (savedWareData.locations[locationLength].latitude  |> float_of_string)) {
+                   !== (
+                         savedWareData.locations[locationLength].latitude
+                         |> float_of_string
+                       )) {
                  let newLocation: location = {
                    latitude: parsedData.latitude |> Js.Float.toString,
                    longitude: parsedData.longitude |> Js.Float.toString,
@@ -237,6 +304,8 @@ module StateFunctions = {
              // CREATE NEW WARE
              // IDENTIFIER
              : {
+               Validation.validateLongitude(parsedData.longitude);
+               Validation.validateLatitude(parsedData.latitude);
                let identifierDict = Js.Dict.empty();
                Js.Dict.set(identifierDict, "ean", parsedData.ean);
                Js.Dict.set(
@@ -303,7 +372,7 @@ module StateFunctions = {
              }
          | _ =>
            raise(Exceptions.StateError("Couldnt get Dict from getState"))
-         }
-       );
+         };
+       });
   };
 };

@@ -16,47 +16,9 @@
 version: "2.1"
 
 services:
-
-  hsrl-postgres:
-    image: mdillon/postgis
-    container_name: hsrl-postgres
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: hsrl
-      POSTGRES_DB: hsrlDB
-    ports:
-      - '5432:5432'
-
-  hsrl-api:
-    build:
-      context: ./api
-      dockerfile: ./Dockerfile
-    image: hsrl/api
-    container_name: hsrl-api
-    ports:
-      - '4000:4000'
-    depends_on:
-      - hsrl-postgres
-    command: ["wait-for-it/wait-for-it.sh", "db:5432","-t","10","--", "npm", "start"]
-
-  hsrl-subscriber:
-    build:
-      context: ./subscriber
-      dockerfile: ./Dockerfile
-    image: hsrl/subscriber
-    container_name: hsrl-subscriber
-    ports:
-      - '4004'
-    depends_on:
-      - validator
-      # - hsrl-api
-      - hsrl-postgres
-    command: ["wait-for-it/wait-for-it.sh","db:5432","-t","15", "--", "npm", "start"]
-
   hsrl-processor:
     build:
-      context: ./processor
+      context: ../processor
       dockerfile: ./Dockerfile
     image: hsrl/processor
     container_name: hsrl-processor
@@ -65,6 +27,14 @@ services:
     depends_on:
       - validator
     command: ["wait-for-it/wait-for-it.sh","localhost:4004","-t","5", "--", "npm", "start"]
+
+  hsrl-tests:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: hsrl/tests
+    container_name: hsrl-tests
+    command: ["wait-for-it/wait-for-it.sh","localhost:4004","-t","7", "--", "npm", "test"]
 
 
   settings-tp:

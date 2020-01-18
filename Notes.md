@@ -2,7 +2,36 @@ TODO:
     updateHistory gives wrong owners back
     tests
     clear notes / or maybe do another dev notes thingy
-    maybe remove sawtooth-shell-default out of docker-compose?
+
+// jest and look at the unit tests from this guy
+
+// do transaction like you would be api and send it to validator and check if i get the exceptions back i should
+
+// create user validation rules
+// pubkey must be unique
+
+// Exceptions.newInvalidTransactionException(
+//     {j|Cannot create User! Public_key: $pubKey already exists!|j},
+//   );
+
+// create/ update/ transfer ware validation rules
+// owner is already user
+// Exceptions.newInvalidTransactionException(
+//     {j|User with public_key: $pubKey doesn't exist!|j},
+//   );
+
+// latitude and longitude are valid
+
+// Exceptions.newInvalidTransactionException(
+//     {j|Longitude must be between -180 and 180. Got $longitude|j},
+//   )
+
+// Exceptions.newInvalidTransactionException(
+//     {j|Latitude must be between -90 and 90. Got $latitude|j},
+//   )
+
+
+
 
 api: 
     docker build -t hsrl/api .
