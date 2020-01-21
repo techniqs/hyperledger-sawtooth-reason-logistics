@@ -31,6 +31,7 @@ cd hyperledger-sawtooth-reason-logistics/
 
 docker-compose up
 ````
+The application is ready as soon as the hsrl-client reports that it started on port 3000. 
 
 ### Running tests
 ```
@@ -49,7 +50,7 @@ docker-compose -f tests.yaml up
 <p align="center"><img align="center" alt="Frontend" src="./public/frontend.png">
 </p>
 
-The above image shows the frontend/client-side of the application, where you can easily create transactions which then get forwarded to the custom graphql API.
+The above image shows the frontend/client-side of the application, which runs on localhost:3000, where you can easily create transactions which then get forwarded to the custom graphql API.
 
 Possible transactions are: 
 -	Create a new user
@@ -63,7 +64,7 @@ Possible transactions are:
 <p align="center"><img align="center" alt="Graphql API" src="./public/graphql.png">
 </p>
 
-The above image shows the graphql-api playground of the application, where you can create transactions through mutations which get sent to the sawtooth validator and access the database with the given queries.
+The above image shows the graphql-api playground of the application, which runs on localhost:4000/graphiql, where you can create transactions through mutations which get sent to the sawtooth validator and access the database with the given queries.
 
 The API itself doesn't store data in the reporting database except in the Auth table to instantly return a JWT token for the client.
 

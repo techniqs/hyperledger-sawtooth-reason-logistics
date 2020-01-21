@@ -75,6 +75,7 @@ services:
     ports:
       - '3000:3000'
       - '4000'
+    command: ["wait-for-it/wait-for-it.sh","db:5432","-t","20", "--", "npm", "start"]
 
   settings-tp:
     image: hyperledger/sawtooth-settings-tp:1.0
