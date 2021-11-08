@@ -6,7 +6,7 @@
     "start": "babel-node src/server.js"
   },
   "dependencies": {
-    "apollo-server": "2.9.7",
+    "apollo-server": "2.25.3",
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "jsonwebtoken": "8.5.1",
