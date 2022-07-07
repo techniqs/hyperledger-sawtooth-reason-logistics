@@ -10,7 +10,7 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "jsonwebtoken": "8.5.1",
-    "moment": "2.24.0",
+    "moment": "2.29.4",
     "path": "0.12.7",
     "pg": "7.12.1",
     "request": "2.88.0",
